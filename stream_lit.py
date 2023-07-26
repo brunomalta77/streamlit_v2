@@ -47,7 +47,7 @@ def my_values(df):
     channel = st.multiselect("Select the channel categories:", channel_options)
     return ws,we,author,channel
 
-def filtering(df,br,ws,we,author,channel):
+def filtering(df,ws,we,author,channel):
     df = df[(df['Week Commencing'] >= ws) & (df['Week Commencing'] <= we) & (df["author_predictions"].isin(author)) & (df["message_type"].isin(channel))]
     alldata = ' '.join(df["cleaned_message"])
     lengpt = len(alldata) / 4000   #(because chatgot maximum token size is 4076)
