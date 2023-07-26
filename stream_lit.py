@@ -84,8 +84,9 @@ def get_topics(df):
                                                     Format your response as a list of items separated by commas \
                                                     Text: ```{}``` \
                                                     ".format(gm)))
-        except:
-            topics.append('')
+         except Exception as e:
+            print(e)
+            #topics.append('')
         print(l)
         l+=1
     # Merging the topics with the actual dataframe
