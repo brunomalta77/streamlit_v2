@@ -218,19 +218,18 @@ def main():
                 st.write(st.session_state.df.shape)
             if st.session_state.df is not None:
                 ws,we,author,channel = my_values(st.session_state.df)
-                st.write(ws)
                 if author == [] and channel ==[] :
-                    st.write("please select your author and channel")
+                    st.warning("please select your author and channel")
                 if author == [] and channel != []:
-                    st.write("please select your author")
+                    st.warning("please select your author")
                 if author !=[] and channel ==[]:
-                    st.write("please select your channel")
+                    st.warning("please select your channel")
                 if author != [] and channel !=[]:
                     try:
                         st.session_state.df = filtering(st.session_state.df,ws,we,author,channel)
                     except ZeroDivisionError as e:
-                        st.write("Please check the calendar or check if it you filter contains enough information") 
-                st.write(st.session_state.df.shape)
+                        st.warning("Please check the calendar or check if  your filter contains enough information") 
+                st.write("rows number -> ",st.session_state.df.shape[0])
                 if st.button("Generate Topics"):
                     st.session_state.df = get_topics(st.session_state.df)
                     st.session_state.final_topics = unique_topics(st.session_state.df)
