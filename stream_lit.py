@@ -159,7 +159,6 @@ def Topics_num(final_topics,df,we,ws):
     st.write(f"you topics -> {top_topics}")
     st.write(final_df)
     df_xlsx = to_excel(final_df)
-    st.write(df_xlsx)
     st.download_button(label='📥 Download Current Topics', data=df_xlsx, file_name= f"{str(df)}_{we}_{ws}.xlsx")
 
 
@@ -233,6 +232,7 @@ def main():
                 
                 if st.checkbox("Save"):
                     df_xlsx = to_excel(st.session_state.df_final)
+                    st.write(df_xlsx)
                     st.download_button(label='📥 Download Current Topics',
                                 data=df_xlsx ,
                                 file_name= f"{str(df_file)}_{we}_{ws}.xlsx")
