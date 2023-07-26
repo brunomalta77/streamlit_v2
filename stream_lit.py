@@ -207,7 +207,7 @@ def main():
             #path_name = f"C:\\Users\\BrunoMalta\\Brand Delta\\Food Pilot - General\\data\\modelled_data\\{market}\\Workflow_output\\latest_output"
             #file = glob.glob(path_name + "/*.parquet")
             df_file= st.file_uploader("Upload a Parquet file")
-            st.write(str(df_file))
+            uploaded_file_info= str(df_file)
             file_name = uploaded_file_info.split(", name='")[1].split(".")[0]
             st.write(file_name)
             #st.session_state.brand_name = st.text_input("write the brand name") 
