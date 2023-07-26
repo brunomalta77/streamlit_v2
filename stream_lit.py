@@ -157,6 +157,7 @@ def Topics_num(final_topics,df,we,ws):
     selected_number = st.selectbox("Num of topics",number_options)
     top_topics,final_df = best_10(final_topics,df,n=selected_number)
     st.write(f"you topics -> {top_topics}")
+    st.write(final_df)
     if st.checkbox("Save your df with your topics"):
         df_xlsx = to_excel(final_df)
         st.download_button(label='📥 Download Current Topics',
@@ -169,7 +170,6 @@ def to_excel(df):
     output = BytesIO()
     writer = pd.ExcelWriter(output, engine='xlsxwriter')
     df.to_excel(writer, index=False, sheet_name='Sheet1')
-    st.write(df)
     workbook = writer.book
     worksheet = writer.sheets['Sheet1']
     format1 = workbook.add_format({'num_format': '0.00'}) 
