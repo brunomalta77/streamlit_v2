@@ -218,16 +218,14 @@ def main():
                 st.write(st.session_state.df.shape)
             if st.session_state.df is not None:
                 ws,we,author,channel = my_values(st.session_state.df)
-                st.write(author)
-                st.write(channel)
                 if author == [] and channel ==[] :
                     st.write("please select your author and channel")
                 if author == [] and channel != []:
                     st.write("please select your author")
                 if author !=[] and channel ==[]:
                     st.write("please select your channel")
-                else:
-                    st.session_state.df = filtering(st.session_state.df,ws,we,author,channel)
+                
+                st.session_state.df = filtering(st.session_state.df,ws,we,author,channel)
                 st.write(st.session_state.df.shape)
                 if st.button("Generate Topics"):
                     st.session_state.df = get_topics(st.session_state.df)
