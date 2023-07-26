@@ -86,7 +86,7 @@ def get_topics(df):
                                                     ".format(gm)))
         except Exception as e:
             print(e)
-            #topics.append('')
+            topics.append('')
         print(l)
         l+=1
     # Merging the topics with the actual dataframe
