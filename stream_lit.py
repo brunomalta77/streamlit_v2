@@ -253,7 +253,7 @@ def main():
                             st.session_state.df = filtering(st.session_state.df,ws,we,author,channel)
                             st.write("rows number -> ",st.session_state.df.shape[0])
                         except ZeroDivisionError as e:
-                            st.warning("Please check the calendar or check if your filter contains enough information") 
+                            st.warning("Please check the calendar") 
                 if st.button("Generate Topics"):
                     st.session_state.df = get_topics(st.session_state.df)
                     st.session_state.final_topics = unique_topics(st.session_state.df)
