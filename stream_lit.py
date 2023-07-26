@@ -20,10 +20,6 @@ load_dotenv()
 api_key = os.getenv('API_Keys')
 openai.api_key= api_key
 
-st.write(api_key)
-
-
-
 
 #page config
 st.set_page_config(page_title="BrandDelta_app",page_icon="💵",layout="wide")
