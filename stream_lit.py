@@ -158,8 +158,10 @@ def Topics_num(final_topics,df):
     top_topics,final_df = best_10(final_topics,df,n=selected_number)
     st.write(f"you topics -> {top_topics}")
     if st.checkbox("Save your df with your topics"):
-        save_path = st.text_input("Write the absolute path for saving the file")
-        final_df.to_excel(save_path, index=False)
+        df_xlsx = to_excel(final_df)
+        st.download_button(label='📥 Download Current Topics',
+        data=df_xlsx ,
+        file_name= f"{str(df_file}_{we}_{ws}.xlsx")
         st.write("Congratulations, you saved you dataframe")
 
 def to_excel(df):
@@ -231,12 +233,10 @@ def main():
                         st.write("Do you want to change the topics or Save ?")
                 
                 if st.checkbox("Save"):
-                    #save_path = st.text_input("Write the absolute path for saving the file")
-                    #type(st.write(save_path))
                     df_xlsx = to_excel(st.session_state.df_final)
                     st.download_button(label='📥 Download Current Topics',
                                 data=df_xlsx ,
-                                file_name= 'Your_topics.xlsx')
+                                file_name= f"{str(df_file}_{we}_{ws}.xlsx")
                     st.write("save successful")
                 if st.checkbox("change topics"):
                     Topics_num(st.session_state.final_topics,st.session_state.unique_topics_df)
