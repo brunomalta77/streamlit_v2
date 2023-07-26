@@ -27,6 +27,9 @@ openai.api_key= api_key
 #page config
 st.set_page_config(page_title="BrandDelta_app",page_icon="💵",layout="wide")
 
+st.title("Brand Delta Topic Modelling")
+
+
 @st.cache(allow_output_mutation=True) # trying no to be always rerruning the dataframe
 def read_parquet(file_path):
     df =pd.read_parquet(file_path)
@@ -222,7 +225,7 @@ def main():
                         st.error("does not have any topic")
                     if st.session_state.df is not None :
                         top_topics,st.session_state.df_final = best_10(st.session_state.final_topics,st.session_state.df)
-                        st.write(st.session_state.df_final)
+                        st.write(st.session_state.final_topics)
                         st.write("your topics")
                         st.write("\n") 
                         st.write(top_topics)
