@@ -15,12 +15,12 @@ import glob
 import os
 
 #Getting the API_Keys
-#load_dotenv()
-#api_key = os.getenv('API_Keys')
-#openai.api_key= api_key
+load_dotenv()
+api_key = os.getenv('API_Keys')
+penai.api_key= api_key
 
 #Getting API_Keys
-api_keys = API_Keys
+#api_keys = API_Keys
 
 
 #page config
