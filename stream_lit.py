@@ -195,8 +195,8 @@ def main():
                 st.write(st.session_state.df.shape)
                 if st.button("Generate Topics"):
                     st.session_state.df = get_topics(st.session_state.df)
-                    st.write(st.session_state.df)
                     st.session_state.final_topics = unique_topics(st.session_state.df)
+                    st.write(st.session_state.df)
                     st.session_state.unique_topics_df = st.session_state.df
 
                     if len(st.session_state.final_topics) == 0:
