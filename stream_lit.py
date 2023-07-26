@@ -14,14 +14,11 @@ import joblib
 import glob
 import os
 
-
 #Getting the API_Keys
-#load_dotenv()
-#api_key = os.getenv('API_Keys')
-#openai.api_key= api_key
+load_dotenv()
+api_key = os.getenv('API_Keys')
+openai.api_key= api_key
 
-#getting the API_Keys
-api_key = st.secrets["api_secret"]
 
 #page config
 st.set_page_config(page_title="BrandDelta_app",page_icon="💵",layout="wide")
@@ -50,7 +47,7 @@ def my_values(df):
     channel = st.multiselect("Select the channel categories:", channel_options)
     return ws,we,author,channel
 
-def filtering(df,ws,we,author,channel):
+def filtering(df,br,ws,we,author,channel):
     df = df[(df['Week Commencing'] >= ws) & (df['Week Commencing'] <= we) & (df["author_predictions"].isin(author)) & (df["message_type"].isin(channel))]
     alldata = ' '.join(df["cleaned_message"])
     lengpt = len(alldata) / 4000   #(because chatgot maximum token size is 4076)
@@ -87,9 +84,9 @@ def get_topics(df):
                                                     Format your response as a list of items separated by commas \
                                                     Text: ```{}``` \
                                                     ".format(gm)))
-        except :
+        except:
             topics.append('')
-            print(l)
+        print(l)
         l+=1
     # Merging the topics with the actual dataframe
     topicdf = pd.DataFrame({'grouped_message': gr_msg_unique, 'topics': topics})
@@ -177,14 +174,15 @@ def main():
         if 'df_final' not in st.session_state:
             st.session_state.df_final = None
 
+
+
+
         # initialize our app
         left_column,right_column = st.columns(2)
         with left_column:
             #market = st.text_input("Enter your market here")
             #path_name = f"C:\\Users\\BrunoMalta\\Brand Delta\\Food Pilot - General\\data\\modelled_data\\{market}\\Workflow_output\\latest_output"
             #file = glob.glob(path_name + "/*.parquet")
-            st.write(api_key)
-            st.write("done")
             df_file= st.file_uploader("Upload a Parquet file")
             if df_file is not None:
                 # read our file
@@ -199,8 +197,8 @@ def main():
                 st.write(st.session_state.df.shape)
                 if st.button("Generate Topics"):
                     st.session_state.df = get_topics(st.session_state.df)
+                    #error
                     st.session_state.final_topics = unique_topics(st.session_state.df)
-                    st.write(st.session_state.df)
                     st.session_state.unique_topics_df = st.session_state.df
 
                     if len(st.session_state.final_topics) == 0:
@@ -213,7 +211,8 @@ def main():
                         st.write(top_topics)
                         st.write("Do you want to change the topics or Save ?")
                 
-    
+                
+                ### Error. 
                 if st.checkbox("Save"):
                     save_path = st.text_input("Write the absolute path for saving the file")
                     type(st.write(save_path))
