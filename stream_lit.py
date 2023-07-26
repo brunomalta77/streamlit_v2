@@ -226,7 +226,7 @@ def main():
                 # read our file
                 st.session_state.df = pd.read_parquet(df_file)
                 st.session_state.df['Week Commencing'] = st.session_state.df['created_time'].apply(lambda x: (x - timedelta(days=x.weekday())).replace(hour=0, minute=0, second=0, microsecond=0))
-                st.info(f"data size -> {st.session_state.df.shape}")
+                st.info(f"data size -> {st.session_state.df.shape[0}")
                 if st.session_state.df is not None:
                     if st.checkbox("Filtered data"):
                         ws,we,author,channel = my_values_filtered(st.session_state.df)
@@ -239,7 +239,7 @@ def main():
                         if author != [] and channel !=[]:
                             try:
                                 st.session_state.df = filtering(st.session_state.df,ws,we,author,channel)
-                                st.info("rows number -> ",st.session_state.df.shape[0])
+                                st.info("data size -> ",st.session_state.df.shape[0])
                             except ZeroDivisionError as e:
                                 st.warning("Please check the calendar or check if your filter contains enough information") 
                     if st.checkbox("All data"):
@@ -247,7 +247,7 @@ def main():
                         if author != [] and channel !=[]:
                             try:
                                 st.session_state.df = filtering(st.session_state.df,ws,we,author,channel)
-                                st.write("data size -> ",st.session_state.df.shape[0])
+                                st.info("data size -> ",st.session_state.df.shape[0])
                             except ZeroDivisionError as e:
                                 st.warning("Please check the calendar") 
                     if st.button("Generate Topics"):
