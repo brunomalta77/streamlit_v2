@@ -35,35 +35,33 @@ def read_parquet(file_path):
     df =pd.read_parquet(file_path)
     return df
 
-def my_values(df):
-   #options
-    if st.checkbox("using all data"):
-        #time period
-        start_date = st.date_input("Select start date")
-        end_date =  st.date_input("Select end date")
-        #convert our dates
-        ws = start_date.strftime('%Y-%m-%d')
-        we = end_date.strftime('%Y-%m-%d')
-        author = [x for x in df["author_predictions"].unique()]
-        channel = [x for x in df["message_type"].unique()]
-        return ws,we,author,channel
-    
-    if st.checkbox("filtering the data"):
-        author_options= [x for x in df["author_predictions"].unique()]
-        channel_options= [x for x in df["message_type"].unique()]
-    
-        #creating the brand
-        #br = st.selectbox("Select a brand:", br_options)
-        #time period
-        start_date = st.date_input("Select start date")
-        end_date =  st.date_input("Select end date")
-        #convert our dates
-        ws = start_date.strftime('%Y-%m-%d')
-        we = end_date.strftime('%Y-%m-%d')
-        # author
-        author =  st.multiselect("Select the author categories:", author_options)
-        channel = st.multiselect("Select the channel categories:", channel_options)
-        return ws,we,author,channel
+def my_values_filterd(df):
+    author_options= [x for x in df["author_predictions"].unique()]
+    channel_options= [x for x in df["message_type"].unique()]
+    #creating the brand
+    #br = st.selectbox("Select a brand:", br_options)
+    #time period
+    start_date = st.date_input("Select start date")
+    end_date =  st.date_input("Select end date")
+    #convert our dates
+    ws = start_date.strftime('%Y-%m-%d')
+    we = end_date.strftime('%Y-%m-%d')
+    # author
+    author =  st.multiselect("Select the author categories:", author_options)
+    channel = st.multiselect("Select the channel categories:", channel_options)
+    return ws,we,author,channel
+
+def my_values_all:
+    start_date = st.date_input("Select start date")
+    end_date =  st.date_input("Select end date")
+    #convert our dates
+    ws = start_date.strftime('%Y-%m-%d')
+    we = end_date.strftime('%Y-%m-%d')
+    author = [x for x in df["author_predictions"].unique()]
+    channel = [x for x in df["message_type"].unique()]
+    return ws,we,author,channel
+
+
 
 def filtering(df,ws,we,author,channel):
     df = df[(df['Week Commencing'] >= ws) & (df['Week Commencing'] <= we) & (df["author_predictions"].isin(author)) & (df["message_type"].isin(channel))]
@@ -228,7 +226,10 @@ def main():
                 st.session_state.df['Week Commencing'] = st.session_state.df['created_time'].apply(lambda x: (x - timedelta(days=x.weekday())).replace(hour=0, minute=0, second=0, microsecond=0))
                 st.write(st.session_state.df.shape)
             if st.session_state.df is not None:
-                ws,we,author,channel = my_values(st.session_state.df)
+                if st.checkbox("Filtered data"):
+                    ws,we,author,channel = my_values_filtered(st.session_state.df)
+                if st.checkbox("All data"):
+                    ws,we,author,channel = my_values_all(st.session_state.df)
                 if author == [] and channel ==[] :
                     st.warning("please select your author and channel")
                 if author == [] and channel != []:
