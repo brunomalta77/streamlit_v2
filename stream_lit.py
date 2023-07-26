@@ -240,6 +240,18 @@ def main():
                             try:
                                 st.session_state.df = filtering(st.session_state.df,ws,we,author,channel)
                                 st.info(f"data size -> {st.session_state.df.shape[0]}")
+                                if st.button("Generate Topics"):
+                                    st.session_state.df = get_topics(st.session_state.df)
+                                    st.session_state.final_topics = unique_topics(st.session_state.df)
+                                    st.session_state.unique_topics_df = st.session_state.df
+                                    if len(st.session_state.final_topics) == 0:
+                                        st.error("does not have any topic")
+                                    if st.session_state.df is not None :
+                                        top_topics,st.session_state.df_final = best_10(st.session_state.final_topics,st.session_state.df)
+                                        st.write("your topics")
+                                        st.write("\n") 
+                                        st.write(top_topics)
+                                        st.write("Do you want to change the topics or Save ?")
                             except ZeroDivisionError as e:
                                 st.warning("Please check the calendar or check if your filter contains enough information") 
                     if st.checkbox("All data"):
@@ -248,21 +260,22 @@ def main():
                             try:
                                 st.session_state.df = filtering(st.session_state.df,ws,we,author,channel)
                                 st.info(f"data size -> {st.session_state.df.shape[0]}")
+                                if st.button("Generate Topics"):
+                                    st.session_state.df = get_topics(st.session_state.df)
+                                    st.session_state.final_topics = unique_topics(st.session_state.df)
+                                    st.session_state.unique_topics_df = st.session_state.df
+                                    if len(st.session_state.final_topics) == 0:
+                                        st.error("does not have any topic")
+                                    if st.session_state.df is not None :
+                                        top_topics,st.session_state.df_final = best_10(st.session_state.final_topics,st.session_state.df)
+                                        st.write("your topics")
+                                        st.write("\n") 
+                                        st.write(top_topics)
+                                        st.write("Do you want to change the topics or Save ?")
                             except ZeroDivisionError as e:
                                 st.warning("Please check the calendar") 
-                    if st.button("Generate Topics"):
-                        st.session_state.df = get_topics(st.session_state.df)
-                        st.session_state.final_topics = unique_topics(st.session_state.df)
-                        st.session_state.unique_topics_df = st.session_state.df
-                        if len(st.session_state.final_topics) == 0:
-                            st.error("does not have any topic")
-                        if st.session_state.df is not None :
-                            top_topics,st.session_state.df_final = best_10(st.session_state.final_topics,st.session_state.df)
-                            st.write("your topics")
-                            st.write("\n") 
-                            st.write(top_topics)
-                            st.write("Do you want to change the topics or Save ?")
-                
+                    
+                    
                     if st.checkbox("Save"):
                         df_xlsx = to_excel(st.session_state.df_final)
                         st.download_button(label='📥 Download Current Topics',
