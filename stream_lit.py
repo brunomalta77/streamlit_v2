@@ -237,7 +237,7 @@ def main():
                     df_xlsx = to_excel(st.session_state.df_final)
                     st.download_button(label='📥 Download Current Topics',
                                 data=df_xlsx ,
-                                file_name= f"{str(df_file}_{we}_{ws}.xlsx")
+                                file_name= f"{str(df_file)}_{we}_{ws}.xlsx")
                     st.write("save successful")
                 if st.checkbox("change topics"):
                     Topics_num(st.session_state.final_topics,st.session_state.unique_topics_df)
