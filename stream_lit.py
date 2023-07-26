@@ -212,7 +212,7 @@ def main():
                         st.write("Do you want to change the topics or Save ?")
                 
                 if st.checkbox("Save"):
-                    save_path = st.text_input("Write the absolute path for saving the file")
+                    #save_path = st.text_input("Write the absolute path for saving the file")
                     #type(st.write(save_path))
                     #st.session_state.df_final.to_excel(save_path, index=False)
                     st.download_button("Download excel",st.session_state.df_final.to_excel(),file_name=f"{str(df_file)}_{ws}_{we}",mime="xlsx")
