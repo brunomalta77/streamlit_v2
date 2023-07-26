@@ -15,8 +15,7 @@ import glob
 import os
 import xlsxwriter
 from io import BytesIO
-
-output = BytesIO()
+from pyxlsb import open_workbook as open_xlsb
 
 #Getting the API_Keys
 #load_dotenv()
@@ -163,6 +162,20 @@ def Topics_num(final_topics,df):
         final_df.to_excel(save_path, index=False)
         st.write("Congratulations, you saved you dataframe")
 
+def to_excel(df):
+    output = BytesIO()
+    writer = pd.ExcelWriter(output, engine='xlsxwriter')
+    df.to_excel(writer, index=False, sheet_name='Sheet1')
+    workbook = writer.book
+    worksheet = writer.sheets['Sheet1']
+    format1 = workbook.add_format({'num_format': '0.00'}) 
+    worksheet.set_column('A:A', None, format1)  
+    writer.save()
+    processed_data = output.getvalue()
+    return processed_data
+
+
+
 
 def main():
     with st.container():
@@ -218,9 +231,10 @@ def main():
                 if st.checkbox("Save"):
                     #save_path = st.text_input("Write the absolute path for saving the file")
                     #type(st.write(save_path))
-                    #st.session_state.df_final.to_excel(save_path, index=False)
-                    excel_data = st.session_state.df_final.to_excel(f"{str(df_final)}.xlsx",index=False)
-                    #st.download_button(label="Download excel",data=st.session_state.df_final.to_excel(),file_name=f"{str(df_file)}_{ws}_{we}.xlsx",mime="application/vnd.ms-excel")
+                    df_xlsx = to_excel(st.session_state.df_final)
+                    st.download_button(label='📥 Download Current Topics',
+                                data=df_xlsx ,
+                                file_name= 'Your_topics.xlsx')
                     st.write("save successful")
                 if st.checkbox("change topics"):
                     Topics_num(st.session_state.final_topics,st.session_state.unique_topics_df)
