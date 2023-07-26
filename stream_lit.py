@@ -16,10 +16,12 @@ import os
 
 
 #Getting the API_Keys
-load_dotenv()
-api_key = os.getenv('API_Keys')
-openai.api_key= api_key
+#load_dotenv()
+#api_key = os.getenv('API_Keys')
+#openai.api_key= api_key
 
+#getting the API_Keys
+api_key = st.secrets["api_secret"]
 
 #page config
 st.set_page_config(page_title="BrandDelta_app",page_icon="💵",layout="wide")
