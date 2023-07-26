@@ -44,8 +44,8 @@ def my_values(df):
     #creating the brand
     #br = st.selectbox("Select a brand:", br_options)
     #time period
-    start_date = st.date_input("Select start date", value=datetime(2023, 7, 1))
-    end_date =  st.date_input("Select end date", value=datetime(2023, 7, 1))
+    start_date = st.date_input("Select start date")
+    end_date =  st.date_input("Select end date")
     #convert our dates
     ws = start_date.strftime('%Y-%m-%d')
     we = end_date.strftime('%Y-%m-%d')
