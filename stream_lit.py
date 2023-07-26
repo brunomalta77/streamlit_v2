@@ -211,13 +211,11 @@ def main():
                         st.write(top_topics)
                         st.write("Do you want to change the topics or Save ?")
                 
-                
-                ### Error. 
                 if st.checkbox("Save"):
                     save_path = st.text_input("Write the absolute path for saving the file")
                     type(st.write(save_path))
                     #st.session_state.df_final.to_excel(save_path, index=False)
-                    st.download_button("Download excel",st.session_state.df_final.to_excel(),file_name=f"{str(df_file}_{ws}_{we}",mime="xlsx")
+                    st.download_button("Download excel",st.session_state.df_final.to_excel(),file_name=f"{str(df_file)}_{ws}_{we}",mime="xlsx")
                     st.write("save successful")
                 if st.checkbox("change topics"):
                     Topics_num(st.session_state.final_topics,st.session_state.unique_topics_df)
