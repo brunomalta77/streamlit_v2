@@ -158,11 +158,10 @@ def Topics_num(final_topics,df,we,ws):
     top_topics,final_df = best_10(final_topics,df,n=selected_number)
     st.write(f"you topics -> {top_topics}")
     st.write(final_df)
-    if st.button("Save your df with your topics"):
-        df_xlsx = to_excel(final_df)
-        st.download_button(label='📥 Download Current Topics',
-        data=df_xlsx, file_name= f"{str(df)}_{we}_{ws}.xlsx")
-        st.write("Congratulations, you saved you dataframe")
+    df_xlsx = to_excel(final_df)
+    st.download_button(label='📥 Download Current Topics',
+    data=df_xlsx, file_name= f"{str(df)}_{we}_{ws}.xlsx")
+    st.write("Congratulations, you saved you dataframe")
 
 
                            
