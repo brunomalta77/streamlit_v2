@@ -226,7 +226,10 @@ def main():
                 if author !=[] and channel ==[]:
                     st.write("please select your channel")
                 if author != [] and channel !=[]:
-                    st.session_state.df = filtering(st.session_state.df,ws,we,author,channel)
+                    try:
+                        st.session_state.df = filtering(st.session_state.df,ws,we,author,channel)
+                    except ZeroDivisionError as e:
+                        st.write("Please check the calendar or check if it you filter contains enough information") 
                 st.write(st.session_state.df.shape)
                 if st.button("Generate Topics"):
                     st.session_state.df = get_topics(st.session_state.df)
