@@ -228,19 +228,30 @@ def main():
             if st.session_state.df is not None:
                 if st.checkbox("Filtered data"):
                     ws,we,author,channel = my_values_filtered(st.session_state.df)
+                    if author == [] and channel ==[] :
+                        st.warning("please select your author and channel")
+                    if author == [] and channel != []:
+                        st.warning("please select your author")
+                    if author !=[] and channel ==[]:
+                        st.warning("please select your channel")
+                    if author != [] and channel !=[]:
+                        try:
+                            st.session_state.df = filtering(st.session_state.df,ws,we,author,channel)
+                        except ZeroDivisionError as e:
+                            st.warning("Please check the calendar or check if your filter contains enough information") 
                 if st.checkbox("All data"):
                     ws,we,author,channel = my_values_all(st.session_state.df)
-                if author == [] and channel ==[] :
-                    st.warning("please select your author and channel")
-                if author == [] and channel != []:
-                    st.warning("please select your author")
-                if author !=[] and channel ==[]:
-                    st.warning("please select your channel")
-                if author != [] and channel !=[]:
-                    try:
-                        st.session_state.df = filtering(st.session_state.df,ws,we,author,channel)
-                    except ZeroDivisionError as e:
-                        st.warning("Please check the calendar or check if your filter contains enough information") 
+                    if author == [] and channel ==[] :
+                        st.warning("please select your author and channel")
+                    if author == [] and channel != []:
+                        st.warning("please select your author")
+                    if author !=[] and channel ==[]:
+                        st.warning("please select your channel")
+                    if author != [] and channel !=[]:
+                        try:
+                            st.session_state.df = filtering(st.session_state.df,ws,we,author,channel)
+                        except ZeroDivisionError as e:
+                            st.warning("Please check the calendar or check if your filter contains enough information") 
                 st.write("rows number -> ",st.session_state.df.shape[0])
                 if st.button("Generate Topics"):
                     st.session_state.df = get_topics(st.session_state.df)
