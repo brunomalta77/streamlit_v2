@@ -213,7 +213,7 @@ def main():
                 
                 if st.checkbox("Save"):
                     save_path = st.text_input("Write the absolute path for saving the file")
-                    type(st.write(save_path))
+                    #type(st.write(save_path))
                     #st.session_state.df_final.to_excel(save_path, index=False)
                     st.download_button("Download excel",st.session_state.df_final.to_excel(),file_name=f"{str(df_file)}_{ws}_{we}",mime="xlsx")
                     st.write("save successful")
