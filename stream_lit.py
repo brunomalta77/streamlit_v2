@@ -241,7 +241,7 @@ def main():
                     #Topics_num(st.session_state.final_topics,st.session_state.unique_topics_df,we,ws)
                     number_options = list(range(1,11))
                     selected_number = st.selectbox("Num of topics",number_options)
-                    top_topics,final_df = best_10(final_topics,df,n=selected_number)
+                    top_topics,final_df = best_10(st.session_state.final_topics,st.session_state.unique_topics_df,n=selected_number)
                     st.write(f"you topics -> {top_topics}")
                     df_xlsx = to_excel(final_df)
                     st.download_button(label='📥 Download Current Topics', data=df_xlsx, file_name= f"{str(df)}_{we}_{ws}.xlsx")
