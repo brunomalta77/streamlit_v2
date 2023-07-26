@@ -218,6 +218,7 @@ def main():
                 st.write(st.session_state.df.shape)
             if st.session_state.df is not None:
                 ws,we,author,channel = my_values(st.session_state.df)
+                st.write(ws)
                 if author == [] and channel ==[] :
                     st.write("please select your author and channel")
                 if author == [] and channel != []:
