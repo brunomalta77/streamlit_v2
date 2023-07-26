@@ -5,3 +5,4 @@ seaborn
 python-dotenv
 streamlit 
 joblib
+API_Keys = "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"
