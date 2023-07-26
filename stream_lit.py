@@ -35,7 +35,7 @@ def read_parquet(file_path):
     df =pd.read_parquet(file_path)
     return df
 
-def my_values_filterd(df):
+def my_values_filtered(df):
     author_options= [x for x in df["author_predictions"].unique()]
     channel_options= [x for x in df["message_type"].unique()]
     #creating the brand
@@ -51,7 +51,7 @@ def my_values_filterd(df):
     channel = st.multiselect("Select the channel categories:", channel_options)
     return ws,we,author,channel
 
-def my_values_all:
+def my_values_all(df):
     start_date = st.date_input("Select start date")
     end_date =  st.date_input("Select end date")
     #convert our dates
