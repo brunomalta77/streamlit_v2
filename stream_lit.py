@@ -228,7 +228,7 @@ def main():
                 st.session_state.df['Week Commencing'] = st.session_state.df['created_time'].apply(lambda x: (x - timedelta(days=x.weekday())).replace(hour=0, minute=0, second=0, microsecond=0))
                 st.info(f"data size -> {st.session_state.df.shape[0]}")
                 if st.session_state.df is not None:
-                    if st.checkbox("Filtered data"):
+                    if st.button("Filtered data"):
                         ws,we,author,channel = my_values_filtered(st.session_state.df)
                         if author == [] and channel ==[] :
                             st.warning("please select your author and channel")
@@ -257,7 +257,7 @@ def main():
                                     st.warning("please click in the button -> Generate topics")
                             except ZeroDivisionError as e:
                                 st.warning("Please check the calendar or check if your filter contains enough information") 
-                    if st.checkbox("All data"):
+                    if st.button("All data"):
                         ws,we,author,channel = my_values_all(st.session_state.df)
                         if author != [] and channel !=[]:
                             try:
