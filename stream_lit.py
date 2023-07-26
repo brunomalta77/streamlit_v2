@@ -146,7 +146,6 @@ def best_10(final_topic_list_cleaned,df1,n=10):
                 df2.loc[index, top] = 1
             else:
                 continue
-    st.write(df2)
     return top_10_topics,df2
     # saving the data frame.
     #df2.to_excel(r"C:\Users\Technology\Desktop\tasks\text_summary\IT_findus_nov-june.xlsx", index=False)
@@ -217,7 +216,6 @@ def main():
                 st.write(st.session_state.df.shape)
                 if st.button("Generate Topics"):
                     st.session_state.df = get_topics(st.session_state.df)
-                    st.write(st.session_state.df)
                     st.session_state.final_topics = unique_topics(st.session_state.df)
                     st.session_state.unique_topics_df = st.session_state.df
                     if len(st.session_state.final_topics) == 0:
@@ -232,7 +230,6 @@ def main():
                 
                 if st.checkbox("Save"):
                     df_xlsx = to_excel(st.session_state.df_final)
-                    st.write(df_xlsx)
                     st.download_button(label='📥 Download Current Topics',
                                 data=df_xlsx ,
                                 file_name= f"{str(df_file)}_{we}_{ws}.xlsx")
