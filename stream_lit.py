@@ -178,13 +178,13 @@ def main():
 
 
 
-headers = {'Content-Type': 'application/json',
+    headers = {'Content-Type': 'application/json',
     'Authorization': f'Bearer {api_key}' }
-API_URL = "https://api.openai.com/v1/playground"
-response = requests.post(API_URL, headers=headers, json=data)
-if response.status_code == 200:
-    print("API key is working.")
-    print("Response:")
+    API_URL = "https://api.openai.com/v1/playground"
+    response = requests.post(API_URL, headers=headers, json=data)
+    if response.status_code == 200:
+        print("API key is working.")
+        print("Response:")
 
 
 
