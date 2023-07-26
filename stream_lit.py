@@ -209,8 +209,7 @@ def main():
             df_file= st.file_uploader("Upload a Parquet file")
             uploaded_file_info= str(df_file)
             file_name = uploaded_file_info.split(", name='")[1].split(".")[0]
-            st.write(file_name)
-            #st.session_state.brand_name = st.text_input("write the brand name") 
+            st.session_state.brand_name = file_name
             if df_file is not None:
                 # read our file
                 st.session_state.df = pd.read_parquet(df_file)
