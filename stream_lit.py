@@ -207,7 +207,7 @@ def main():
             #path_name = f"C:\\Users\\BrunoMalta\\Brand Delta\\Food Pilot - General\\data\\modelled_data\\{market}\\Workflow_output\\latest_output"
             #file = glob.glob(path_name + "/*.parquet")
             df_file= st.file_uploader("Upload a Parquet file")
-            st.session_state.brand_name = st.text("write the brand name") 
+            st.session_state.brand_name = st.text_input("write the brand name") 
             if df_file is not None:
                 # read our file
                 st.session_state.df = pd.read_parquet(df_file)
@@ -237,7 +237,7 @@ def main():
                     df_xlsx = to_excel(st.session_state.df_final)
                     st.download_button(label='📥 Download Current Topics',
                                 data=df_xlsx ,
-                                file_name= f"{str(df_file)}_{we}_{ws}.xlsx")
+                                file_name= f"{st.session_state.brand_name}_{ws}_{we}.xlsx")
                     st.write("save successful")
                 if st.checkbox("change topics"):
                     #Topics_num(st.session_state.final_topics,st.session_state.unique_topics_df,we,ws)
@@ -246,7 +246,7 @@ def main():
                     top_topics,final_df = best_10(st.session_state.final_topics,st.session_state.unique_topics_df,n=selected_number)
                     st.write(f"you topics -> {top_topics}")
                     df_xlsx = to_excel(final_df)
-                    st.download_button(label='📥 Download Current Topics', data=df_xlsx, file_name= f"{str(df_file)}_{we}_{ws}.xlsx")
+                    st.download_button(label='📥 Download Current Topics', data=df_xlsx, file_name= f"{st.session_state.brand_name}_{ws}_{we}.xlsx")
 
 
 
