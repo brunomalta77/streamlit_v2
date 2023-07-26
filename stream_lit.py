@@ -269,7 +269,7 @@ def main():
                                             df_xlsx = to_excel(final_df)
                                             st.download_button(label='📥 Download Current Topics', data=df_xlsx, file_name= f"{st.session_state.brand_name}_{ws}_{we}.xlsx")
                                 else:
-                                    st.warning("please click in the button "Generate topics")
+                                    st.warning("please click in the button -> Generate topics")
                             except ZeroDivisionError as e:
                                 st.warning("Please check the calendar or check if your filter contains enough information") 
                     if st.checkbox("All data"):
@@ -307,7 +307,7 @@ def main():
                                             df_xlsx = to_excel(final_df)
                                             st.download_button(label='📥 Download Current Topics', data=df_xlsx, file_name= f"{st.session_state.brand_name}_{ws}_{we}.xlsx")
                                 else:
-                                    st.warning("please click in the button "Generate topics")
+                                    st.warning("please click in the button -> Generate topics")
                             except ZeroDivisionError as e:
                                 st.warning("Please check the calendar") 
                     
