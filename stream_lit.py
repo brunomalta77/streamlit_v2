@@ -219,7 +219,8 @@ def main():
                     #save_path = st.text_input("Write the absolute path for saving the file")
                     #type(st.write(save_path))
                     #st.session_state.df_final.to_excel(save_path, index=False)
-                    st.download_button(label="Download excel",data=st.session_state.df_final.to_excel(),file_name=f"{str(df_file)}_{ws}_{we}.xlsx",mime="application/vnd.ms-excel")
+                    excel_data = st.session_state.df_final.to_excel(index=False)
+                    #st.download_button(label="Download excel",data=st.session_state.df_final.to_excel(),file_name=f"{str(df_file)}_{ws}_{we}.xlsx",mime="application/vnd.ms-excel")
                     st.write("save successful")
                 if st.checkbox("change topics"):
                     Topics_num(st.session_state.final_topics,st.session_state.unique_topics_df)
