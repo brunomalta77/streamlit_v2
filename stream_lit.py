@@ -160,8 +160,7 @@ def Topics_num(final_topics,df):
     if st.checkbox("Save your df with your topics"):
         df_xlsx = to_excel(final_df)
         st.download_button(label='📥 Download Current Topics',
-        data=df_xlsx ,
-        file_name= f"{str(df_file}_{we}_{ws}.xlsx")
+        data=df_xlsx, file_name= f"{str(df_file)}_{we}_{ws}.xlsx")
         st.write("Congratulations, you saved you dataframe")
 
 
