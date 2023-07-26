@@ -6,5 +6,5 @@ python-dotenv
 streamlit 
 joblib
 openpyxl
-xlsxwriter
 pyxlsb
+xlsxwriter
