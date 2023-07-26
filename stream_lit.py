@@ -224,8 +224,8 @@ def main():
                     st.write("please select your author")
                 if author !=[] and channel ==[]:
                     st.write("please select your channel")
-                
-                st.session_state.df = filtering(st.session_state.df,ws,we,author,channel)
+                if author != [] and channel !=[]:
+                    st.session_state.df = filtering(st.session_state.df,ws,we,author,channel)
                 st.write(st.session_state.df.shape)
                 if st.button("Generate Topics"):
                     st.session_state.df = get_topics(st.session_state.df)
