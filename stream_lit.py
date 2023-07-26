@@ -258,7 +258,6 @@ def main():
                             st.error("does not have any topic")
                         if st.session_state.df is not None :
                             top_topics,st.session_state.df_final = best_10(st.session_state.final_topics,st.session_state.df)
-                            st.write(st.session_state.final_topics)
                             st.write("your topics")
                             st.write("\n") 
                             st.write(top_topics)
