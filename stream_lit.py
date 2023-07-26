@@ -13,11 +13,18 @@ import streamlit as st
 import joblib
 import glob
 import os
+import toml
 
 #Getting the API_Keys
 load_dotenv()
 api_key = os.getenv('API_Keys')
 openai.api_key= api_key
+
+config = toml.load("config.toml")
+api_key = config["api"]["key"]
+open.api_key = api_key
+
+
 
 
 #page config
