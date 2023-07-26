@@ -165,7 +165,7 @@ def Topics_num(final_topics,df):
 def to_excel(df):
     output = BytesIO()
     writer = pd.ExcelWriter(output, engine='xlsxwriter')
-    my_excel = df.to_excel(writer, index=False, sheet_name='Sheet1')
+    df.to_excel(writer, index=False, sheet_name='Sheet1')
     #st.write(df)
     #workbook = writer.book
     #worksheet = writer.sheets['Sheet1']
@@ -173,7 +173,8 @@ def to_excel(df):
     #worksheet.set_column('A:A', None, format1)  
     ##writer.save()
     #processed_data = output.getvalue()
-    return my_excel
+    return df
+    
 
 
 
