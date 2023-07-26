@@ -197,7 +197,7 @@ def main():
                 st.write(st.session_state.df.shape)
                 if st.button("Generate Topics"):
                     st.session_state.df = get_topics(st.session_state.df)
-                    #error
+                    st.write(st.session_state.df)
                     st.session_state.final_topics = unique_topics(st.session_state.df)
                     st.session_state.unique_topics_df = st.session_state.df
 
@@ -211,8 +211,7 @@ def main():
                         st.write(top_topics)
                         st.write("Do you want to change the topics or Save ?")
                 
-                
-                ### Error. 
+    
                 if st.checkbox("Save"):
                     save_path = st.text_input("Write the absolute path for saving the file")
                     type(st.write(save_path))
