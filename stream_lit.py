@@ -87,14 +87,9 @@ def get_topics(df):
                                                     Format your response as a list of items separated by commas \
                                                     Text: ```{}``` \
                                                     ".format(gm)))
-        except Exception as e:
-            print(e)
-<<<<<<< HEAD
-            #topics.append('')
-=======
+        except :
             topics.append('')
->>>>>>> ccd331cebfa89d5f0c50d204975557c9c38f7afb
-        print(l)
+            print(l)
         l+=1
     # Merging the topics with the actual dataframe
     topicdf = pd.DataFrame({'grouped_message': gr_msg_unique, 'topics': topics})
