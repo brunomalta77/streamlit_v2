@@ -220,8 +220,12 @@ def main():
                 ws,we,author,channel = my_values(st.session_state.df)
                 st.write(author)
                 st.write(channel)
-                if author == [] or channel ==[] :
-                    st.write("please select your author/channel")
+                if author == [] and channel ==[] :
+                    st.write("please select your author and channel")
+                if author == [] and channel != []:
+                    st.write("please select your author")
+                if author !=[] and channel ==[]:
+                    st.write("please select your channel")
                 else:
                     st.session_state.df = filtering(st.session_state.df,ws,we,author,channel)
                 st.write(st.session_state.df.shape)
