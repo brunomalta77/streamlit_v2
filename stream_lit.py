@@ -196,7 +196,8 @@ def main():
         if 'df_final' not in st.session_state:
             st.session_state.df_final = None
 
-
+        if 'brand_name' not in st.session_state:
+            st.session_state.brand_name = None
 
 
         # initialize our app
@@ -206,6 +207,7 @@ def main():
             #path_name = f"C:\\Users\\BrunoMalta\\Brand Delta\\Food Pilot - General\\data\\modelled_data\\{market}\\Workflow_output\\latest_output"
             #file = glob.glob(path_name + "/*.parquet")
             df_file= st.file_uploader("Upload a Parquet file")
+            st.write(str(df_file))
             if df_file is not None:
                 # read our file
                 st.session_state.df = pd.read_parquet(df_file)
