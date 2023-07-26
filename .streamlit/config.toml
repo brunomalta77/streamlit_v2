@@ -1,2 +1,5 @@
 [server]
 maxUploadSize = 200
+
+[api]
+key = "YOUR_API_KEY"
