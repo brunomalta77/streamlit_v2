@@ -1,7 +1,0 @@
-openai
-pandas 
-numpy 
-seaborn 
-python-dotenv
-streamlit 
-joblib
