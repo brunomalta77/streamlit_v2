@@ -208,6 +208,8 @@ def main():
             #file = glob.glob(path_name + "/*.parquet")
             df_file= st.file_uploader("Upload a Parquet file")
             st.write(str(df_file))
+            file_name = uploaded_file_info.split(", name='")[1].split(".")[0]
+            st.write(file_name)
             #st.session_state.brand_name = st.text_input("write the brand name") 
             if df_file is not None:
                 # read our file
