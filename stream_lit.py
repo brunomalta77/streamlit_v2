@@ -175,20 +175,6 @@ def main():
         if 'df_final' not in st.session_state:
             st.session_state.df_final = None
 
-
-
-
-    headers = {'Content-Type': 'application/json',
-    'Authorization': f'Bearer {api_key}' }
-    API_URL = "https://api.openai.com/v1/playground"
-    response = requests.post(API_URL, headers=headers, json=data)
-    if response.status_code == 200:
-        print("API key is working.")
-        print("Response:")
-
-
-
-        
         # initialize our app
         left_column,right_column = st.columns(2)
         with left_column:
