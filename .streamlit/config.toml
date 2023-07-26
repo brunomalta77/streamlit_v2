@@ -1,5 +1,2 @@
 [server]
 maxUploadSize = 200
-
-[api]
-key = "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"
