@@ -152,7 +152,7 @@ def best_10(final_topic_list_cleaned,df1,n=10):
     #df2.to_excel(r"C:\Users\Technology\Desktop\tasks\text_summary\IT_findus_nov-june.xlsx", index=False)
 
 
-def Topics_num(final_topics,df):
+def Topics_num(final_topics,df,we,ws):
     number_options = list(range(1,11))
     selected_number = st.selectbox("Num of topics",number_options)
     top_topics,final_df = best_10(final_topics,df,n=selected_number)
@@ -240,7 +240,7 @@ def main():
                                 file_name= f"{str(df_file)}_{we}_{ws}.xlsx")
                     st.write("save successful")
                 if st.checkbox("change topics"):
-                    Topics_num(st.session_state.final_topics,st.session_state.unique_topics_df)
+                    Topics_num(st.session_state.final_topics,st.session_state.unique_topics_df,we,ws)
 
 
 
