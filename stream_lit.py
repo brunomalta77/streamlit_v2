@@ -252,6 +252,22 @@ def main():
                                         st.write("\n") 
                                         st.write(top_topics)
                                         st.write("Do you want to change the topics or Save ?")
+                                        if st.checkbox("Save"):
+                                            df_xlsx = to_excel(st.session_state.df_final)
+                                            st.download_button(label='📥 Download Current Topics',
+                                                        data=df_xlsx ,
+                                                        file_name= f"{st.session_state.brand_name}_{ws}_{we}.xlsx")
+                                            st.write("save successful")
+                                        if st.checkbox("change topics"):
+                                            #Topics_num(st.session_state.final_topics,st.session_state.unique_topics_df,we,ws)
+                                            number_options = list(range(1,11))
+                                            selected_number = st.selectbox("Num of topics",number_options)
+                                            top_topics,final_df = best_10(st.session_state.final_topics,st.session_state.unique_topics_df,n=selected_number)
+                                            st.write("your topics")
+                                            st.write("\n")
+                                            st.write(top_topics)
+                                            df_xlsx = to_excel(final_df)
+                                            st.download_button(label='📥 Download Current Topics', data=df_xlsx, file_name= f"{st.session_state.brand_name}_{ws}_{we}.xlsx")
                             except ZeroDivisionError as e:
                                 st.warning("Please check the calendar or check if your filter contains enough information") 
                     if st.checkbox("All data"):
@@ -272,29 +288,28 @@ def main():
                                         st.write("\n") 
                                         st.write(top_topics)
                                         st.write("Do you want to change the topics or Save ?")
+                                        if st.checkbox("Save"):
+                                            df_xlsx = to_excel(st.session_state.df_final)
+                                            st.download_button(label='📥 Download Current Topics',
+                                                        data=df_xlsx ,
+                                                        file_name= f"{st.session_state.brand_name}_{ws}_{we}.xlsx")
+                                            st.write("save successful")
+                                        if st.checkbox("change topics"):
+                                            #Topics_num(st.session_state.final_topics,st.session_state.unique_topics_df,we,ws)
+                                            number_options = list(range(1,11))
+                                            selected_number = st.selectbox("Num of topics",number_options)
+                                            top_topics,final_df = best_10(st.session_state.final_topics,st.session_state.unique_topics_df,n=selected_number)
+                                            st.write("your topics")
+                                            st.write("\n")
+                                            st.write(top_topics)
+                                            df_xlsx = to_excel(final_df)
+                                            st.download_button(label='📥 Download Current Topics', data=df_xlsx, file_name= f"{st.session_state.brand_name}_{ws}_{we}.xlsx")
+    
                             except ZeroDivisionError as e:
                                 st.warning("Please check the calendar") 
                     
                     
-                    if st.checkbox("Save"):
-                        df_xlsx = to_excel(st.session_state.df_final)
-                        st.download_button(label='📥 Download Current Topics',
-                                    data=df_xlsx ,
-                                    file_name= f"{st.session_state.brand_name}_{ws}_{we}.xlsx")
-                        st.write("save successful")
-                    if st.checkbox("change topics"):
-                        #Topics_num(st.session_state.final_topics,st.session_state.unique_topics_df,we,ws)
-                        number_options = list(range(1,11))
-                        selected_number = st.selectbox("Num of topics",number_options)
-                        top_topics,final_df = best_10(st.session_state.final_topics,st.session_state.unique_topics_df,n=selected_number)
-                        st.write("your topics")
-                        st.write("\n")
-                        st.write(top_topics)
-                        df_xlsx = to_excel(final_df)
-                        st.download_button(label='📥 Download Current Topics', data=df_xlsx, file_name= f"{st.session_state.brand_name}_{ws}_{we}.xlsx")
-
-
-
+                    
 if __name__=="__main__":
     main()   
     
