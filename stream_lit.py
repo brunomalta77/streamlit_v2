@@ -209,7 +209,7 @@ def main():
                 st.session_state.df['Week Commencing'] = st.session_state.df['created_time'].apply(lambda x: (x - timedelta(days=x.weekday())).replace(hour=0, minute=0, second=0, microsecond=0))
                 st.write(st.session_state.df.shape)
             else:
-                st.error("invalid data_path")
+                st.error("invalid data")
             if st.session_state.df is not None:
                 ws,we,author,channel = my_values(st.session_state.df)
                 st.session_state.df = filtering(st.session_state.df,ws,we,author,channel)
