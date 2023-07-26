@@ -17,10 +17,9 @@ import os
 #Getting the API_Keys
 #load_dotenv()
 #api_key = os.getenv('API_Keys')
-#openai.api_key= api_key
 
 api_key = st.secrets["API_KEY"]
-
+openai.api_key= api_key
 
 
 
@@ -187,7 +186,6 @@ def main():
             #market = st.text_input("Enter your market here")
             #path_name = f"C:\\Users\\BrunoMalta\\Brand Delta\\Food Pilot - General\\data\\modelled_data\\{market}\\Workflow_output\\latest_output"
             #file = glob.glob(path_name + "/*.parquet")
-            st.write(api_key)
             df_file= st.file_uploader("Upload a Parquet file")
             if df_file is not None:
                 # read our file
