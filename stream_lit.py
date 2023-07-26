@@ -226,7 +226,7 @@ def main():
                 # read our file
                 st.session_state.df = pd.read_parquet(df_file)
                 st.session_state.df['Week Commencing'] = st.session_state.df['created_time'].apply(lambda x: (x - timedelta(days=x.weekday())).replace(hour=0, minute=0, second=0, microsecond=0))
-                st.info(f"data size -> {st.session_state.df.shape[0}")
+                st.info(f"data size -> {st.session_state.df.shape[0]}")
                 if st.session_state.df is not None:
                     if st.checkbox("Filtered data"):
                         ws,we,author,channel = my_values_filtered(st.session_state.df)
