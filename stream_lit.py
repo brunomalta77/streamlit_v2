@@ -20,7 +20,7 @@ import os
 #openai.api_key= api_key
 
 #Getting API_Keys
-api_keys = st.secrets["api_keys"]
+api_keys = st.secrets["api_key"]
 
 
 #page config
