@@ -67,6 +67,11 @@ def my_values_all(df):
     channel = [x for x in df["message_type"].unique()]
     return author,channel
 
+def my_values_without_author(df):
+    channel = [x for x in df["message_type"].unique()]
+    return channel
+
+
 
 def filtering_all(df,author,channel):
     df = df[(df["author_predictions"].isin(author)) & (df["message_type"].isin(channel))]
@@ -168,6 +173,12 @@ def best_10(final_topic_list_cleaned,df1,n=10):
     #df2.to_excel(r"C:\Users\Technology\Desktop\tasks\text_summary\IT_findus_nov-june.xlsx", index=False)
 
 
+
+
+
+
+
+
 def Topics_num(final_topics,df,we,ws): #i am not using this, here because perphaps may be useful. 
     number_options = list(range(1,11))
     selected_number = st.selectbox("Num of topics",number_options)
@@ -220,7 +231,7 @@ def main():
             #market = st.text_input("Enter your market here")
             #path_name = f"C:\\Users\\BrunoMalta\\Brand Delta\\Food Pilot - General\\data\\modelled_data\\{market}\\Workflow_output\\latest_output"
             #file = glob.glob(path_name + "/*.parquet")
-            df_file= st.file_uploader("Upload a Parquet file")
+            df_file= st.file_uploader("Upload a Excel file")
             if df_file is None:
                 st.warning("Please drop your brand file")
             if df_file is not None:
@@ -235,35 +246,38 @@ def main():
                 st.info(f"Data size : {st.session_state.df.shape[0]}")
                 if st.session_state.df is not None:
                     if st.checkbox("Filtered data"):
-                        ws,we,author,channel = my_values_filtered(st.session_state.df)
-                        if author == [] and channel ==[] :
-                            st.warning("please select your author and channel")
-                        if author == [] and channel != []:
-                            st.warning("please select your author")
-                        if author !=[] and channel ==[]:
-                            st.warning("please select your channel")
-                        if author != [] and channel !=[]:
-                            try:
-                                st.session_state.df = filtering(st.session_state.df,ws,we,author,channel)
-                                st.info(f"Data size : {st.session_state.df.shape[0]}")
-                                if st.button("Generate Topics"):
-                                    st.session_state.button = True
-                                    st.session_state.df = get_topics(st.session_state.df)
-                                    st.session_state.final_topics = unique_topics(st.session_state.df)
-                                    st.session_state.unique_topics_df = st.session_state.df
-                                    if len(st.session_state.final_topics) == 0:
-                                        st.error("does not have any topic")
-                                    if st.session_state.df is not None :
-                                        top_topics,st.session_state.df_final = best_10(st.session_state.final_topics,st.session_state.df)
-                                        st.write("your topics")
-                                        st.write("\n") 
-                                        st.write(top_topics)
-                                        st.write("Do you want to change the topics or Save ?")
-                                        st.session_state.name_file = f"_{ws}_{we}"
-                                else:
-                                    st.warning("please click in the button -> Generate topics")
-                            except ZeroDivisionError as e:
-                                st.warning("Please check the calendar or check if your filter contains enough information") 
+                        if "author" not in st.session_state.df.columns():
+                            channel = my_values_without_author(st.session_state.df)
+                        if "author" in st.session_state.df.columns():
+                            ws,we,author,channel = my_values_filtered(st.session_state.df)
+                            if author == [] and channel ==[] :
+                                st.warning("please select your author and channel")
+                            if author == [] and channel != []:
+                                st.warning("please select your author")
+                            if author !=[] and channel ==[]:
+                                st.warning("please select your channel")
+                            if author != [] and channel !=[]:
+                        try:
+                            st.session_state.df = filtering(st.session_state.df,ws,we,author,channel)
+                            st.info(f"Data size : {st.session_state.df.shape[0]}")
+                            if st.button("Generate Topics"):
+                                st.session_state.button = True
+                                st.session_state.df = get_topics(st.session_state.df)
+                                st.session_state.final_topics = unique_topics(st.session_state.df)
+                                st.session_state.unique_topics_df = st.session_state.df
+                                if len(st.session_state.final_topics) == 0:
+                                    st.error("does not have any topic")
+                                if st.session_state.df is not None :
+                                    top_topics,st.session_state.df_final = best_10(st.session_state.final_topics,st.session_state.df)
+                                    st.write("your topics")
+                                    st.write("\n") 
+                                    st.write(top_topics)
+                                    st.write("Do you want to change the topics or Save ?")
+                                    st.session_state.name_file = f"_{ws}_{we}"
+                            else:
+                                st.warning("please click in the button -> Generate topics")
+                        except ZeroDivisionError as e:
+                            st.warning("Please check the calendar or check if your filter contains enough information") 
                     if st.checkbox("All data"):
                         author,channel = my_values_all(st.session_state.df)
                         if author != [] and channel !=[]:
