@@ -222,7 +222,7 @@ def main():
             #file = glob.glob(path_name + "/*.parquet")
             df_file= st.file_uploader("Upload a Parquet file")
             if df_file is None:
-                st.warning("please drop your brand file")
+                st.warning("Please drop your brand file")
             if df_file is not None:
                 uploaded_file_info= str(df_file)
                 file_name = uploaded_file_info.split(", name='")[1].split(".")[0]
@@ -231,7 +231,7 @@ def main():
                 # read our file
                 st.session_state.df = pd.read_parquet(df_file)
                 st.session_state.df['Week Commencing'] = st.session_state.df['created_time'].apply(lambda x: (x - timedelta(days=x.weekday())).replace(hour=0, minute=0, second=0, microsecond=0))
-                st.info(f"data size -> {st.session_state.df.shape[0]}")
+                st.info(f"Data size : {st.session_state.df.shape[0]}")
                 if st.session_state.df is not None:
                     if st.checkbox("Filtered data"):
                         ws,we,author,channel = my_values_filtered(st.session_state.df)
@@ -244,7 +244,7 @@ def main():
                         if author != [] and channel !=[]:
                             try:
                                 st.session_state.df = filtering(st.session_state.df,ws,we,author,channel)
-                                st.info(f"data size -> {st.session_state.df.shape[0]}")
+                                st.info(f"Data size : {st.session_state.df.shape[0]}")
                                 if st.button("Generate Topics"):
                                     st.session_state.button = True
                                     st.session_state.df = get_topics(st.session_state.df)
