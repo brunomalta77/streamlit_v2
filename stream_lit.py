@@ -215,6 +215,9 @@ def save_num_topics(df_final,final_topics,df_unique_topics,we=None,ws=None,name_
         st.download_button(label='📥 Download Current Topics', data=df_xlsx, file_name= f"{st.session_state.brand_name}{name_file}.xlsx")
 
 
+def click_button():
+    st.session_state.button = not st.session_state.button
+
 
 
 def main():
@@ -235,6 +238,8 @@ def main():
         if 'brand_name' not in st.session_state:
             st.session_state.brand_name = None
 
+        if 'button' not in st.session_state:
+            st.session_state.button = False
 
         # initialize our app
         left_column,right_column = st.columns(2)
@@ -267,7 +272,7 @@ def main():
                             try:
                                 st.session_state.df = filtering(st.session_state.df,ws,we,author,channel)
                                 st.info(f"data size -> {st.session_state.df.shape[0]}")
-                                if st.button("Generate Topics"):
+                                if st.button("Generate Topics",on_click=click_button):
                                     st.session_state.df = get_topics(st.session_state.df)
                                     st.session_state.final_topics = unique_topics(st.session_state.df)
                                     st.session_state.unique_topics_df = st.session_state.df
@@ -280,12 +285,6 @@ def main():
                                         st.write(top_topics)
                                         st.write("Do you want to change the topics or Save ?")
                                         name_file = f"_{ws}_{we}"
-                                    if st.checkbox("Save"):
-                                        df_xlsx = to_excel(df_final)
-                                        st.download_button(label='📥 Download Current Topics',
-                                        data=df_xlsx,
-                                        file_name= f"{st.session_state.brand_name}{name_file}.xlsx")
-                                        st.write("save successful")
                                 else:
                                     st.warning("please click in the button -> Generate topics")
                             except ZeroDivisionError as e:
@@ -314,8 +313,16 @@ def main():
                                     st.warning("please click in the button -> Generate topics")
                             except ZeroDivisionError as e:
                                 st.warning("Please check the calendar") 
-                    
-                
+
+
+                # saving
+                if st.session_state.button:    
+                    if st.checkbox("Save"):
+                    df_xlsx = to_excel(df_final)
+                    st.download_button(label='📥 Download Current Topics',
+                    data=df_xlsx,
+                    file_name= f"{st.session_state.brand_name}{name_file}.xlsx")
+                    st.write("save successful")
 
 
 
