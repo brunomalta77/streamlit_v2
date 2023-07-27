@@ -285,7 +285,7 @@ def main():
                             except ZeroDivisionError as e:
                                 st.warning("Please check the calendar or check if your filter contains enough information") 
                         
-                        if "author" in st.session_state.df.columns():
+                        if "author" in st.session_state.df.columns:
                             ws,we,author,channel = my_values_filtered(st.session_state.df)
                             if author == [] and channel ==[] :
                                 st.warning("please select your author and channel")
