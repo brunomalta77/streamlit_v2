@@ -333,7 +333,7 @@ def main():
                         if "author" not in st.session_state.df.columns:
                             channel = my_values_without_author(st.session_state.df)
                             try:
-                                st.write(st.session_state.df["cleaned_message"]
+                                st.write(st.session_state.df["cleaned_message"])
                                 st.session_state.df = filtering_without_author(st.session_state.df,channel,ws=None,we=None)
                                 st.info(f"Data size : {st.session_state.df.shape[0]}")
                                 if st.button("Generate Topics"):
