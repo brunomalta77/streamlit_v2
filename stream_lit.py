@@ -65,17 +65,21 @@ def my_values_all(df):
     channel = [x for x in df["message_type"].unique()]
     return author,channel
 
-def my_values_without_author_filtered(df):
+def my_values_without_author(df,ws=None,we=None):
     channel_options= [x for x in df["message_type"].unique()]
+    if ws is None and we is None:
+        channel = st.multiselect("Select the channel categories:", channel_options)
+        return channel
+    else:
     #time period
-    start_date = st.date_input("Select start date")
-    end_date =  st.date_input("Select end date")
-    #convert our dates
-    ws = start_date.strftime('%Y-%m-%d')
-    we = end_date.strftime('%Y-%m-%d')
-    
-    channel = st.multiselect("Select the channel categories:", channel_options)
-    return ws,we,channel
+        start_date = st.date_input("Select start date")
+        end_date =  st.date_input("Select end date")
+        #convert our dates
+        ws = start_date.strftime('%Y-%m-%d')
+        we = end_date.strftime('%Y-%m-%d')
+        
+        channel = st.multiselect("Select the channel categories:", channel_options)
+        return ws,we,channel
 
 
 
@@ -89,16 +93,24 @@ def filtering_all(df,author,channel):
     return(df)
 
 
-def filtering_without_author_filtered(df,ws,we,channel):
-    df = df[(df['Week Commencing'] >= ws) & (df['Week Commencing'] <= we) & (df["message_type"].isin(channel))]
-    alldata = ' '.join(df["cleaned_message"])
-    lengpt = len(alldata) / 4000   #(because chatgot maximum token size is 4076)
-    posts_to_combine = round(len(df) / lengpt)
-    df['nposts'] = np.arange(len(df))//posts_to_combine+1
-    df['grouped_message'] = df.groupby(['nposts'])['cleaned_message'].transform(lambda x: ' '.join(x))
-    return(df)
+def filtering_without_author(df,ws=None,we=None,channel):
+    if ws is None and we is None:
+        df = df[(df["message_type"].isin(channel))]
+        alldata = ' '.join(df["cleaned_message"])
+        lengpt = len(alldata) / 4000   #(because chatgot maximum token size is 4076)
+        posts_to_combine = round(len(df) / lengpt)
+        df['nposts'] = np.arange(len(df))//posts_to_combine+1
+        df['grouped_message'] = df.groupby(['nposts'])['cleaned_message'].transform(lambda x: ' '.join(x))
+        return(df)
 
-
+    else:
+        df = df[(df['Week Commencing'] >= ws) & (df['Week Commencing'] <= we) & (df["message_type"].isin(channel))]
+        alldata = ' '.join(df["cleaned_message"])
+        lengpt = len(alldata) / 4000   #(because chatgot maximum token size is 4076)
+        posts_to_combine = round(len(df) / lengpt)
+        df['nposts'] = np.arange(len(df))//posts_to_combine+1
+        df['grouped_message'] = df.groupby(['nposts'])['cleaned_message'].transform(lambda x: ' '.join(x))
+        return(df)
 
 
 
@@ -262,9 +274,9 @@ def main():
                 if st.session_state.df is not None:
                     if st.checkbox("Filtered data"):
                         if "author" not in st.session_state.df.columns:
-                            ws,we,channel = my_values_without_author_filtered(st.session_state.df)
+                            ws,we,channel = my_values_without_author(st.session_state.df,ws=True,we=True)
                             try:
-                                st.session_state.df = filtering_without_author_filtered(st.session_state.df,ws,we,channel)
+                                st.session_state.df = filtering_without_author(st.session_state.df,ws,we,channel)
                                 st.info(f"Data size : {st.session_state.df.shape[0]}")
                                 if st.button("Generate Topics"):
                                     st.session_state.button = True
@@ -316,12 +328,13 @@ def main():
                                 except ZeroDivisionError as e:
                                     st.warning("Please check the calendar or check if your filter contains enough information") 
                     if st.checkbox("All data"):
-                        author,channel = my_values_all(st.session_state.df)
-                        if author != [] and channel !=[]:
+                        if "author" not in st.session_state.df.columns:
+                            channel = my_values_without_author(st.session_state.df,ws=None,we=None)
                             try:
-                                st.session_state.df = filtering_all(st.session_state.df,author,channel)
-                                st.info(f"data size -> {st.session_state.df.shape[0]}")
+                                st.session_state.df = filtering_without_author(st.session_state.df,ws=None,we=None,channel)
+                                st.info(f"Data size : {st.session_state.df.shape[0]}")
                                 if st.button("Generate Topics"):
+                                    st.session_state.button = True
                                     st.session_state.df = get_topics(st.session_state.df)
                                     st.session_state.final_topics = unique_topics(st.session_state.df)
                                     st.session_state.unique_topics_df = st.session_state.df
@@ -333,11 +346,36 @@ def main():
                                         st.write("\n") 
                                         st.write(top_topics)
                                         st.write("Do you want to change the topics or Save ?")
-                                        st.session_state.name_file = "all_year"
+                                        st.session_state.name_file = f"_{ws}_{we}"
                                 else:
                                     st.warning("please click in the button -> Generate topics")
                             except ZeroDivisionError as e:
-                                st.warning("Please check the calendar") 
+                                st.warning("Please check the calendar or check if your filter contains enough information") 
+                        
+                        
+                        if "author" in st.session_state.df.columns:
+                            author,channel = my_values_all(st.session_state.df)
+                            if author != [] and channel !=[]:
+                                try:
+                                    st.session_state.df = filtering_all(st.session_state.df,author,channel)
+                                    st.info(f"data size -> {st.session_state.df.shape[0]}")
+                                    if st.button("Generate Topics"):
+                                        st.session_state.df = get_topics(st.session_state.df)
+                                        st.session_state.final_topics = unique_topics(st.session_state.df)
+                                        st.session_state.unique_topics_df = st.session_state.df
+                                        if len(st.session_state.final_topics) == 0:
+                                            st.error("does not have any topic")
+                                        if st.session_state.df is not None :
+                                            top_topics,st.session_state.df_final = best_10(st.session_state.final_topics,st.session_state.df)
+                                            st.write("your topics")
+                                            st.write("\n") 
+                                            st.write(top_topics)
+                                            st.write("Do you want to change the topics or Save ?")
+                                            st.session_state.name_file = "all_year"
+                                    else:
+                                        st.warning("please click in the button -> Generate topics")
+                                except ZeroDivisionError as e:
+                                    st.warning("Please check the calendar") 
 
 
                 # saving process
