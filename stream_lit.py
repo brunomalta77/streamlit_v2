@@ -331,7 +331,7 @@ def main():
                         if st.checkbox("change topics"):
                             number_options = list(range(1,11))
                             selected_number = st.selectbox("Num of topics",number_options)
-                            top_topics,final_df = best_10(final_topics,df_unique_topics,n=selected_number)
+                            top_topics,final_df = best_10(st.session_state.final_topics,st.session_state.unique_topics_df,n=selected_number)
                             st.write("your topics")
                             st.write("\n")
                             st.write(top_topics)
