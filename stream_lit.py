@@ -296,7 +296,7 @@ def main():
                             data=df_xlsx,
                             file_name= f"{st.session_state.brand_name}{st.session_state.name_file}.xlsx")
                             st.write("save successful")
-                        if st.checkbox("change topics"):
+                        if st.checkbox("Change topics"):
                             number_options = list(range(1,11))
                             selected_number = st.selectbox("Num of topics",number_options)
                             top_topics,final_df = best_10(st.session_state.final_topics,st.session_state.unique_topics_df,n=selected_number)
