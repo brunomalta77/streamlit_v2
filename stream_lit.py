@@ -68,8 +68,7 @@ def my_values_all(df):
 def my_values_without_author(df,ws=None,we=None):
     channel_options= [x for x in df["message_type"].unique()]
     if ws is None and we is None:
-        channel = st.multiselect("Select the channel categories:", channel_options)
-        st.write(channel_options)
+        #channel = st.multiselect("Select the channel categories:", channel_options)
         return channel_options
     else:
     #time period
@@ -333,7 +332,7 @@ def main():
                                     st.warning("Please check the calendar or check if your filter contains enough information") 
                     if st.checkbox("All data"):
                         if "author" not in st.session_state.df.columns:
-                            channel = my_values_without_author(st.session_state.df,ws=None,we=None)
+                            channel = my_values_without_author(st.session_state.df)
                             try:
                                 st.session_state.df = filtering_without_author(st.session_state.df,channel,ws=None,we=None)
                                 st.info(f"Data size : {st.session_state.df.shape[0]}")
