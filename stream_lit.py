@@ -68,8 +68,8 @@ def my_values_all(df):
 def my_values_without_author(df,ws=None,we=None):
     channel_options= [x for x in df["message_type"].unique()]
     if ws is None and we is None:
-        channel = st.multiselect("Select the channel categories:", channel_options)
-        return channel
+        #channel = st.multiselect("Select the channel categories:", channel_options)
+        return channel_options
     else:
     #time period
         start_date = st.date_input("Select start date")
