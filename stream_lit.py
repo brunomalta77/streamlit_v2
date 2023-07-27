@@ -229,7 +229,8 @@ def main():
                 st.session_state.brand_name = file_name
             if df_file is not None:
                 # read our file
-                st.session_state.df = pd.read_parquet(df_file)
+                #st.session_state.df = pd.read_parquet(df_file)
+                st.session_state.df = pd.read_excel(df_file)
                 st.session_state.df['Week Commencing'] = st.session_state.df['created_time'].apply(lambda x: (x - timedelta(days=x.weekday())).replace(hour=0, minute=0, second=0, microsecond=0))
                 st.info(f"Data size : {st.session_state.df.shape[0]}")
                 if st.session_state.df is not None:
