@@ -96,14 +96,12 @@ def filtering_all(df,author,channel):
 def filtering_without_author(df,channel,ws=None,we=None):
     if ws is None and we is None:
         df = df[df["message_type"].isin(channel)]
-        st.write(df["cleaned_message"])
         alldata = ' '.join(df["cleaned_message"])
         lengpt = len(alldata) / 4000   #(because chatgot maximum token size is 4076)
         posts_to_combine = round(len(df) / lengpt)
         df['nposts'] = np.arange(len(df))//posts_to_combine+1
         df['grouped_message'] = df.groupby(['nposts'])['cleaned_message'].transform(lambda x: ' '.join(x))
         return(df)
-
     else:
         df = df[(df['Week Commencing'] >= ws) & (df['Week Commencing'] <= we) & (df["message_type"].isin(channel))]
         alldata = ' '.join(df["cleaned_message"])
@@ -335,6 +333,7 @@ def main():
                         if "author" not in st.session_state.df.columns:
                             channel = my_values_without_author(st.session_state.df)
                             try:
+                                st.write(st.session_state.df["cleaned_message"]
                                 st.session_state.df = filtering_without_author(st.session_state.df,channel,ws=None,we=None)
                                 st.info(f"Data size : {st.session_state.df.shape[0]}")
                                 if st.button("Generate Topics"):
