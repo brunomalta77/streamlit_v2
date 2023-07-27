@@ -184,6 +184,7 @@ def save_num_topics(df_final,final_topics,df_unique_topics,we=None,ws=None,name_
         name_file = name_all
     if we is not None and ws is not None:
         name_file = f"_{ws}_{we}"
+        st.write(name_file)
     if st.checkbox("Save"):
         df_xlsx = to_excel(df_final)
         st.download_button(label='📥 Download Current Topics',
