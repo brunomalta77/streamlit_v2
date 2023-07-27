@@ -190,36 +190,6 @@ def to_excel(df):
     processed_data = output.getvalue()
     return processed_data
 
-def save_num_topics(df_final,final_topics,df_unique_topics,we=None,ws=None,name_all="all_year"):
-    #name file
-    if we is None and ws is None:
-        name_file = name_all
-    if we is not None and ws is not None:
-        name_file = f"_{ws}_{we}"
-        st.write(name_file)
-    if st.checkbox("Save"):
-        df_xlsx = to_excel(df_final)
-        st.download_button(label='📥 Download Current Topics',
-        data=df_xlsx ,
-        file_name= f"{st.session_state.brand_name}{name_file}.xlsx")
-        st.write("save successful")
-    if st.button("change topics"):
-        #Topics_num(st.session_state.final_topics,st.session_state.unique_topics_df,we,ws)
-        number_options = list(range(1,11))
-        selected_number = st.selectbox("Num of topics",number_options)
-        top_topics,final_df = best_10(final_topics,df_unique_topics,n=selected_number)
-        st.write("your topics")
-        st.write("\n")
-        st.write(top_topics)
-        df_xlsx = to_excel(final_df)
-        st.download_button(label='📥 Download Current Topics', data=df_xlsx, file_name= f"{st.session_state.brand_name}{name_file}.xlsx")
-
-
-def click_button():
-    st.session_state.button =  st.session_state.button
-
-
-
 def main():
     with st.container():
         
@@ -289,7 +259,6 @@ def main():
                                         st.write(top_topics)
                                         st.write("Do you want to change the topics or Save ?")
                                         st.session_state.name_file = f"_{ws}_{we}"
-                                        st.write(st.session_state.name_file)
                                 else:
                                     st.warning("please click in the button -> Generate topics")
                             except ZeroDivisionError as e:
@@ -312,8 +281,7 @@ def main():
                                         st.write("\n") 
                                         st.write(top_topics)
                                         st.write("Do you want to change the topics or Save ?")
-                                        save_num_topics(st.session_state.df_final,st.session_state.final_topics,
-                                                        st.session_state.unique_topics_df,we=None,ws=None,name_all="all_year")
+                                        st.session_state.name_file = "all_year"
                                 else:
                                     st.warning("please click in the button -> Generate topics")
                             except ZeroDivisionError as e:
