@@ -168,7 +168,7 @@ def best_10(final_topic_list_cleaned,df1,n=10):
     #df2.to_excel(r"C:\Users\Technology\Desktop\tasks\text_summary\IT_findus_nov-june.xlsx", index=False)
 
 
-def Topics_num(final_topics,df,we,ws):
+def Topics_num(final_topics,df,we,ws): #i am not using this, here because perphaps may be useful. 
     number_options = list(range(1,11))
     selected_number = st.selectbox("Num of topics",number_options)
     top_topics,final_df = best_10(final_topics,df,n=selected_number)
@@ -176,6 +176,33 @@ def Topics_num(final_topics,df,we,ws):
     st.write(final_df)
     df_xlsx = to_excel(final_df)
     st.download_button(label='📥 Download Current Topics', data=df_xlsx, file_name= f"{str(df)}_{we}_{ws}.xlsx")
+
+
+def save_num_topics(df_final,final_topics,df_unique_topics,we=None,ws=None,name_all="all_year"):
+    #name file
+    if we is None & ws is None:
+        name_file = name_all
+    if we is not None & ws is not None:
+        name_file = f"_{ws}_{we}"
+    if st.checkbox("Save"):
+        df_xlsx = to_excel(df_final)
+        st.download_button(label='📥 Download Current Topics',
+        data=df_xlsx ,
+        file_name= f"{st.session_state.brand_name}{name_file}.xlsx")
+        st.write("save successful")
+    if st.checkbox("change topics"):
+        #Topics_num(st.session_state.final_topics,st.session_state.unique_topics_df,we,ws)
+        number_options = list(range(1,11))
+        selected_number = st.selectbox("Num of topics",number_options)
+        top_topics,final_df = best_10(final_topics,df_unique_topics,n=selected_number)
+        st.write("your topics")
+        st.write("\n")
+        st.write(top_topics)
+        df_xlsx = to_excel(final_df)
+        st.download_button(label='📥 Download Current Topics', data=df_xlsx, file_name= f"{st.session_state.brand_name}{name_file}.xlsx")
+
+
+
 
 
                            
@@ -257,7 +284,8 @@ def main():
                                         st.write("\n") 
                                         st.write(top_topics)
                                         st.write("Do you want to change the topics or Save ?")
-                                       
+                                        save_num_topics(st.session_state.df_final,st.session_state.final_topics,
+                                                        st.session_state.unique_topics_df,we=we,ws=ws)
                                 else:
                                     st.warning("please click in the button -> Generate topics")
                             except ZeroDivisionError as e:
@@ -280,28 +308,14 @@ def main():
                                         st.write("\n") 
                                         st.write(top_topics)
                                         st.write("Do you want to change the topics or Save ?")
-                                    
+                                        save_num_topics(st.session_state.df_final,st.session_state.final_topics,
+                                                        st.session_state.unique_topics_df,we=None,ws=None,name_all="all_year")
                                 else:
                                     st.warning("please click in the button -> Generate topics")
                             except ZeroDivisionError as e:
                                 st.warning("Please check the calendar") 
                     
-                if st.checkbox("Save"):
-                    df_xlsx = to_excel(st.session_state.df_final)
-                    st.download_button(label='📥 Download Current Topics',
-                    data=df_xlsx ,
-                    file_name= f"{st.session_state.brand_name}_{ws}_{we}.xlsx")
-                    st.write("save successful")
-                if st.checkbox("change topics"):
-                    #Topics_num(st.session_state.final_topics,st.session_state.unique_topics_df,we,ws)
-                    number_options = list(range(1,11))
-                    selected_number = st.selectbox("Num of topics",number_options)
-                    top_topics,final_df = best_10(st.session_state.final_topics,st.session_state.unique_topics_df,n=selected_number)
-                    st.write("your topics")
-                    st.write("\n")
-                    st.write(top_topics)
-                    df_xlsx = to_excel(final_df)
-                    st.download_button(label='📥 Download Current Topics', data=df_xlsx, file_name= f"{st.session_state.brand_name}_{ws}_{we}.xlsx")
+                
 
 
 
