@@ -239,7 +239,7 @@ def main():
             st.session_state.brand_name = None
 
         if 'button' not in st.session_state:
-            st.session_state.button = False
+            st.session_state.button = None
 
         # initialize our app
         left_column,right_column = st.columns(2)
