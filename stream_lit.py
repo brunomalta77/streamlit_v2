@@ -66,6 +66,7 @@ def my_values_all(df):
     return author,channel
 
 def my_values_without_author_filtered(df):
+    channel_options= [x for x in df["message_type"].unique()]
     #time period
     start_date = st.date_input("Select start date")
     end_date =  st.date_input("Select end date")
