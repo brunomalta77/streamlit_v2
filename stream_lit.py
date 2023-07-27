@@ -180,9 +180,9 @@ def Topics_num(final_topics,df,we,ws): #i am not using this, here because perpha
 
 def save_num_topics(df_final,final_topics,df_unique_topics,we=None,ws=None,name_all="all_year"):
     #name file
-    if we is None & ws is None:
+    if we is None and ws is None:
         name_file = name_all
-    if we is not None & ws is not None:
+    if we is not None and ws is not None:
         name_file = f"_{ws}_{we}"
     if st.checkbox("Save"):
         df_xlsx = to_excel(df_final)
