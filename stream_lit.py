@@ -96,8 +96,7 @@ def filtering_all(df,author,channel):
 def filtering_without_author(df,channel,ws=None,we=None):
     if ws is None and we is None:
         df = df[df["message_type"].isin(channel)]
-        st.write(df.shape)
-        st.write(df.columns)
+        df["cleaned_message"] = df["cleaned_message"].apply(lambda x: str(x))
         alldata = ' '.join(df["cleaned_message"])
         lengpt = len(alldata) / 4000   #(because chatgot maximum token size is 4076)
         posts_to_combine = round(len(df) / lengpt)
