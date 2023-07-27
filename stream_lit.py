@@ -60,16 +60,21 @@ def filtering(df,ws,we,author,channel):
     df['grouped_message'] = df.groupby(['nposts'])['cleaned_message'].transform(lambda x: ' '.join(x))
     return(df)
 
-
-
 def my_values_all(df):
     author = [x for x in df["author_predictions"].unique()]
     channel = [x for x in df["message_type"].unique()]
     return author,channel
 
-def my_values_without_author(df):
-    channel = [x for x in df["message_type"].unique()]
-    return channel
+def my_values_without_author_filtered(df):
+    #time period
+    start_date = st.date_input("Select start date")
+    end_date =  st.date_input("Select end date")
+    #convert our dates
+    ws = start_date.strftime('%Y-%m-%d')
+    we = end_date.strftime('%Y-%m-%d')
+    
+    channel = st.multiselect("Select the channel categories:", channel_options)
+    return ws,we,channel
 
 
 
@@ -81,6 +86,20 @@ def filtering_all(df,author,channel):
     df['nposts'] = np.arange(len(df))//posts_to_combine+1
     df['grouped_message'] = df.groupby(['nposts'])['cleaned_message'].transform(lambda x: ' '.join(x))
     return(df)
+
+
+def filtering_without_author_filtered(df,ws,we,channel):
+    df = df[(df['Week Commencing'] >= ws) & (df['Week Commencing'] <= we) & (df["message_type"].isin(channel))]
+    alldata = ' '.join(df["cleaned_message"])
+    lengpt = len(alldata) / 4000   #(because chatgot maximum token size is 4076)
+    posts_to_combine = round(len(df) / lengpt)
+    df['nposts'] = np.arange(len(df))//posts_to_combine+1
+    df['grouped_message'] = df.groupby(['nposts'])['cleaned_message'].transform(lambda x: ' '.join(x))
+    return(df)
+
+
+
+
 
 # generating the Chat GPT respose
 def generate_chatgpt_response_v2(prompt, model = "gpt-3.5-turbo"):
@@ -174,11 +193,6 @@ def best_10(final_topic_list_cleaned,df1,n=10):
 
 
 
-
-
-
-
-
 def Topics_num(final_topics,df,we,ws): #i am not using this, here because perphaps may be useful. 
     number_options = list(range(1,11))
     selected_number = st.selectbox("Num of topics",number_options)
@@ -247,9 +261,9 @@ def main():
                 if st.session_state.df is not None:
                     if st.checkbox("Filtered data"):
                         if "author" not in st.session_state.df.columns:
-                            channel = my_values_without_author(st.session_state.df)
+                            ws,we,channel = my_values_without_author_filtered(st.session_state.df)
                             try:
-                                st.session_state.df = filtering(st.session_state.df,ws,we,author,channel)
+                                st.session_state.df = filtering_without_author_filtered(st.session_state.df,ws,we,channel)
                                 st.info(f"Data size : {st.session_state.df.shape[0]}")
                                 if st.button("Generate Topics"):
                                     st.session_state.button = True
