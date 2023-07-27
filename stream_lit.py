@@ -276,7 +276,7 @@ def main():
                         if "author" not in st.session_state.df.columns:
                             ws,we,channel = my_values_without_author(st.session_state.df,ws=True,we=True)
                             if channel == []:
-                                st.warning("Please choose your channel)
+                                st.warning("Please choose your channel")
                             else:
                                 try:
                                     st.session_state.df = filtering_without_author(st.session_state.df,channel,ws,we)
