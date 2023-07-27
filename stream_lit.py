@@ -51,6 +51,17 @@ def my_values_filtered(df):
     channel = st.multiselect("Select the channel categories:", channel_options)
     return ws,we,author,channel
 
+def filtering(df,ws,we,author,channel):
+    df = df[(df['Week Commencing'] >= ws) & (df['Week Commencing'] <= we) & (df["author_predictions"].isin(author)) & (df["message_type"].isin(channel))]
+    alldata = ' '.join(df["cleaned_message"])
+    lengpt = len(alldata) / 4000   #(because chatgot maximum token size is 4076)
+    posts_to_combine = round(len(df) / lengpt)
+    df['nposts'] = np.arange(len(df))//posts_to_combine+1
+    df['grouped_message'] = df.groupby(['nposts'])['cleaned_message'].transform(lambda x: ' '.join(x))
+    return(df)
+
+
+
 def my_values_all(df):
     start_date = st.date_input("Select start date")
     end_date =  st.date_input("Select end date")
@@ -59,12 +70,11 @@ def my_values_all(df):
     we = end_date.strftime('%Y-%m-%d')
     author = [x for x in df["author_predictions"].unique()]
     channel = [x for x in df["message_type"].unique()]
-    return ws,we,author,channel
+    return author,channel
 
 
-
-def filtering(df,ws,we,author,channel):
-    df = df[(df['Week Commencing'] >= ws) & (df['Week Commencing'] <= we) & (df["author_predictions"].isin(author)) & (df["message_type"].isin(channel))]
+def filtering_all(df,author,channel):
+    df = df[ df["author_predictions"].isin(author)) & (df["message_type"].isin(channel))]
     alldata = ' '.join(df["cleaned_message"])
     lengpt = len(alldata) / 4000   #(because chatgot maximum token size is 4076)
     posts_to_combine = round(len(df) / lengpt)
@@ -258,10 +268,10 @@ def main():
                             except ZeroDivisionError as e:
                                 st.warning("Please check the calendar or check if your filter contains enough information") 
                     if st.checkbox("All data"):
-                        ws,we,author,channel = my_values_all(st.session_state.df)
+                        author,channel = my_values_all(st.session_state.df)
                         if author != [] and channel !=[]:
                             try:
-                                st.session_state.df = filtering(st.session_state.df,ws,we,author,channel)
+                                st.session_state.df = filtering_all(st.session_state.df,author,channel)
                                 st.info(f"data size -> {st.session_state.df.shape[0]}")
                                 if st.button("Generate Topics"):
                                     st.session_state.df = get_topics(st.session_state.df)
