@@ -241,6 +241,9 @@ def main():
         if 'button' not in st.session_state:
             st.session_state.button = None
 
+        if "name_file" not in st.session_state:
+            st.session_state.name_file = None
+        
         # initialize our app
         left_column,right_column = st.columns(2)
         with left_column:
@@ -285,7 +288,7 @@ def main():
                                         st.write("\n") 
                                         st.write(top_topics)
                                         st.write("Do you want to change the topics or Save ?")
-                                        name_file = f"_{ws}_{we}"
+                                        st.session_state.name_file = f"_{ws}_{we}"
                                 else:
                                     st.warning("please click in the button -> Generate topics")
                             except ZeroDivisionError as e:
@@ -317,13 +320,13 @@ def main():
 
 
                 # saving
-                if st.session_state.button is not None:
-                    if st.checkbox("Save"):
-                        df_xlsx = to_excel(st.session_state.df_final)
-                        st.download_button(label='📥 Download Current Topics',
-                        data=df_xlsx,
-                        file_name= f"{st.session_state.brand_name}{name_file}.xlsx")
-                        st.write("save successful")
+                    if st.session_state.button is not None:
+                        if st.checkbox("Save"):
+                            df_xlsx = to_excel(st.session_state.df_final)
+                            st.download_button(label='📥 Download Current Topics',
+                            data=df_xlsx,
+                            file_name= f"{st.session_state.brand_name}{st.session_state.name_file}.xlsx")
+                            st.write("save successful")
 
 
 
