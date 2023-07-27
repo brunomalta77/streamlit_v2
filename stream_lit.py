@@ -74,7 +74,7 @@ def my_values_all(df):
 
 
 def filtering_all(df,author,channel):
-    df = df[ df["author_predictions"].isin(author)) & (df["message_type"].isin(channel))]
+    df = df[(df["author_predictions"].isin(author)) & (df["message_type"].isin(channel))]
     alldata = ' '.join(df["cleaned_message"])
     lengpt = len(alldata) / 4000   #(because chatgot maximum token size is 4076)
     posts_to_combine = round(len(df) / lengpt)
