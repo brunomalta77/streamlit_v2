@@ -272,7 +272,8 @@ def main():
                             try:
                                 st.session_state.df = filtering(st.session_state.df,ws,we,author,channel)
                                 st.info(f"data size -> {st.session_state.df.shape[0]}")
-                                if st.button("Generate Topics",on_click=click_button):
+                                if st.button("Generate Topics"):
+                                    st.session_state.button = True
                                     st.session_state.df = get_topics(st.session_state.df)
                                     st.session_state.final_topics = unique_topics(st.session_state.df)
                                     st.session_state.unique_topics_df = st.session_state.df
@@ -316,7 +317,7 @@ def main():
 
 
                 # saving
-                if st.session_state.button:    
+                if st.session_state.button not None:
                     if st.checkbox("Save"):
                         df_xlsx = to_excel(df_final)
                         st.download_button(label='📥 Download Current Topics',
