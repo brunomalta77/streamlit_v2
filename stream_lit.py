@@ -63,11 +63,6 @@ def filtering(df,ws,we,author,channel):
 
 
 def my_values_all(df):
-    start_date = st.date_input("Select start date")
-    end_date =  st.date_input("Select end date")
-    #convert our dates
-    ws = start_date.strftime('%Y-%m-%d')
-    we = end_date.strftime('%Y-%m-%d')
     author = [x for x in df["author_predictions"].unique()]
     channel = [x for x in df["message_type"].unique()]
     return author,channel
