@@ -216,7 +216,7 @@ def save_num_topics(df_final,final_topics,df_unique_topics,we=None,ws=None,name_
 
 
 def click_button():
-    st.session_state.button = not st.session_state.button
+    st.session_state.button =  st.session_state.button
 
 
 
