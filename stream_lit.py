@@ -96,6 +96,8 @@ def filtering_all(df,author,channel):
 def filtering_without_author(df,channel,ws=None,we=None):
     if ws is None and we is None:
         df = df[df["message_type"].isin(channel)]
+        st.write(df)
+        st.write(channel)
         alldata = ' '.join(df["cleaned_message"])
         lengpt = len(alldata) / 4000   #(because chatgot maximum token size is 4076)
         posts_to_combine = round(len(df) / lengpt)
@@ -354,7 +356,6 @@ def main():
                                         st.warning("please click in the button -> Generate topics")
                                 except ZeroDivisionError as e:
                                     st.warning("Please check the calendar or check if your filter contains enough information") 
-                            
                         
                         if "author" in st.session_state.df.columns:
                             author,channel = my_values_all(st.session_state.df)
