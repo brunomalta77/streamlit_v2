@@ -317,7 +317,7 @@ def main():
 
 
                 # saving
-                if st.session_state.button not None:
+                if st.session_state.button is not None:
                     if st.checkbox("Save"):
                         df_xlsx = to_excel(df_final)
                         st.download_button(label='📥 Download Current Topics',
