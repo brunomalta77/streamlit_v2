@@ -280,12 +280,12 @@ def main():
                                         st.write(top_topics)
                                         st.write("Do you want to change the topics or Save ?")
                                         name_file = f"_{ws}_{we}"
-                                        if st.checkbox("Save"):
-                                            df_xlsx = to_excel(df_final)
-                                            st.download_button(label='📥 Download Current Topics',
-                                            data=df_xlsx,
-                                            file_name= f"{st.session_state.brand_name}{name_file}.xlsx")
-                                            st.write("save successful")
+                                    if st.checkbox("Save"):
+                                        df_xlsx = to_excel(df_final)
+                                        st.download_button(label='📥 Download Current Topics',
+                                        data=df_xlsx,
+                                        file_name= f"{st.session_state.brand_name}{name_file}.xlsx")
+                                        st.write("save successful")
                                 else:
                                     st.warning("please click in the button -> Generate topics")
                             except ZeroDivisionError as e:
