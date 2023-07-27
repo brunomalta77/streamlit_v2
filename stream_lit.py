@@ -275,27 +275,30 @@ def main():
                     if st.checkbox("Filtered data"):
                         if "author" not in st.session_state.df.columns:
                             ws,we,channel = my_values_without_author(st.session_state.df,ws=True,we=True)
-                            try:
-                                st.session_state.df = filtering_without_author(st.session_state.df,channel,ws,we)
-                                st.info(f"Data size : {st.session_state.df.shape[0]}")
-                                if st.button("Generate Topics"):
-                                    st.session_state.button = True
-                                    st.session_state.df = get_topics(st.session_state.df)
-                                    st.session_state.final_topics = unique_topics(st.session_state.df)
-                                    st.session_state.unique_topics_df = st.session_state.df
-                                    if len(st.session_state.final_topics) == 0:
-                                        st.error("does not have any topic")
-                                    if st.session_state.df is not None :
-                                        top_topics,st.session_state.df_final = best_10(st.session_state.final_topics,st.session_state.df)
-                                        st.write("your topics")
-                                        st.write("\n") 
-                                        st.write(top_topics)
-                                        st.write("Do you want to change the topics or Save ?")
-                                        st.session_state.name_file = f"_{ws}_{we}"
-                                else:
-                                    st.warning("please click in the button -> Generate topics")
-                            except ZeroDivisionError as e:
-                                st.warning("Please check the calendar or check if your filter contains enough information") 
+                            if channel == []:
+                                st.warning("Please choose your channel)
+                            else:
+                                try:
+                                    st.session_state.df = filtering_without_author(st.session_state.df,channel,ws,we)
+                                    st.info(f"Data size : {st.session_state.df.shape[0]}")
+                                    if st.button("Generate Topics"):
+                                        st.session_state.button = True
+                                        st.session_state.df = get_topics(st.session_state.df)
+                                        st.session_state.final_topics = unique_topics(st.session_state.df)
+                                        st.session_state.unique_topics_df = st.session_state.df
+                                        if len(st.session_state.final_topics) == 0:
+                                            st.error("does not have any topic")
+                                        if st.session_state.df is not None :
+                                            top_topics,st.session_state.df_final = best_10(st.session_state.final_topics,st.session_state.df)
+                                            st.write("your topics")
+                                            st.write("\n") 
+                                            st.write(top_topics)
+                                            st.write("Do you want to change the topics or Save ?")
+                                            st.session_state.name_file = f"_{ws}_{we}"
+                                    else:
+                                        st.warning("please click in the button -> Generate topics")
+                                except ZeroDivisionError as e:
+                                    st.warning("Please check the calendar or check if your filter contains enough information") 
                         
                         if "author" in st.session_state.df.columns:
                             ws,we,author,channel = my_values_filtered(st.session_state.df)
