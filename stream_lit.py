@@ -246,7 +246,7 @@ def main():
                 st.info(f"Data size : {st.session_state.df.shape[0]}")
                 if st.session_state.df is not None:
                     if st.checkbox("Filtered data"):
-                        if "author" not in st.session_state.df.columns():
+                        if "author" not in st.session_state.df.columns:
                             channel = my_values_without_author(st.session_state.df)
                             try:
                                 st.session_state.df = filtering(st.session_state.df,ws,we,author,channel)
