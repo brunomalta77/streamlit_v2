@@ -65,7 +65,7 @@ def my_values_all(df):
     channel = [x for x in df["message_type"].unique()]
     return author,channel
 
-@st.experimental_memo
+@st.cache_data(experimental_allow_widgets=True)
 def my_values_without_author(df,ws=None,we=None):
     channel_options= [x for x in df["message_type"].unique()]
     if ws is None and we is None:
