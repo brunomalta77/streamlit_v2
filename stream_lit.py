@@ -30,7 +30,8 @@ st.set_page_config(page_title="BrandDelta_app",page_icon="💵",layout="wide")
 st.title("Brand Delta Topic Modelling")
 
 
-@st.cache(allow_output_mutation=True) # trying no to be always rerruning the dataframe
+#@st.cache(allow_output_mutation=True) # trying no to be always rerruning the dataframe
+@st.experimental_memo
 def read_parquet(file_path):
     df =pd.read_parquet(file_path)
     return df
@@ -68,7 +69,6 @@ def my_values_all(df):
 def my_values_without_author(df,ws=None,we=None):
     channel_options= [x for x in df["message_type"].unique()]
     if ws is None and we is None:
-        #channel = st.multiselect("Select the channel categories:", channel_options)
         return channel_options
     else:
     #time period
