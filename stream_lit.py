@@ -30,8 +30,7 @@ st.set_page_config(page_title="BrandDelta_app",page_icon="💵",layout="wide")
 st.title("Brand Delta Topic Modelling")
 
 
-#@st.cache(allow_output_mutation=True) # trying no to be always rerruning the dataframe
-@st.experimental_memo
+@st.cache(allow_output_mutation=True) # trying no to be always rerruning the dataframe
 def read_parquet(file_path):
     df =pd.read_parquet(file_path)
     return df
