@@ -279,6 +279,7 @@ def main():
                             #convert our dates
                             ws = start_date.strftime('%Y-%m-%d')
                             we = end_date.strftime('%Y-%m-%d')
+                            channel_options= [x for x in df["message_type"].unique()]
                             channel = st.multiselect("Select the channel categories:", channel_options)
                             st.write(ws,we,channel)
                             #ws,we,channel = my_values_without_author(st.session_state.df,ws=True,we=True)
