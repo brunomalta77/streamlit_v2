@@ -265,7 +265,6 @@ def main():
                 uploaded_file_info= str(df_file)
                 file_name = uploaded_file_info.split(", name='")[1].split(".")[0]
                 st.session_state.brand_name = file_name
-            if df_file is not None:
                 # read our file
                 #st.session_state.df = pd.read_parquet(df_file)
                 st.session_state.df = pd.read_excel(df_file)
@@ -274,7 +273,15 @@ def main():
                 if st.session_state.df is not None:
                     if st.checkbox("Filtered data"):
                         if "author" not in st.session_state.df.columns:
-                            ws,we,channel = my_values_without_author(st.session_state.df,ws=True,we=True)
+                            #values
+                            start_date = st.date_input("Select start date")
+                            end_date =  st.date_input("Select end date")
+                            #convert our dates
+                            ws = start_date.strftime('%Y-%m-%d')
+                            we = end_date.strftime('%Y-%m-%d')
+                            channel = st.multiselect("Select the channel categories:", channel_options)
+                            st.write(ws,we,channel)
+                            #ws,we,channel = my_values_without_author(st.session_state.df,ws=True,we=True)
                             if channel == []:
                                 st.warning("Please choose your channel")
                             else:
