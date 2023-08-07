@@ -32,7 +32,9 @@ st.title("Brand Delta Topic Modelling")
 @st.cache(allow_output_mutation=True,suppress_st_warning=True) 
 def read_excel(df_file):
     df = pd.read_excel(df_file)
-    return df
+    uploaded_file_info= str(df_file)
+    file_name = uploaded_file_info.split(", name='")[1].split(".")[0]
+    return df,uploaded_file_info,file_name
 
 
 @st.cache(allow_output_mutation=True)
@@ -264,12 +266,12 @@ def main():
             if df_file is None:
                 st.warning("Please drop your brand file")
             else:
-                st.session_state.df = read_excel(df_file) #leitura
+                st.session_state.df,uploaded_file_info,file_name = read_excel(df_file) #leitura
             if st.session_state.df is None:
                 st.warning("Please drop your brand file")
             if st.session_state.df is not None:
-                uploaded_file_info= str(df_file)
-                file_name = uploaded_file_info.split(", name='")[1].split(".")[0]
+                #uploaded_file_info= str(df_file)
+                #file_name = uploaded_file_info.split(", name='")[1].split(".")[0]
                 st.session_state.brand_name = file_name
                 # read our file
                 #st.session_state.df = pd.read_parquet(df_file)
