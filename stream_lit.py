@@ -266,9 +266,7 @@ def main():
             if df_file is None:
                 st.warning("Please drop your brand file")
             else:
-                st.session_state.df,uploaded_file_info,file_name = read_excel(df_file) #leitura
-            if st.session_state.df is None:
-                st.warning("Please drop your brand file")
+                st.session_state.df, uploaded_file_info, file_name = read_excel(df_file) #leitura
             if st.session_state.df is not None:
                 #uploaded_file_info= str(df_file)
                 #file_name = uploaded_file_info.split(", name='")[1].split(".")[0]
