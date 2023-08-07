@@ -33,8 +33,11 @@ st.title("Brand Delta Topic Modelling")
 @st.cache(allow_output_mutation=True) # trying no to be always rerruning the dataframe
 def down_read_excel():
     df_file= st.file_uploader("Upload a Excel file")
-    df =pd.read_excel(df_file)
-    return df
+    if df_file is none:
+        st.warning("please drop your database")
+    else:
+        df =pd.read_excel(df_file)
+        return df
 
 
 @st.cache(allow_output_mutation=True)
