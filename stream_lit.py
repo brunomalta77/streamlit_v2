@@ -269,9 +269,9 @@ def main():
         left_column,right_column = st.columns(2)
         with left_column:
             if st.session_state.df_file is None:
-                df_file = dow_excel()
+                st.session_state.df_file = dow_excel()
             else:
-                st.session_state.df = read_excel(df_file) #leitura
+                st.session_state.df = read_excel(st.session_state.df_file) #leitura
             if st.session_state.df is None:
                 st.warning("Please drop your brand file")
             if st.session_state.df is not None:
