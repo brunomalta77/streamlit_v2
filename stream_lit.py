@@ -34,6 +34,7 @@ def read_excel(df_file):
     df = pd.read_excel(df_file)
     uploaded_file_info= str(df_file)
     file_name = uploaded_file_info.split(", name='")[1].split(".")[0]
+    df['Week Commencing'] = df['created_time'].apply(lambda x: (x - timedelta(days=x.weekday())).replace(hour=0, minute=0, second=0, microsecond=0))
     return df,uploaded_file_info,file_name
 
 
@@ -268,13 +269,10 @@ def main():
             else:
                 st.session_state.df, uploaded_file_info, file_name = read_excel(df_file) #leitura
             if st.session_state.df is not None:
-                #uploaded_file_info= str(df_file)
-                #file_name = uploaded_file_info.split(", name='")[1].split(".")[0]
                 st.session_state.brand_name = file_name
                 # read our file
-                #st.session_state.df = pd.read_parquet(df_file)
-                #st.session_state.df = pd.read_excel(df_file)
-                st.session_state.df['Week Commencing'] = st.session_state.df['created_time'].apply(lambda x: (x - timedelta(days=x.weekday())).replace(hour=0, minute=0, second=0, microsecond=0))
+                #st.session_state.df['Week Commencing'] = st.session_state.df['created_time'].apply(lambda x: (x - timedelta(days=x.weekday())).replace(hour=0, minute=0, second=0, microsecond=0))
+                st.write(st.session_state_df.columns)
                 st.info(f"Data size : {st.session_state.df.shape[0]}")
                 if st.session_state.df is not None:
                     if st.checkbox("Filtered data"):
