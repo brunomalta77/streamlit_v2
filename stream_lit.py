@@ -260,7 +260,7 @@ def main():
         left_column,right_column = st.columns(2)
         with left_column:
             #df_file= st.file_uploader("Upload a Excel file")
-             st.session_state.df = down_read_excel()
+            st.session_state.df = down_read_excel()
             if st.session_state.df is None:
                 st.warning("Please drop your brand file")
             if st.session_state.df is not None:
