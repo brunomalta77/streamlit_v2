@@ -266,7 +266,7 @@ def main():
             st.session_state.name_file = None
         
         # initialize our app
-        left_column = st.columns(1)
+        left_column,right_column = st.columns(2)
         with left_column:
             if st.session_state.df_file is None:
                 df_file = dow_excel()
