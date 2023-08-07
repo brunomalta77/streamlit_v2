@@ -269,7 +269,6 @@ def main():
         left_column,right_column = st.columns(2)
         with left_column:
             df_file = st.file_uploader("Upload a Excel file")
-            st.session_state.button = None
             if df_file is None:
                 st.warning("Please drop your brand file")
             else:
