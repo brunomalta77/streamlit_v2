@@ -361,7 +361,7 @@ def main():
                             if author != [] and channel !=[]:
                                 try:
                                     st.session_state.df = filtering_all(st.session_state.df,author,channel)
-                                    st.info(f"data size -> {st.session_state.df.shape[0]}")
+                                    #st.info(f"data size -> {st.session_state.df.shape[0]}")
                                     if st.button("Generate Topics"):
                                         st.session_state.df = get_topics(st.session_state.df)
                                         st.session_state.final_topics = unique_topics(st.session_state.df)
