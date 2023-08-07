@@ -337,7 +337,6 @@ def main():
                             if channel != []:
                                 try:
                                     st.session_state.df = filtering_without_author(st.session_state.df,channel,ws=None,we=None)
-                                    st.info(f"Data size : {st.session_state.df.shape[0]}")
                                     if st.button("Generate Topics"):
                                         st.session_state.button = True
                                         st.session_state.df = get_topics(st.session_state.df)
