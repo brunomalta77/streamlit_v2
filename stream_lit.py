@@ -30,14 +30,13 @@ st.set_page_config(page_title="BrandDelta_app",page_icon="💵",layout="wide")
 st.title("Brand Delta Topic Modelling")
 
 
-@st.cache(suppress_st_warning=True)
 def dow_excel():
     df_file = st.file_uploader("Upload a Excel file")
     return df_file
 
 @st.cache(suppress_st_warning=True) 
 def read_excel(df_file):
-    df =pd.read_excel(df_file)
+    df = pd.read_excel(df_file)
     return df
 
 
