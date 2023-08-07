@@ -32,7 +32,10 @@ st.title("Brand Delta Topic Modelling")
 @st.cache(suppress_st_warning=True) 
 def dow_excel():
     df_file = st.file_uploader("Upload a Excel file")
-    return df_file
+    if df_file is None:
+        st.warning("Please upload your brand database")
+    else:
+        return df_file
 
 @st.cache(suppress_st_warning=True) 
 def read_excel(df_file):
@@ -238,6 +241,9 @@ def to_excel(df):
 def main():
     with st.container():
         
+        if "df_file" not in st.session_state:
+            st.session_state.df_file = None
+        
         if 'df' not in st.session_state:
             st.session_state.df = None
         
@@ -262,9 +268,8 @@ def main():
         # initialize our app
         left_column,right_column = st.columns(2)
         with left_column:
-            df_file = dow_excel() #upload
-            if df_file is None:
-                st.warning("Please Upload your brand database")
+            if st.session_state.df_file = None:
+                df_file = dow_excel()
             else:
                 st.session_state.df = read_excel(df_file) #leitura
             if st.session_state.df is None:
