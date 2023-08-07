@@ -29,7 +29,7 @@ openai.api_key= api_key
 st.set_page_config(page_title="BrandDelta_app",page_icon="💵",layout="wide")
 
 st.title("Brand Delta Topic Modelling")
-#pd.set_option("mode.chained_assignment", None)
+
 
 
 @st.cache(allow_output_mutation=True,suppress_st_warning=True) 
@@ -39,6 +39,7 @@ def read_excel(df_file):
         uploaded_file_info= str(df_file)
         file_name = uploaded_file_info.split(", name='")[1].split(".")[0]
         df['Week Commencing'] = df['created_time'].apply(lambda x: (x - timedelta(days=x.weekday())).replace(hour=0, minute=0, second=0, microsecond=0))
+    st.success("Done!")
     return df,uploaded_file_info,file_name
 
 
