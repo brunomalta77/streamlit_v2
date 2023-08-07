@@ -261,7 +261,10 @@ def main():
         left_column,right_column = st.columns(2)
         with left_column:
             df_file = st.file_uploader("Upload a Excel file")
-            st.session_state.df = read_excel(df_file) #leitura
+            if df_file is None:
+                st.warning("Please drop your brand file")
+            else:
+                st.session_state.df = read_excel(df_file) #leitura
             if st.session_state.df is None:
                 st.warning("Please drop your brand file")
             if st.session_state.df is not None:
