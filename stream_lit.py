@@ -271,8 +271,6 @@ def main():
             if st.session_state.df is not None:
                 st.session_state.brand_name = file_name
                 # read our file
-                #st.session_state.df['Week Commencing'] = st.session_state.df['created_time'].apply(lambda x: (x - timedelta(days=x.weekday())).replace(hour=0, minute=0, second=0, microsecond=0))
-                st.write(st.session_state.df.columns)
                 st.info(f"Data size : {st.session_state.df.shape[0]}")
                 if st.session_state.df is not None:
                     if st.checkbox("Filtered data"):
