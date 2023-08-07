@@ -32,6 +32,7 @@ st.title("Brand Delta Topic Modelling")
 @st.cache(allow_output_mutation=True,suppress_st_warning=True) 
 def read_excel(df_file):
     with st.spinner("Reading your file...."):
+        warnings.simplefilter("ignore")
         df = pd.read_excel(df_file)
         uploaded_file_info= str(df_file)
         file_name = uploaded_file_info.split(", name='")[1].split(".")[0]
