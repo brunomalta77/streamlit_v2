@@ -29,7 +29,7 @@ st.set_page_config(page_title="BrandDelta_app",page_icon="💵",layout="wide")
 
 st.title("Brand Delta Topic Modelling")
 
-@st.cache(suppress_st_warning=True) 
+@st.cache(allow_output_mutation=True,suppress_st_warning=True) 
 def read_excel(df_file):
     df = pd.read_excel(df_file)
     return df
