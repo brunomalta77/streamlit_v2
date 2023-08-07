@@ -260,10 +260,8 @@ def main():
         # initialize our app
         left_column,right_column = st.columns(2)
         with left_column:
-            if st.session_state.df_file is None:
-                st.session_state.df_file = st.file_uploader("Upload a Excel file")
-            else:
-                st.session_state.df = read_excel(st.session_state.df_file) #leitura
+            st.session_state.df_file = st.file_uploader("Upload a Excel file")
+            st.session_state.df = read_excel(st.session_state.df_file) #leitura
             if st.session_state.df is None:
                 st.warning("Please drop your brand file")
             if st.session_state.df is not None:
