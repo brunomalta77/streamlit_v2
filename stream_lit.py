@@ -274,6 +274,8 @@ def main():
                     if st.checkbox("Filtered data"):
                         if "author" not in st.session_state.df.columns:
                             ws,we,channel = my_values_without_author(st.session_state.df,ws=True,we=True)
+                            st.write(ws,we)
+                            st.write(channel)
                             if channel == []:
                                 st.warning("Please choose your channel")
                             else:
