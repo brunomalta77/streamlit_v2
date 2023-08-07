@@ -38,7 +38,7 @@ def read_excel(df_file):
     return df,uploaded_file_info,file_name
 
 
-@st.cache(allow_output_mutation=True)
+@st.cache(allow_output_mutation=True
 def my_values_filtered(df):
     author_options= [x for x in df["author_predictions"].unique()]
     channel_options= [x for x in df["message_type"].unique()]
@@ -71,7 +71,7 @@ def my_values_all(df):
     return author,channel
 
 
-@st.cache_data(experimental_allow_widgets=True)
+
 def my_values_without_author(df,ws=None,we=None):
     channel_options= [x for x in df["message_type"].unique()]
     if ws is None and we is None:
