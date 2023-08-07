@@ -268,9 +268,7 @@ def main():
                 st.warning("Please drop your brand file")
             else:
                 st.session_state.df, uploaded_file_info, file_name = read_excel(df_file) #leitura
-            if st.session_state.df is not None:
                 st.session_state.brand_name = file_name
-                # read our file
                 st.info(f"Data size : {st.session_state.df.shape[0]}")
                 if st.session_state.df is not None:
                     if st.checkbox("Filtered data"):
