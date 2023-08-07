@@ -30,14 +30,15 @@ st.set_page_config(page_title="BrandDelta_app",page_icon="💵",layout="wide")
 st.title("Brand Delta Topic Modelling")
 
 
-@st.cache(suppress_st_warning=True) # trying no to be always rerruning the dataframe
-def down_read_excel():
-    df_file= st.file_uploader("Upload a Excel file")
-    if df_file is None:
-        st.warning("Please upload your brand database") 
-    else:
-        df =pd.read_excel(df_file)
-        return df
+@st.cache(suppress_st_warning=True)
+def dow_excel():
+    df_file = st.file_uploader("Upload a Excel file")
+    return df_file
+
+@st.cache(suppress_st_warning=True) 
+def read_excel(df_file):
+    df =pd.read_excel(df_file)
+    return df
 
 
 @st.cache(allow_output_mutation=True)
@@ -262,8 +263,8 @@ def main():
         # initialize our app
         left_column,right_column = st.columns(2)
         with left_column:
-            #df_file= st.file_uploader("Upload a Excel file")
-            st.session_state.df = down_read_excel()
+            df_file = dow_excel()
+            st.session_state.df = read_excel(df_file)
             if st.session_state.df is None:
                 st.warning("Please drop your brand file")
             if st.session_state.df is not None:
