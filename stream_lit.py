@@ -28,7 +28,7 @@ openai.api_key= api_key
 st.set_page_config(page_title="BrandDelta_app",page_icon="💵",layout="wide")
 
 st.title("Brand Delta Topic Modelling")
-pd.set_option("mode.chained_assignment", None)
+#pd.set_option("mode.chained_assignment", None)
 
 
 @st.cache(allow_output_mutation=True,suppress_st_warning=True) 
