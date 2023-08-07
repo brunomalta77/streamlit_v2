@@ -31,8 +31,9 @@ st.title("Brand Delta Topic Modelling")
 
 
 @st.cache(allow_output_mutation=True) # trying no to be always rerruning the dataframe
-def read_parquet(file_path):
-    df =pd.read_parquet(file_path)
+def down_read_excel():
+    df_file= st.file_uploader("Upload a Excel file")
+    df =pd.read_excel(df_file)
     return df
 
 
@@ -258,19 +259,17 @@ def main():
         # initialize our app
         left_column,right_column = st.columns(2)
         with left_column:
-            #market = st.text_input("Enter your market here")
-            #path_name = f"C:\\Users\\BrunoMalta\\Brand Delta\\Food Pilot - General\\data\\modelled_data\\{market}\\Workflow_output\\latest_output"
-            #file = glob.glob(path_name + "/*.parquet")
-            df_file= st.file_uploader("Upload a Excel file")
-            if df_file is None:
+            #df_file= st.file_uploader("Upload a Excel file")
+             st.session_state.df = down_read_excel()
+            if st.session_state.df is None:
                 st.warning("Please drop your brand file")
-            if df_file is not None:
+            if st.session_state.df is not None:
                 uploaded_file_info= str(df_file)
                 file_name = uploaded_file_info.split(", name='")[1].split(".")[0]
                 st.session_state.brand_name = file_name
                 # read our file
                 #st.session_state.df = pd.read_parquet(df_file)
-                st.session_state.df = pd.read_excel(df_file)
+                #st.session_state.df = pd.read_excel(df_file)
                 st.session_state.df['Week Commencing'] = st.session_state.df['created_time'].apply(lambda x: (x - timedelta(days=x.weekday())).replace(hour=0, minute=0, second=0, microsecond=0))
                 st.info(f"Data size : {st.session_state.df.shape[0]}")
                 if st.session_state.df is not None:
