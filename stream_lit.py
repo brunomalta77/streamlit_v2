@@ -38,7 +38,7 @@ def read_excel(df_file):
     return df,uploaded_file_info,file_name
 
 
-@st.cache(allow_output_mutation=True)
+
 def my_values_filtered(df):
     author_options= [x for x in df["author_predictions"].unique()]
     channel_options= [x for x in df["message_type"].unique()]
@@ -64,7 +64,7 @@ def filtering(df,ws,we,author,channel):
     df['grouped_message'] = df.groupby(['nposts'])['cleaned_message'].transform(lambda x: ' '.join(x))
     return(df)
 
-@st.cache(allow_output_mutation=True)
+
 def my_values_all(df):
     author = [x for x in df["author_predictions"].unique()]
     channel = [x for x in df["message_type"].unique()]
@@ -87,7 +87,7 @@ def my_values_without_author(df,ws=None,we=None):
         return ws,we,channel
 
 
-@st.cache(allow_output_mutation=True)
+
 def filtering_all(df,author,channel):
     df = df[(df["author_predictions"].isin(author)) & (df["message_type"].isin(channel))]
     alldata = ' '.join(df["cleaned_message"])
@@ -97,7 +97,7 @@ def filtering_all(df,author,channel):
     df['grouped_message'] = df.groupby(['nposts'])['cleaned_message'].transform(lambda x: ' '.join(x))
     return(df)
 
-@st.cache(allow_output_mutation=True)
+
 def filtering_without_author(df,channel,ws=None,we=None):
     if ws is None and we is None:
         df = df[df["message_type"].isin(channel)]
