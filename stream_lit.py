@@ -268,7 +268,7 @@ def main():
         # initialize our app
         left_column,right_column = st.columns(2)
         with left_column:
-            df_file = st.file_uploader("Upload a Excel file",use_container_width=False)
+            df_file = st.file_uploader("Upload a Excel file")
             if df_file is None:
                 st.warning("Please drop your brand file")
             else:
