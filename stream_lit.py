@@ -347,7 +347,7 @@ def main():
                                         st.write(st.session_state.df)
                                         if len(st.session_state.final_topics) == 0:
                                             st.error("does not have any topic")
-                                        if st.session_state.df is not None :
+                                        if len(st.session_state.final_topics) != 0: 
                                             top_topics,st.session_state.df_final = best_10(st.session_state.final_topics,st.session_state.df)
                                             st.write("your topics")
                                             st.write("\n") 
