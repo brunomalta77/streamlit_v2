@@ -16,6 +16,9 @@ import os
 import xlsxwriter
 from io import BytesIO
 from pyxlsb import open_workbook as open_xlsb
+import requests
+
+
 
 #Getting the API_Keys
 #load_dotenv()
@@ -24,6 +27,15 @@ from pyxlsb import open_workbook as open_xlsb
 api_key = st.secrets["API_KEY"]
 openai.api_key= api_key
 
+#Getting the request from chat gpt
+response = requests.get('https://api.openai.com/v1/chat/completions')
+status_code = response.status_code
+
+#getting the request
+if status_code == 200:
+    st.warning('Chat GPT is ready to be used')
+else:
+    st.warning("Warning!!! Chat GPT API problem, may give errors bad output.Contact the IT team")
 
 #page config
 st.set_page_config(page_title="BrandDelta_app",page_icon="💵",layout="wide")
