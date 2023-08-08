@@ -291,7 +291,7 @@ def main():
                                         st.session_state.final_topics = unique_topics(st.session_state.df)
                                         st.session_state.unique_topics_df = st.session_state.df
                                         if st.session_state.final_topics == []:
-                                            st.error("does not have any topic")
+                                            st.error("does not have any topic/ Topics with less than 5 words/ Chat GPT API problem")
                                         if st.session_state.final_topics != [] :
                                             top_topics,st.session_state.df_final = best_10(st.session_state.final_topics,st.session_state.df)
                                             st.write("your topics")
@@ -322,7 +322,7 @@ def main():
                                         st.session_state.final_topics = unique_topics(st.session_state.df)
                                         st.session_state.unique_topics_df = st.session_state.df
                                         if st.session_state.final_topics == []:
-                                            st.error("does not have any topic")
+                                            st.error("does not have any topic/ Topics with less than 5 words/ Chat GPT API problem")
                                         if st.session_state.final_topics != [] :
                                             top_topics,st.session_state.df_final = best_10(st.session_state.final_topics,st.session_state.df)
                                             st.write("your topics")
@@ -348,15 +348,15 @@ def main():
                                         st.session_state.df = get_topics(st.session_state.df)
                                         st.session_state.final_topics = unique_topics(st.session_state.df)
                                         st.session_state.unique_topics_df = st.session_state.df
-                                        if len(st.session_state.final_topics) == 0:
-                                            st.error("does not have any topic")
-                                        if len(st.session_state.final_topics) != 0: 
+                                        if st.session_state.final_topics == []:
+                                            st.error("does not have any topic/ Topics with less than 5 words/ Chat GPT API problem")
+                                        if st.session_state.final_topics != []: 
                                             top_topics,st.session_state.df_final = best_10(st.session_state.final_topics,st.session_state.df)
                                             st.write("your topics")
                                             st.write("\n") 
                                             st.write(top_topics)
                                             st.write("Do you want to change the topics or Save ?")
-                                            st.session_state.name_file = f"All_data"
+                                            st.session_state.name_file = f"_All_data"
                                     else:
                                         st.warning("please click in the button -> Generate topics")
                                 except ZeroDivisionError as e:
@@ -372,15 +372,15 @@ def main():
                                         st.session_state.df = get_topics(st.session_state.df)
                                         st.session_state.final_topics = unique_topics(st.session_state.df)
                                         st.session_state.unique_topics_df = st.session_state.df
-                                        if len(st.session_state.final_topics) == 0:
-                                            st.error("does not have any topic")
-                                        if st.session_state.df is not None :
+                                        if st.session_state.final_topics == []:
+                                            st.error("does not have any topic/ Topics with less than 5 words/ Chat GPT API problem")
+                                        if st.session_state.final_topics != []:
                                             top_topics,st.session_state.df_final = best_10(st.session_state.final_topics,st.session_state.df)
                                             st.write("your topics")
                                             st.write("\n") 
                                             st.write(top_topics)
                                             st.write("Do you want to change the topics or Save ?")
-                                            st.session_state.name_file = f"All_data"
+                                            st.session_state.name_file = f"_All_data"
                                     else:
                                         st.warning("please click in the button -> Generate topics")
                                 except ZeroDivisionError as e:
