@@ -23,7 +23,6 @@ from pyxlsb import open_workbook as open_xlsb
 
 api_key = st.secrets["API_KEY"]
 openai.api_key= api_key
-st.write(openai.api_key)
 
 
 #page config
