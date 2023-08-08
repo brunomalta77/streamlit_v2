@@ -23,6 +23,8 @@ from pyxlsb import open_workbook as open_xlsb
 
 api_key = st.secrets["API_KEY"]
 openai.api_key= api_key
+st.write(openai.api_key)
+
 
 #page config
 st.set_page_config(page_title="BrandDelta_app",page_icon="💵",layout="wide")
@@ -285,9 +287,7 @@ def main():
                                     if st.button("Generate Topics"):
                                         st.session_state.button = True
                                         st.session_state.df = get_topics(st.session_state.df)
-                                        st.write(st.session_state.df)
                                         st.session_state.final_topics = unique_topics(st.session_state.df)
-                                        st.write(st.session_state.final_topics)
                                         st.session_state.unique_topics_df = st.session_state.df
                                         if st.session_state.final_topics == []:
                                             st.error("does not have any topic")
