@@ -339,6 +339,8 @@ def main():
                             if channel != []:
                                 try:
                                     st.session_state.df = filtering_without_author(st.session_state.df,channel,ws=None,we=None)
+                                    ws=0
+                                    we = 0 
                                     st.info(f"data size -> {st.session_state.df.shape[0]}")
                                     if st.button("Generate Topics"):
                                         st.session_state.button = True
@@ -353,7 +355,7 @@ def main():
                                             st.write("\n") 
                                             st.write(top_topics)
                                             st.write("Do you want to change the topics or Save ?")
-                                            st.session_state.name_file = f"_{ws}_{we}"
+                                            st.session_state.name_file = f"All_data"
                                     else:
                                         st.warning("please click in the button -> Generate topics")
                                 except ZeroDivisionError as e:
@@ -377,7 +379,7 @@ def main():
                                             st.write("\n") 
                                             st.write(top_topics)
                                             st.write("Do you want to change the topics or Save ?")
-                                            st.session_state.name_file = "all_year"
+                                            st.session_state.name_file = f"All_data"
                                     else:
                                         st.warning("please click in the button -> Generate topics")
                                 except ZeroDivisionError as e:
