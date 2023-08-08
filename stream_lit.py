@@ -320,9 +320,9 @@ def main():
                                         st.session_state.df = get_topics(st.session_state.df)
                                         st.session_state.final_topics = unique_topics(st.session_state.df)
                                         st.session_state.unique_topics_df = st.session_state.df
-                                        if len(st.session_state.final_topics) == 0:
+                                        if st.session_state.final_topics == []:
                                             st.error("does not have any topic")
-                                        if st.session_state.df is not None :
+                                        if st.session_state.final_topics != [] :
                                             top_topics,st.session_state.df_final = best_10(st.session_state.final_topics,st.session_state.df)
                                             st.write("your topics")
                                             st.write("\n") 
