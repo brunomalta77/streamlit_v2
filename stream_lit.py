@@ -49,7 +49,8 @@ def my_values_filtered(df):
     author_options.append("All")
     channel_options= [x for x in df["message_type"].unique()]
     channel_options.append("All")
-    #br = st.selectbox("Select a brand:", br_options)
+    br_options = [x for x in df["brand"].unique()]
+    br_options.append("All")
     #time period
     start_date = st.date_input("Select start date")
     end_date =  st.date_input("Select end date")
@@ -59,7 +60,7 @@ def my_values_filtered(df):
     # author
     res_author =  st.multiselect("Select the author categories:", author_options)
     res_channel = st.multiselect("Select the channel categories:", channel_options)
-
+    res_br = st.multiselect("Select the brand that you want:", br_options)
     if "All" in res_channel:
         channel = [x for x in df["message_type"].unique()]
     else:
@@ -69,15 +70,20 @@ def my_values_filtered(df):
         author = [x for x in df["author_predictions"].unique()]
     else:
         author = res_author
-   
+
+     if "All" in res_br:
+        brand = [x for x in df["brand"].unique()]
+    else:
+        brand = res_br
+        
     st.write(author)
     st.write(channel)
-    return ws,we,author,channel
+    return ws,we,author,channel,brand
 
 
 
-def filtering(df,ws,we,author,channel):
-    df = df[(df['Week Commencing'] >= ws) & (df['Week Commencing'] <= we) & (df["author_predictions"].isin(author)) & (df["message_type"].isin(channel))]
+def filtering(df,ws,we,author,channel,brand):
+    df = df[(df['Week Commencing'] >= ws) & (df['Week Commencing'] <= we) & (df["author_predictions"].isin(author)) & (df["message_type"].isin(channel)) & (df["brand"].isin(brand))]
     df["cleaned_message"] = df["cleaned_message"].apply(lambda x: str(x))
     alldata = ' '.join(df["cleaned_message"])
     lengpt = len(alldata) / 4000   #(because chatgot maximum token size is 4076)
@@ -85,7 +91,6 @@ def filtering(df,ws,we,author,channel):
     df['nposts'] = np.arange(len(df))//posts_to_combine+1
     df['grouped_message'] = df.groupby(['nposts'])['cleaned_message'].transform(lambda x: ' '.join(x))
     return(df)
-
 
 def my_values_all(df):
     author = [x for x in df["author_predictions"].unique()]
@@ -330,14 +335,16 @@ def main():
                                     st.warning("Please check the calendar or check if your filter contains enough information") 
                         
                         if "author_predictions" in st.session_state.df.columns:
-                            ws,we,author,channel = my_values_filtered(st.session_state.df)
-                            if author == [] and channel ==[] :
-                                st.warning("please select your author and channel")
-                            if author == [] and channel != []:
-                                st.warning("please select your author")
-                            if author !=[] and channel ==[]:
-                                st.warning("please select your channel")
-                            if author != [] and channel !=[]:
+                            ws,we,author,channel,brand = my_values_filtered(st.session_state.df)
+                            if author == [] and channel ==[] and brand ==[]:
+                                st.warning("please select your author,channel and brand")
+                            if author == [] and channel != [] and brand != [] :
+                                st.warning("please select your authors or All for all the authors")
+                            if author !=[] and channel ==[] and brand !=[]:
+                                st.warning("please select your channels or All for all channels")
+                            if author != [] and channel !=[] and brand ==[]:
+                                st.warning("please select your brands or All for all brands") 
+                            if author != [] and channel !=[] and brand !=[]:
                                 try:
                                     st.session_state.df = filtering(st.session_state.df,ws,we,author,channel)
                                     st.info(f"number of rows: {st.session_state.df.shape[0]}")
