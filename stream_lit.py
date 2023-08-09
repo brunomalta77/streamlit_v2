@@ -62,8 +62,12 @@ def my_values_filtered(df):
     st.write(res_channel)
     if res_channel == "All":
         channel = [x for x in df["message_type"].unique()]
+    else:
+        channel = res_channel
     if res_author == "All":
         author = [x for x in df["author_predictions"].unique()]
+    else:
+        author= res_author
     return ws,we,author,channel
 
 def filtering(df,ws,we,author,channel):
