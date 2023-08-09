@@ -276,7 +276,7 @@ def main():
                 st.session_state.brand_name = file_name
                 st.info(f"number of rows: {st.session_state.df.shape[0]}")
                 if st.session_state.df is not None:
-                    if st.checkbox(:red["Filter data"]):
+                    if st.checkbox("Filter data"):
                         if "author" not in st.session_state.df.columns:
                             ws,we,channel = my_values_without_author(st.session_state.df,ws=True,we=True)
                             if channel == []:
@@ -334,7 +334,7 @@ def main():
                                         st.warning("please click in the button -> Generate topics")
                                 except ZeroDivisionError as e:
                                     st.warning("Please check the calendar or check if your filter contains enough information") 
-                    if st.checkbox(:red["All data"]):
+                    if st.checkbox("All data"):
                         if "author" not in st.session_state.df.columns:
                             channel = my_values_without_author(st.session_state.df)
                             if channel != []:
@@ -389,13 +389,13 @@ def main():
 
                 # saving process
                     if st.session_state.button is not None:
-                        if st.checkbox(:blue["Save"]):
+                        if st.checkbox("Save"):
                             df_xlsx = to_excel(st.session_state.df_final)
                             st.download_button(label='📥 Download Current Topics',
                             data=df_xlsx,
                             file_name= f"{st.session_state.brand_name}{st.session_state.name_file}.xlsx")
                             st.write("save successful")
-                        if st.checkbox(:blue["Change topics"]):
+                        if st.checkbox("Change topics"):
                             number_options = list(range(1,11))
                             selected_number = st.selectbox("Num of topics",number_options)
                             top_topics,final_df = best_10(st.session_state.final_topics,st.session_state.unique_topics_df,n=selected_number)
