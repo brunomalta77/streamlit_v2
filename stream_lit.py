@@ -48,6 +48,7 @@ def my_values_filtered(df):
     author_options= [x for x in df["author_predictions"].unique()]
     author_options.append("All")
     channel_options= [x for x in df["message_type"].unique()]
+    channel_options.append("All")
     #br = st.selectbox("Select a brand:", br_options)
     #time period
     start_date = st.date_input("Select start date")
