@@ -301,7 +301,7 @@ def main():
             st.session_state.name_file = None
         
         if "top_topics_show" not in st.session_state:
-            st.session_state.top_topics_show= None 
+            st.session_state.top_topics_show= st.warning("You still do not have topics")
 
         
         # initialize our app
