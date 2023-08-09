@@ -62,7 +62,7 @@ def my_values_filtered(df):
     st.write(res_channel)
     if res_channel[0] == "All":
         channel = [x for x in df["message_type"].unique()]
-    if res_channel[0] != "All" or res_channel[0] == None:
+    if res_channel[0] != "All" or res_channel == []:
         channel = res_channel
         
     if res_author[0] == "All":
