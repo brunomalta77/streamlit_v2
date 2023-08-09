@@ -55,7 +55,7 @@ def my_values_filtered(df):
     ws = start_date.strftime('%Y-%m-%d')
     we = end_date.strftime('%Y-%m-%d')
     # author
-    author =  st.multiselect("Select the author categories:", author_options,"All")
+    author =  st.multiselect("Select the author categories:", [author_options,"All"])
     channel = st.multiselect("Select the channel categories:", channel_options,"All")
     if channel == "All":
         channel = channel_options
