@@ -320,7 +320,9 @@ def main():
                             ws,we,channel,brand = my_values_without_author(st.session_state.df,ws=True,we=True)
                             if channel == []:
                                 st.warning("Please select your channel")
-                            else:
+                            if brand == []:
+                                st.warning("Please select your brand")
+                            if brand !=[] and channel != []:
                                 try:
                                     st.session_state.df = filtering_without_author(st.session_state.df,channel,brand,ws,we)
                                     st.info(f"Data size : {st.session_state.df.shape[0]}")
