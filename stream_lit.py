@@ -336,8 +336,6 @@ def main():
                         
                         if "author_predictions" in st.session_state.df.columns:
                             ws,we,author,channel,brand = my_values_filtered(st.session_state.df)
-                            if author == [] and channel ==[] and brand ==[]:
-                                st.warning("please select your author,channel and brand")
                             if author == [] :
                                 st.warning("please select your authors or All for all the authors")
                             if channel == []:
