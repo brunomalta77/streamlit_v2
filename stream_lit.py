@@ -61,7 +61,7 @@ def my_values_filtered(df):
     res_channel = st.multiselect("Select the channel categories:", channel_options)
     if res_channel[0] == "All":
         channel = [x for x in df["message_type"].unique()]
-    if res_channel[0] != "All":
+    if res_channel[0] != "All" or res_channel[0] == []:
         channel = res_channel
         
     if res_author[0] == "All":
