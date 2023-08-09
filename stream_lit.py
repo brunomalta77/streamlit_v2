@@ -442,6 +442,7 @@ def main():
                         else:
                             st.write("your topics")
                             st.write("\n")
+                            st.write(st.session_state.top_topics_show)
                             st.write("Do you want to save or change the number of topics?")
                         if st.checkbox("Save"):
                             df_xlsx = to_excel(st.session_state.df_final)
