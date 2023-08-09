@@ -95,6 +95,7 @@ def my_values_without_author(df,ws=None,we=None):
 
 def filtering_all(df,author,channel):
     df = df[(df["author_predictions"].isin(author)) & (df["message_type"].isin(channel))]
+    df["cleaned_message"] = df["cleaned_message"].apply(lambda x: str(x))
     alldata = ' '.join(df["cleaned_message"])
     lengpt = len(alldata) / 4000   #(because chatgot maximum token size is 4076)
     posts_to_combine = round(len(df) / lengpt)
@@ -115,6 +116,7 @@ def filtering_without_author(df,channel,ws=None,we=None):
         return(df)
     else:
         df = df[(df['Week Commencing'] >= ws) & (df['Week Commencing'] <= we) & (df["message_type"].isin(channel))]
+        df["cleaned_message"] = df["cleaned_message"].apply(lambda x: str(x))
         alldata = ' '.join(df["cleaned_message"])
         lengpt = len(alldata) / 4000   #(because chatgot maximum token size is 4076)
         posts_to_combine = round(len(df) / lengpt)
