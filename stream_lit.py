@@ -75,9 +75,6 @@ def my_values_filtered(df):
         brand = [x for x in df["brand"].unique()]
     else:
         brand = res_br
-        
-    st.write(author)
-    st.write(channel)
     return ws,we,author,channel,brand
 
 
@@ -303,6 +300,10 @@ def main():
         if "name_file" not in st.session_state:
             st.session_state.name_file = None
         
+        if "top_topics_show" not in st.session_state:
+            st.session_state.top_topics_show= None 
+
+        
         # initialize our app
         left_column,right_column = st.columns(2)
         with left_column:
@@ -335,6 +336,7 @@ def main():
                                             st.error("does not have any topic/ Topics with less than 5 words/ Chat GPT API problem")
                                         if st.session_state.final_topics != [] :
                                             top_topics,st.session_state.df_final = best_10(st.session_state.final_topics,st.session_state.df)
+                                            st.session_state.top_topics_show = top_topics
                                             st.write("your topics")
                                             st.write("\n") 
                                             st.write(top_topics)
@@ -366,6 +368,7 @@ def main():
                                             st.error("does not have any topic/ Topics with less than 5 words/ Chat GPT API problem")
                                         if st.session_state.final_topics != [] :
                                             top_topics,st.session_state.df_final = best_10(st.session_state.final_topics,st.session_state.df)
+                                            st.session_state.top_topics_show = top_topics
                                             st.write("your topics")
                                             st.write("\n") 
                                             st.write(top_topics)
@@ -393,6 +396,7 @@ def main():
                                             st.error("does not have any topic/ Topics with less than 5 words/ Chat GPT API problem")
                                         if st.session_state.final_topics != []: 
                                             top_topics,st.session_state.df_final = best_10(st.session_state.final_topics,st.session_state.df)
+                                            st.session_state.top_topics_show=top_topics
                                             st.write("your topics")
                                             st.write("\n") 
                                             st.write(top_topics)
@@ -417,6 +421,7 @@ def main():
                                             st.error("does not have any topic/ Topics with less than 5 words/ Chat GPT API problem")
                                         if st.session_state.final_topics != []:
                                             top_topics,st.session_state.df_final = best_10(st.session_state.final_topics,st.session_state.df)
+                                            st.session_state.top_topics_show=top_topics
                                             st.write("your topics")
                                             st.write("\n") 
                                             st.write(top_topics)
@@ -428,10 +433,11 @@ def main():
                                     st.warning("Please check the calendar") 
 
 
-                # saving process
+
                     st.write("your topics")
-                    st.write("\n") 
-                    st.write(top_topics)
+                    st.write("\n")
+                    st.write(st.session_state.top_topics_show)
+
                     if st.session_state.button is not None:
                         if st.checkbox("Save"):
                             df_xlsx = to_excel(st.session_state.df_final)
