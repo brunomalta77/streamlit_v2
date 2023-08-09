@@ -95,33 +95,42 @@ def filtering(df,ws,we,author,channel,brand):
 def my_values_all(df):
     author = [x for x in df["author_predictions"].unique()]
     channel = [x for x in df["message_type"].unique()]
-    return author,channel
+    brand = [x for x in df["brand"].unique()]
+    return author,channel,brand
 
 
 def my_values_without_author(df,ws=None,we=None):
     channel_options= [x for x in df["message_type"].unique()]
-    channel_options.append("All")
+    br_options = [x for x in df["brand"].unique()]
     if ws is None and we is None:
-        return channel_options
+        return channel_options,br_options
     else:
-    #time period
+        br_options.append("All")
+        channel_options.append("All")
         start_date = st.date_input("Select start date")
         end_date =  st.date_input("Select end date")
         #convert our dates
         ws = start_date.strftime('%Y-%m-%d')
         we = end_date.strftime('%Y-%m-%d')
         
-        res_channel = st.multiselect("Select the channel categories:", res_channel)
+        res_channel = st.multiselect("Select the channel categories:", channel_options)
+        res_br = st.multiselect("Select the channel categories:", br_options)
         if "All" in res_channel:
             channel = [x for x in df["message_type"].unique()]
         else:
             channel = res_channel
-        return ws,we,channel
+
+         if "All" in res_br:
+            brand = [x for x in df["brand"].unique()]
+        else:
+            brand = res_br
+        
+        return ws,we,channel,brand
 
 
 
-def filtering_all(df,author,channel):
-    df = df[(df["author_predictions"].isin(author)) & (df["message_type"].isin(channel))]
+def filtering_all(df,author,channel,brand):
+    df = df[(df["author_predictions"].isin(author)) & (df["message_type"].isin(channel)) & df["brand"].isin(brand)]
     df["cleaned_message"] = df["cleaned_message"].apply(lambda x: str(x))
     alldata = ' '.join(df["cleaned_message"])
     lengpt = len(alldata) / 4000   #(because chatgot maximum token size is 4076)
@@ -131,9 +140,9 @@ def filtering_all(df,author,channel):
     return(df)
 
 
-def filtering_without_author(df,channel,ws=None,we=None):
+def filtering_without_author(df,channel,brand,ws=None,we=None):
     if ws is None and we is None:
-        df = df[df["message_type"].isin(channel)]
+        df = df[df["message_type"].isin(channel) & df["brand"].isin(brand)]
         df["cleaned_message"] = df["cleaned_message"].apply(lambda x: str(x))
         alldata = ' '.join(df["cleaned_message"])
         lengpt = len(alldata) / 4000   #(because chatgot maximum token size is 4076)
@@ -142,7 +151,7 @@ def filtering_without_author(df,channel,ws=None,we=None):
         df['grouped_message'] = df.groupby(['nposts'])['cleaned_message'].transform(lambda x: ' '.join(x))
         return(df)
     else:
-        df = df[(df['Week Commencing'] >= ws) & (df['Week Commencing'] <= we) & (df["message_type"].isin(channel))]
+        df = df[(df['Week Commencing'] >= ws) & (df['Week Commencing'] <= we) & (df["message_type"].isin(channel)) & df["brand"].isin(brand)]
         df["cleaned_message"] = df["cleaned_message"].apply(lambda x: str(x))
         alldata = ' '.join(df["cleaned_message"])
         lengpt = len(alldata) / 4000   #(because chatgot maximum token size is 4076)
@@ -308,12 +317,12 @@ def main():
                 if st.session_state.df is not None:
                     if st.checkbox("Filter data"):
                         if "author_predictions" not in st.session_state.df.columns:
-                            ws,we,channel = my_values_without_author(st.session_state.df,ws=True,we=True)
+                            ws,we,channel,brand = my_values_without_author(st.session_state.df,ws=True,we=True)
                             if channel == []:
                                 st.warning("Please select your channel")
                             else:
                                 try:
-                                    st.session_state.df = filtering_without_author(st.session_state.df,channel,ws,we)
+                                    st.session_state.df = filtering_without_author(st.session_state.df,channel,brand,ws,we)
                                     st.info(f"Data size : {st.session_state.df.shape[0]}")
                                     if st.button("Generate Topics"):
                                         st.session_state.button = True
@@ -366,10 +375,10 @@ def main():
                                     st.warning("Please check the calendar or check if your filter contains enough information") 
                     if st.checkbox("All data"):
                         if "author_predictions" not in st.session_state.df.columns:
-                            channel = my_values_without_author(st.session_state.df)
-                            if channel != []:
+                            channel,brand  = my_values_without_author(st.session_state.df)
+                            if channel != [] and brand !=[]:
                                 try:
-                                    st.session_state.df = filtering_without_author(st.session_state.df,channel,ws=None,we=None)
+                                    st.session_state.df = filtering_without_author(st.session_state.df,channel,brand,ws=None,we=None)
                                     ws=0
                                     we = 0 
                                     st.info(f"Number of rows: {st.session_state.df.shape[0]}")
@@ -393,10 +402,10 @@ def main():
                                     st.warning("Please check the calendar or check if your filter contains enough information") 
                         
                         if "author_predictions" in st.session_state.df.columns:
-                            author,channel = my_values_all(st.session_state.df)
+                            author,channel,brand = my_values_all(st.session_state.df)
                             if author != [] and channel !=[]:
                                 try:
-                                    st.session_state.df = filtering_all(st.session_state.df,author,channel)
+                                    st.session_state.df = filtering_all(st.session_state.df,author,channel,brand)
                                     st.info(f" number of rows: {st.session_state.df.shape[0]}")
                                     if st.button("Generate Topics"):
                                         st.session_state.df = get_topics(st.session_state.df)
