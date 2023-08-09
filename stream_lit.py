@@ -422,13 +422,14 @@ def main():
 
 
 
-                    st.write("your topics")
-                    st.write("\n")
-                    if st.session_state.top_topics_show == None:
-                        st.warning("you do not have topics yet")
-                    else:
-                        st.write("Do you want to save or change the number of topics?")
+                  
                     if st.session_state.button is not None:
+                        st.write("your topics")
+                        st.write("\n")
+                        if st.session_state.top_topics_show == None:
+                            st.warning("you do not have topics yet")
+                        else:
+                            st.write("Do you want to save or change the number of topics?")
                         if st.checkbox("Save"):
                             df_xlsx = to_excel(st.session_state.df_final)
                             st.download_button(label='📥 Download Current Topics',
