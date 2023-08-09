@@ -59,7 +59,6 @@ def my_values_filtered(df):
     # author
     res_author =  st.multiselect("Select the author categories:", author_options)
     res_channel = st.multiselect("Select the channel categories:", channel_options)
-    st.write(type(res_channel))
     if res_channel[0] == "All":
         channel = [x for x in df["message_type"].unique()]
         st.write("ok")
