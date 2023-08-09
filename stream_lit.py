@@ -274,9 +274,9 @@ def main():
             else:
                 st.session_state.df, uploaded_file_info, file_name = read_excel(df_file) #leitura
                 st.session_state.brand_name = file_name
-                st.info(f"Data size : {st.session_state.df.shape[0]}")
+                st.info(f"number of rows: {st.session_state.df.shape[0]}")
                 if st.session_state.df is not None:
-                    if st.checkbox("Filtered data"):
+                    if st.checkbox("Filter data"):
                         if "author" not in st.session_state.df.columns:
                             ws,we,channel = my_values_without_author(st.session_state.df,ws=True,we=True)
                             if channel == []:
@@ -315,7 +315,7 @@ def main():
                             if author != [] and channel !=[]:
                                 try:
                                     st.session_state.df = filtering(st.session_state.df,ws,we,author,channel)
-                                    st.info(f"Data size : {st.session_state.df.shape[0]}")
+                                    st.info(f"number of rows: {st.session_state.df.shape[0]}")
                                     if st.button("Generate Topics"):
                                         st.session_state.button = True
                                         st.session_state.df = get_topics(st.session_state.df)
@@ -342,7 +342,7 @@ def main():
                                     st.session_state.df = filtering_without_author(st.session_state.df,channel,ws=None,we=None)
                                     ws=0
                                     we = 0 
-                                    st.info(f"data size -> {st.session_state.df.shape[0]}")
+                                    st.info(f"Number of rows: {st.session_state.df.shape[0]}")
                                     if st.button("Generate Topics"):
                                         st.session_state.button = True
                                         st.session_state.df = get_topics(st.session_state.df)
@@ -367,7 +367,7 @@ def main():
                             if author != [] and channel !=[]:
                                 try:
                                     st.session_state.df = filtering_all(st.session_state.df,author,channel)
-                                    st.info(f"data size -> {st.session_state.df.shape[0]}")
+                                    st.info(f" number of rows: {st.session_state.df.shape[0]}")
                                     if st.button("Generate Topics"):
                                         st.session_state.df = get_topics(st.session_state.df)
                                         st.session_state.final_topics = unique_topics(st.session_state.df)
