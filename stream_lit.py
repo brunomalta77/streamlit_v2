@@ -322,7 +322,7 @@ def main():
                 st.session_state.brand_name = file_name
                 st.info(f"number of rows: {st.session_state.df.shape[0]}")
                 if st.session_state.df is not None:
-                    if  st.session_state.filter_data = True:
+                    if  st.session_state.filter_data == True:
                         if st.checkbox("Filter data"):
                             st.session_state.all_data = False
                             if "author_predictions" not in st.session_state.df.columns:
@@ -381,7 +381,7 @@ def main():
                                     except ZeroDivisionError as e:
                                         st.warning("Please check the calendar or check if your filter contains enough information") 
                     
-                    if st.session_state.all_data = True:
+                    if st.session_state.all_data == True:
                         if st.checkbox("All data"):
                             st.session_state.filter_data = False
                             if "author_predictions" not in st.session_state.df.columns:
