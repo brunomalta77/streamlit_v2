@@ -46,7 +46,9 @@ def read_excel(df_file):
 
 def my_values_filtered(df):
     author_options= [x for x in df["author_predictions"].unique()]
+    res_author = author_options.append("All")
     channel_options= [x for x in df["message_type"].unique()]
+    res_channel = channel_options.append("All")
     #creating the brand
     #br = st.selectbox("Select a brand:", br_options)
     #time period
@@ -56,8 +58,12 @@ def my_values_filtered(df):
     ws = start_date.strftime('%Y-%m-%d')
     we = end_date.strftime('%Y-%m-%d')
     # author
-    author =  st.multiselect("Select the author categories:", author_options)
-    channel = st.multiselect("Select the channel categories:", channel_options)
+    author =  st.multiselect("Select the author categories:", res_author)
+    channel = st.multiselect("Select the channel categories:", res_channel)
+    if channel == "All":
+        channel = channel_options
+    if author == "All":
+        author = author_options
     return ws,we,author,channel
 
 def filtering(df,ws,we,author,channel):
@@ -79,6 +85,7 @@ def my_values_all(df):
 
 def my_values_without_author(df,ws=None,we=None):
     channel_options= [x for x in df["message_type"].unique()]
+    res_channel = channel_options.append("All")
     if ws is None and we is None:
         return channel_options
     else:
@@ -89,7 +96,9 @@ def my_values_without_author(df,ws=None,we=None):
         ws = start_date.strftime('%Y-%m-%d')
         we = end_date.strftime('%Y-%m-%d')
         
-        channel = st.multiselect("Select the channel categories:", channel_options)
+        channel = st.multiselect("Select the channel categories:", res_channel)
+        if channel =="All":
+            channel= channel_options
         return ws,we,channel
 
 
