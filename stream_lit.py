@@ -338,11 +338,11 @@ def main():
                             ws,we,author,channel,brand = my_values_filtered(st.session_state.df)
                             if author == [] and channel ==[] and brand ==[]:
                                 st.warning("please select your author,channel and brand")
-                            if author == [] and channel != [] and brand != [] :
+                            if author == [] :
                                 st.warning("please select your authors or All for all the authors")
-                            if author !=[] and channel ==[] and brand !=[]:
+                            if channel == []:
                                 st.warning("please select your channels or All for all channels")
-                            if author != [] and channel !=[] and brand ==[]:
+                            if brand == []:
                                 st.warning("please select your brands or All for all brands") 
                             if author != [] and channel !=[] and brand !=[]:
                                 try:
