@@ -303,6 +303,12 @@ def main():
         if "top_topics_show" not in st.session_state:
             st.session_state.top_topics_show= None
 
+        if "all_data" not in st.session_state:
+            st.session_state.all_data = True
+        
+        if "filter_data" not in st.session_state:
+            st.session_state.filter_data = True
+        
         
         # initialize our app
         left_column,right_column = st.columns(2)
@@ -316,109 +322,114 @@ def main():
                 st.session_state.brand_name = file_name
                 st.info(f"number of rows: {st.session_state.df.shape[0]}")
                 if st.session_state.df is not None:
-                    if st.button("Filter data"):
-                        if "author_predictions" not in st.session_state.df.columns:
-                            ws,we,channel,brand = my_values_without_author(st.session_state.df,ws=True,we=True)
-                            if channel == []:
-                                st.warning("Please select your channel")
-                            if brand == []:
-                                st.warning("Please select your brand")
-                            if brand !=[] and channel != []:
-                                try:
-                                    st.session_state.df = filtering_without_author(st.session_state.df,channel,brand,ws,we)
-                                    st.info(f"Data size : {st.session_state.df.shape[0]}")
-                                    if st.button("Generate Topics"):
-                                        st.session_state.button = True
-                                        st.session_state.df = get_topics(st.session_state.df)
-                                        st.session_state.final_topics = unique_topics(st.session_state.df)
-                                        st.session_state.unique_topics_df = st.session_state.df
-                                        if st.session_state.final_topics == []:
-                                            st.error("does not have any topic/ Topics with less than 5 words/ Chat GPT API problem")
-                                        if st.session_state.final_topics != [] :
-                                            top_topics,st.session_state.df_final = best_10(st.session_state.final_topics,st.session_state.df)
-                                            st.session_state.top_topics_show = top_topics
-                                            st.write("Do you want to change the topics or Save ?")
-                                            st.session_state.name_file = f"_{ws}_{we}"
-                                    else:
-                                        st.warning("please click in the button -> Generate topics")
-                                except ZeroDivisionError as e:
-                                    st.warning("Please check the calendar or check if your filter contains enough information") 
-                        
-                        if "author_predictions" in st.session_state.df.columns:
-                            ws,we,author,channel,brand = my_values_filtered(st.session_state.df)
-                            if author == [] :
-                                st.warning("please select your authors or All for all the authors")
-                            if channel == []:
-                                st.warning("please select your channels or All for all channels")
-                            if brand == []:
-                                st.warning("please select your brands or All for all brands") 
-                            if author != [] and channel !=[] and brand !=[]:
-                                try:
-                                    st.session_state.df = filtering(st.session_state.df,ws,we,author,channel,brand)
-                                    st.info(f"number of rows: {st.session_state.df.shape[0]}")
-                                    if st.button("Generate Topics"):
-                                        st.session_state.button = True
-                                        st.session_state.df = get_topics(st.session_state.df)
-                                        st.session_state.final_topics = unique_topics(st.session_state.df)
-                                        st.session_state.unique_topics_df = st.session_state.df
-                                        if st.session_state.final_topics == []:
-                                            st.error("does not have any topic/ Topics with less than 5 words/ Chat GPT API problem")
-                                        if st.session_state.final_topics != [] :
-                                            top_topics,st.session_state.df_final = best_10(st.session_state.final_topics,st.session_state.df)
-                                            st.session_state.top_topics_show = top_topics
-                                            st.write("Do you want to change the topics or Save ?")
-                                            st.session_state.name_file = f"_{ws}_{we}"
-                                    else:
-                                        st.warning("please click in the button -> Generate topics")
-                                except ZeroDivisionError as e:
-                                    st.warning("Please check the calendar or check if your filter contains enough information") 
-                    if st.button("All data"):
-                        if "author_predictions" not in st.session_state.df.columns:
-                            channel,brand  = my_values_without_author(st.session_state.df)
-                            if channel != [] and brand !=[]:
-                                try:
-                                    st.session_state.df = filtering_without_author(st.session_state.df,channel,brand,ws=None,we=None)
-                                    ws=0
-                                    we = 0 
-                                    st.info(f"Number of rows: {st.session_state.df.shape[0]}")
-                                    if st.button("Generate Topics"):
-                                        st.session_state.button = True
-                                        st.session_state.df = get_topics(st.session_state.df)
-                                        st.session_state.final_topics = unique_topics(st.session_state.df)
-                                        st.session_state.unique_topics_df = st.session_state.df
-                                        if st.session_state.final_topics == []:
-                                            st.error("does not have any topic/ Topics with less than 5 words/ Chat GPT API problem")
-                                        if st.session_state.final_topics != []: 
-                                            top_topics,st.session_state.df_final = best_10(st.session_state.final_topics,st.session_state.df)
-                                            st.session_state.top_topics_show=top_topics
-                                            st.write("Do you want to change the topics or Save ?")
-                                            st.session_state.name_file = f"_All_data"
-                                    else:
-                                        st.warning("please click in the button -> Generate topics")
-                                except ZeroDivisionError as e:
-                                    st.warning("Please check the calendar or check if your filter contains enough information") 
-                        
-                        if "author_predictions" in st.session_state.df.columns:
-                            author,channel,brand = my_values_all(st.session_state.df)
-                            if author != [] and channel !=[]:
-                                try:
-                                    st.session_state.df = filtering_all(st.session_state.df,author,channel,brand)
-                                    st.info(f" number of rows: {st.session_state.df.shape[0]}")
-                                    if st.button("Generate Topics"):
-                                        st.session_state.df = get_topics(st.session_state.df)
-                                        st.session_state.final_topics = unique_topics(st.session_state.df)
-                                        st.session_state.unique_topics_df = st.session_state.df
-                                        if st.session_state.final_topics == []:
-                                            st.error("does not have any topic/ Topics with less than 5 words/ Chat GPT API problem")
-                                        if st.session_state.final_topics != []:
-                                            top_topics,st.session_state.df_final = best_10(st.session_state.final_topics,st.session_state.df)
-                                            st.session_state.top_topics_show=top_topics
-                                            st.write("Do you want to change the topics or Save ?")
-                                            st.session_state.name_file = f"_All_data"
-                                    else:
-                                        st.warning("please click in the button -> Generate topics")
-                                except ZeroDivisionError as e:
-                                    st.warning("Please check the calendar") 
+                    if  st.session_state.filter_data = True:
+                        if st.checkbox("Filter data"):
+                            st.session_state.all_data = False
+                            if "author_predictions" not in st.session_state.df.columns:
+                                ws,we,channel,brand = my_values_without_author(st.session_state.df,ws=True,we=True)
+                                if channel == []:
+                                    st.warning("Please select your channel")
+                                if brand == []:
+                                    st.warning("Please select your brand")
+                                if brand !=[] and channel != []:
+                                    try:
+                                        st.session_state.df = filtering_without_author(st.session_state.df,channel,brand,ws,we)
+                                        st.info(f"Data size : {st.session_state.df.shape[0]}")
+                                        if st.button("Generate Topics"):
+                                            st.session_state.button = True
+                                            st.session_state.df = get_topics(st.session_state.df)
+                                            st.session_state.final_topics = unique_topics(st.session_state.df)
+                                            st.session_state.unique_topics_df = st.session_state.df
+                                            if st.session_state.final_topics == []:
+                                                st.error("does not have any topic/ Topics with less than 5 words/ Chat GPT API problem")
+                                            if st.session_state.final_topics != [] :
+                                                top_topics,st.session_state.df_final = best_10(st.session_state.final_topics,st.session_state.df)
+                                                st.session_state.top_topics_show = top_topics
+                                                st.write("Do you want to change the topics or Save ?")
+                                                st.session_state.name_file = f"_{ws}_{we}"
+                                        else:
+                                            st.warning("please click in the button -> Generate topics")
+                                    except ZeroDivisionError as e:
+                                        st.warning("Please check the calendar or check if your filter contains enough information") 
+                            
+                            if "author_predictions" in st.session_state.df.columns:
+                                ws,we,author,channel,brand = my_values_filtered(st.session_state.df)
+                                if author == [] :
+                                    st.warning("please select your authors or All for all the authors")
+                                if channel == []:
+                                    st.warning("please select your channels or All for all channels")
+                                if brand == []:
+                                    st.warning("please select your brands or All for all brands") 
+                                if author != [] and channel !=[] and brand !=[]:
+                                    try:
+                                        st.session_state.df = filtering(st.session_state.df,ws,we,author,channel,brand)
+                                        st.info(f"number of rows: {st.session_state.df.shape[0]}")
+                                        if st.button("Generate Topics"):
+                                            st.session_state.button = True
+                                            st.session_state.df = get_topics(st.session_state.df)
+                                            st.session_state.final_topics = unique_topics(st.session_state.df)
+                                            st.session_state.unique_topics_df = st.session_state.df
+                                            if st.session_state.final_topics == []:
+                                                st.error("does not have any topic/ Topics with less than 5 words/ Chat GPT API problem")
+                                            if st.session_state.final_topics != [] :
+                                                top_topics,st.session_state.df_final = best_10(st.session_state.final_topics,st.session_state.df)
+                                                st.session_state.top_topics_show = top_topics
+                                                st.write("Do you want to change the topics or Save ?")
+                                                st.session_state.name_file = f"_{ws}_{we}"
+                                        else:
+                                            st.warning("please click in the button -> Generate topics")
+                                    except ZeroDivisionError as e:
+                                        st.warning("Please check the calendar or check if your filter contains enough information") 
+                    
+                    if st.session_state.all_data = True:
+                        if st.checkbox("All data"):
+                            st.session_state.filter_data = False
+                            if "author_predictions" not in st.session_state.df.columns:
+                                channel,brand  = my_values_without_author(st.session_state.df)
+                                if channel != [] and brand !=[]:
+                                    try:
+                                        st.session_state.df = filtering_without_author(st.session_state.df,channel,brand,ws=None,we=None)
+                                        ws=0
+                                        we = 0 
+                                        st.info(f"Number of rows: {st.session_state.df.shape[0]}")
+                                        if st.button("Generate Topics"):
+                                            st.session_state.button = True
+                                            st.session_state.df = get_topics(st.session_state.df)
+                                            st.session_state.final_topics = unique_topics(st.session_state.df)
+                                            st.session_state.unique_topics_df = st.session_state.df
+                                            if st.session_state.final_topics == []:
+                                                st.error("does not have any topic/ Topics with less than 5 words/ Chat GPT API problem")
+                                            if st.session_state.final_topics != []: 
+                                                top_topics,st.session_state.df_final = best_10(st.session_state.final_topics,st.session_state.df)
+                                                st.session_state.top_topics_show=top_topics
+                                                st.write("Do you want to change the topics or Save ?")
+                                                st.session_state.name_file = f"_All_data"
+                                        else:
+                                            st.warning("please click in the button -> Generate topics")
+                                    except ZeroDivisionError as e:
+                                        st.warning("Please check the calendar or check if your filter contains enough information") 
+                            
+                            if "author_predictions" in st.session_state.df.columns:
+                                author,channel,brand = my_values_all(st.session_state.df)
+                                if author != [] and channel !=[]:
+                                    try:
+                                        st.session_state.df = filtering_all(st.session_state.df,author,channel,brand)
+                                        st.info(f" number of rows: {st.session_state.df.shape[0]}")
+                                        if st.button("Generate Topics"):
+                                            st.session_state.df = get_topics(st.session_state.df)
+                                            st.session_state.final_topics = unique_topics(st.session_state.df)
+                                            st.session_state.unique_topics_df = st.session_state.df
+                                            if st.session_state.final_topics == []:
+                                                st.error("does not have any topic/ Topics with less than 5 words/ Chat GPT API problem")
+                                            if st.session_state.final_topics != []:
+                                                top_topics,st.session_state.df_final = best_10(st.session_state.final_topics,st.session_state.df)
+                                                st.session_state.top_topics_show=top_topics
+                                                st.write("Do you want to change the topics or Save ?")
+                                                st.session_state.name_file = f"_All_data"
+                                        else:
+                                            st.warning("please click in the button -> Generate topics")
+                                    except ZeroDivisionError as e:
+                                        st.warning("Please check the calendar") 
 
 
 
