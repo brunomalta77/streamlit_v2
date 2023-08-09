@@ -57,11 +57,13 @@ def my_values_filtered(df):
     ws = start_date.strftime('%Y-%m-%d')
     we = end_date.strftime('%Y-%m-%d')
     # author
-    author =  st.multiselect("Select the author categories:", author_options)
-    channel = st.multiselect("Select the channel categories:", channel_options)
-    if channel == "All":
+    res_author =  st.multiselect("Select the author categories:", author_options)
+    res_channel = st.multiselect("Select the channel categories:", channel_options)
+    if res_channel == "All":
+        st.write(res_channel)
         channel = [x for x in df["message_type"].unique()]
-    if author == "All":
+    if res_author == "All":
+        st.write(res_author)
         author = [x for x in df["author_predictions"].unique()]
     return ws,we,author,channel
 
