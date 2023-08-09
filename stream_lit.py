@@ -344,7 +344,7 @@ def main():
                                 st.warning("please select your brands or All for all brands") 
                             if author != [] and channel !=[] and brand !=[]:
                                 try:
-                                    st.session_state.df = filtering(st.session_state.df,ws,we,author,channel)
+                                    st.session_state.df = filtering(st.session_state.df,ws,we,author,channel,brand)
                                     st.info(f"number of rows: {st.session_state.df.shape[0]}")
                                     if st.button("Generate Topics"):
                                         st.session_state.button = True
