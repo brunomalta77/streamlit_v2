@@ -45,12 +45,8 @@ def read_excel(df_file):
 
 
 def my_values_filtered(df):
-    author_options= [x for x in df["author_predictions"].unique()].append("All")
-    st.write(author_options)
-    res_author = author_options.append("All")
+    author_options= [x for x in df["author_predictions"].unique()]
     channel_options= [x for x in df["message_type"].unique()]
-    res_channel = channel_options.append("All")
-    #creating the brand
     #br = st.selectbox("Select a brand:", br_options)
     #time period
     start_date = st.date_input("Select start date")
@@ -59,8 +55,8 @@ def my_values_filtered(df):
     ws = start_date.strftime('%Y-%m-%d')
     we = end_date.strftime('%Y-%m-%d')
     # author
-    author =  st.multiselect("Select the author categories:", res_author)
-    channel = st.multiselect("Select the channel categories:", res_channel)
+    author =  st.multiselect("Select the author categories:", author_options,"All")
+    channel = st.multiselect("Select the channel categories:", channel_options,"All")
     if channel == "All":
         channel = channel_options
     if author == "All":
