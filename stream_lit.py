@@ -316,7 +316,7 @@ def main():
                 st.session_state.brand_name = file_name
                 st.info(f"number of rows: {st.session_state.df.shape[0]}")
                 if st.session_state.df is not None:
-                    if st.checkbox("Filter data"):
+                    if st.button("Filter data"):
                         if "author_predictions" not in st.session_state.df.columns:
                             ws,we,channel,brand = my_values_without_author(st.session_state.df,ws=True,we=True)
                             if channel == []:
@@ -372,7 +372,7 @@ def main():
                                         st.warning("please click in the button -> Generate topics")
                                 except ZeroDivisionError as e:
                                     st.warning("Please check the calendar or check if your filter contains enough information") 
-                    if st.checkbox("All data"):
+                    if st.button("All data"):
                         if "author_predictions" not in st.session_state.df.columns:
                             channel,brand  = my_values_without_author(st.session_state.df)
                             if channel != [] and brand !=[]:
