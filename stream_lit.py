@@ -319,6 +319,8 @@ def main():
                 st.warning("Please, if you encounter the -- AxiosError: Network Error--, close the excel you have open on your local machine")
             else:
                 st.session_state.df, uploaded_file_info, file_name = read_excel(df_file) #leitura
+                st.session_state.all_data = True
+                st.session_state.filter_data = True
                 st.session_state.brand_name = file_name
                 st.info(f"number of rows: {st.session_state.df.shape[0]}")
                 if st.session_state.df is not None:
