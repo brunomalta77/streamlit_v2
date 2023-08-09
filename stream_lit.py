@@ -62,7 +62,7 @@ def my_values_filtered(df):
     try:
         if res_channel[0] == "All":
             channel = [x for x in df["message_type"].unique()]
-        else
+        else:
             channel = res_channel
     except:
         pass
