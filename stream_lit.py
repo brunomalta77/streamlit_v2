@@ -57,10 +57,9 @@ def my_values_filtered(df):
     ws = start_date.strftime('%Y-%m-%d')
     we = end_date.strftime('%Y-%m-%d')
     # author
-    res_channel=[1]
     res_author =  st.multiselect("Select the author categories:", author_options)
     res_channel = st.multiselect("Select the channel categories:", channel_options)
-    st.write(res_channel)
+    st.write(res_channel[0])
     if res_channel[0] == "All":
         channel = [x for x in df["message_type"].unique()]
     if res_channel[0] != "All" or res_channel == []:
