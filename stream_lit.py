@@ -441,6 +441,7 @@ def main():
                     if st.session_state.button is not None:
                         st.write("your topics")
                         st.write("\n")
+                        st.write(st.session_state.top_topics_show)
                         if st.session_state.top_topics_show == None:
                             st.warning("you do not have topics yet")
                         else:
