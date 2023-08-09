@@ -301,7 +301,7 @@ def main():
             st.session_state.name_file = None
         
         if "top_topics_show" not in st.session_state:
-            st.session_state.top_topics_show= st.warning("You still do not have topics")
+            st.session_state.top_topics_show= None
 
         
         # initialize our app
@@ -424,8 +424,10 @@ def main():
 
                     st.write("your topics")
                     st.write("\n")
-                    st.write(st.session_state.top_topics_show)
-                    st.write("Do you want to save or change the number of topics?")
+                    if st.session_state.top_topics_show == None:
+                        st.warning("you do not have topics yet")
+                    else:
+                        st.write("Do you want to save or change the number of topics?")
                     if st.session_state.button is not None:
                         if st.checkbox("Save"):
                             df_xlsx = to_excel(st.session_state.df_final)
