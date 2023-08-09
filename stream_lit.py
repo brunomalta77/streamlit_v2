@@ -65,7 +65,7 @@ def my_values_filtered(df):
         st.write("ok")
     else:
         channel = res_channel
-    if res_author == "All":
+    if res_author[0] == "All":
         author = [x for x in df["author_predictions"].unique()]
     else:
         author = res_author
@@ -92,7 +92,7 @@ def my_values_all(df):
 
 def my_values_without_author(df,ws=None,we=None):
     channel_options= [x for x in df["message_type"].unique()]
-    res_channel = channel_options.append("All")
+    channel_options.append("All")
     if ws is None and we is None:
         return channel_options
     else:
@@ -103,9 +103,11 @@ def my_values_without_author(df,ws=None,we=None):
         ws = start_date.strftime('%Y-%m-%d')
         we = end_date.strftime('%Y-%m-%d')
         
-        channel = st.multiselect("Select the channel categories:", res_channel)
-        if channel =="All":
-            channel= channel_options
+        res_channel = st.multiselect("Select the channel categories:", res_channel)
+        if res_channel[0] =="All":
+            channel = [x for x in df["message_type"].unique()]
+        else:
+            channel = res_channel
         return ws,we,channel
 
 
