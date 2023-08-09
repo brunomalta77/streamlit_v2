@@ -337,9 +337,6 @@ def main():
                                         if st.session_state.final_topics != [] :
                                             top_topics,st.session_state.df_final = best_10(st.session_state.final_topics,st.session_state.df)
                                             st.session_state.top_topics_show = top_topics
-                                            st.write("your topics")
-                                            st.write("\n") 
-                                            st.write(top_topics)
                                             st.write("Do you want to change the topics or Save ?")
                                             st.session_state.name_file = f"_{ws}_{we}"
                                     else:
@@ -369,9 +366,6 @@ def main():
                                         if st.session_state.final_topics != [] :
                                             top_topics,st.session_state.df_final = best_10(st.session_state.final_topics,st.session_state.df)
                                             st.session_state.top_topics_show = top_topics
-                                            st.write("your topics")
-                                            st.write("\n") 
-                                            st.write(top_topics)
                                             st.write("Do you want to change the topics or Save ?")
                                             st.session_state.name_file = f"_{ws}_{we}"
                                     else:
@@ -397,9 +391,6 @@ def main():
                                         if st.session_state.final_topics != []: 
                                             top_topics,st.session_state.df_final = best_10(st.session_state.final_topics,st.session_state.df)
                                             st.session_state.top_topics_show=top_topics
-                                            st.write("your topics")
-                                            st.write("\n") 
-                                            st.write(top_topics)
                                             st.write("Do you want to change the topics or Save ?")
                                             st.session_state.name_file = f"_All_data"
                                     else:
@@ -422,9 +413,6 @@ def main():
                                         if st.session_state.final_topics != []:
                                             top_topics,st.session_state.df_final = best_10(st.session_state.final_topics,st.session_state.df)
                                             st.session_state.top_topics_show=top_topics
-                                            st.write("your topics")
-                                            st.write("\n") 
-                                            st.write(top_topics)
                                             st.write("Do you want to change the topics or Save ?")
                                             st.session_state.name_file = f"_All_data"
                                     else:
@@ -437,7 +425,7 @@ def main():
                     st.write("your topics")
                     st.write("\n")
                     st.write(st.session_state.top_topics_show)
-
+                    st.write("Do you want to save or change the number of topics?")
                     if st.session_state.button is not None:
                         if st.checkbox("Save"):
                             df_xlsx = to_excel(st.session_state.df_final)
