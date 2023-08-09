@@ -278,7 +278,7 @@ def main():
                 st.info(f"number of rows: {st.session_state.df.shape[0]}")
                 if st.session_state.df is not None:
                     if st.checkbox("Filter data"):
-                        if "author" not in st.session_state.df.columns:
+                        if "author_predictions" not in st.session_state.df.columns:
                             ws,we,channel = my_values_without_author(st.session_state.df,ws=True,we=True)
                             if channel == []:
                                 st.warning("Please choose your channel")
@@ -336,7 +336,7 @@ def main():
                                 except ZeroDivisionError as e:
                                     st.warning("Please check the calendar or check if your filter contains enough information") 
                     if st.checkbox("All data"):
-                        if "author" not in st.session_state.df.columns:
+                        if "author_predictions" not in st.session_state.df.columns:
                             channel = my_values_without_author(st.session_state.df)
                             if channel != []:
                                 try:
