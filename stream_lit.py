@@ -59,15 +59,20 @@ def my_values_filtered(df):
     # author
     res_author =  st.multiselect("Select the author categories:", author_options)
     res_channel = st.multiselect("Select the channel categories:", channel_options)
-    if res_channel[0] == "All":
-        channel = [x for x in df["message_type"].unique()]
-        st.write("ok")
-    else:
-        channel = res_channel
-    if res_author[0] == "All":
-        author = [x for x in df["author_predictions"].unique()]
-    else:
-        author = res_author
+    try:
+        if res_channel[0] == "All":
+            channel = [x for x in df["message_type"].unique()]
+        else
+            channel = res_channel
+    except:
+        pass
+    try:
+        if res_author[0] == "All":
+            author = [x for x in df["author_predictions"].unique()]
+        else:
+            author = res_author
+    except:
+        pass
     return ws,we,author,channel
 
 
