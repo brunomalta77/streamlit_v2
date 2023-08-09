@@ -71,7 +71,7 @@ def my_values_filtered(df):
     else:
         author = res_author
 
-     if "All" in res_br:
+    if "All" in res_br:
         brand = [x for x in df["brand"].unique()]
     else:
         brand = res_br
