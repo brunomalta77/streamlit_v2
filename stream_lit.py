@@ -66,8 +66,12 @@ def my_values_filtered(df):
     if res_author == "All":
         author = [x for x in df["author_predictions"].unique()]
     else:
-        author= res_author
+        author = res_author
+    st.write(author)
+    st.write(channel)
     return ws,we,author,channel
+
+
 
 def filtering(df,ws,we,author,channel):
     df = df[(df['Week Commencing'] >= ws) & (df['Week Commencing'] <= we) & (df["author_predictions"].isin(author)) & (df["message_type"].isin(channel))]
@@ -322,8 +326,6 @@ def main():
                         
                         if "author_predictions" in st.session_state.df.columns:
                             ws,we,author,channel = my_values_filtered(st.session_state.df)
-                            st.write(author)
-                            st.write(channel)
                             if author == [] and channel ==[] :
                                 st.warning("please select your author and channel")
                             if author == [] and channel != []:
