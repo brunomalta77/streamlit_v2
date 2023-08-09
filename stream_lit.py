@@ -114,7 +114,7 @@ def my_values_without_author(df,ws=None,we=None):
         we = end_date.strftime('%Y-%m-%d')
         
         res_channel = st.multiselect("Select the channel categories:", channel_options)
-        res_br = st.multiselect("Select the channel categories:", br_options)
+        res_br = st.multiselect("Select the brand categories:", br_options)
         if "All" in res_channel:
             channel = [x for x in df["message_type"].unique()]
         else:
