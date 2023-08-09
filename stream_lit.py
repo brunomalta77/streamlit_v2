@@ -120,7 +120,7 @@ def my_values_without_author(df,ws=None,we=None):
         else:
             channel = res_channel
 
-         if "All" in res_br:
+        if "All" in res_br:
             brand = [x for x in df["brand"].unique()]
         else:
             brand = res_br
