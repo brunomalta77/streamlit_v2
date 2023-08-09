@@ -304,10 +304,10 @@ def main():
             st.session_state.top_topics_show= None
 
         if "all_data" not in st.session_state:
-            st.session_state.all_data = True
+            st.session_state.all_data = None
         
         if "filter_data" not in st.session_state:
-            st.session_state.filter_data = True
+            st.session_state.filter_data = None
         
         
         # initialize our app
