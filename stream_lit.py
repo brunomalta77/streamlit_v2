@@ -323,7 +323,7 @@ def main():
                         if "author_predictions" in st.session_state.df.columns:
                             ws,we,author,channel = my_values_filtered(st.session_state.df)
                             st.write(author)
-                            st.wirte(channel)
+                            st.write(channel)
                             if author == [] and channel ==[] :
                                 st.warning("please select your author and channel")
                             if author == [] and channel != []:
