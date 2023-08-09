@@ -59,7 +59,6 @@ def my_values_filtered(df):
     # author
     res_author =  st.multiselect("Select the author categories:", author_options)
     res_channel = st.multiselect("Select the channel categories:", channel_options)
-    st.write(res_channel)
     if res_channel == "All":
         channel = [x for x in df["message_type"].unique()]
     else:
@@ -323,6 +322,8 @@ def main():
                         
                         if "author_predictions" in st.session_state.df.columns:
                             ws,we,author,channel = my_values_filtered(st.session_state.df)
+                            st.write(author)
+                            st.wirte(channel)
                             if author == [] and channel ==[] :
                                 st.warning("please select your author and channel")
                             if author == [] and channel != []:
