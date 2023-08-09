@@ -271,7 +271,7 @@ def main():
             df_file = st.file_uploader("Upload a Excel file")
             if df_file is None:
                 st.warning("Please drop your brand file")
-                st.warning("Please, if you encounter the "AxiosError: Network Error", close the excel you have open on your local machine")
+                st.warning("Please, if you encounter the -- AxiosError: Network Error--, close the excel you have open on your local machine")
             else:
                 st.session_state.df, uploaded_file_info, file_name = read_excel(df_file) #leitura
                 st.session_state.brand_name = file_name
