@@ -329,8 +329,6 @@ def main():
                             st.session_state.all_data = False
                             if "author_predictions" not in st.session_state.df.columns:
                                 ws,we,channel,brand = my_values_without_author(st.session_state.df,ws=True,we=True)
-                                st.write(channel)
-                                st.write(brand)
                                 if channel == []:
                                     st.warning("Please select your channel")
                                 if brand == []:
