@@ -45,7 +45,7 @@ def read_excel(df_file):
 
 
 def my_values_filtered(df):
-    author_options= [x for x in df["author_predictions"].unique(),"All"]
+    author_options= [x for x in df["author_predictions"].unique()].append("All")
     st.write(type(author_options))
     res_author = author_options.append("All")
     channel_options= [x for x in df["message_type"].unique()]
