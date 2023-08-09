@@ -429,6 +429,9 @@ def main():
 
 
                 # saving process
+                    st.write("your topics")
+                    st.write("\n") 
+                    st.write(top_topics)
                     if st.session_state.button is not None:
                         if st.checkbox("Save"):
                             df_xlsx = to_excel(st.session_state.df_final)
