@@ -455,6 +455,7 @@ def main():
                             else:
                                 st.warning("click on the download button to download") 
                         if st.checkbox("Change topics"):
+                            press = False
                             number_options = list(range(1,11))
                             selected_number = st.selectbox("Num of topics",number_options)
                             top_topics,final_df = best_10(st.session_state.final_topics,st.session_state.unique_topics_df,n=selected_number)
@@ -462,7 +463,12 @@ def main():
                             st.write("\n")
                             st.write(top_topics)
                             df_xlsx = to_excel(final_df)
-                            st.download_button(label='📥 Download Current Topics', data=df_xlsx, file_name=  f"{st.session_state.brand_name}{st.session_state.name_file}_{selected_number}_topics.xlsx")
+                            if st.download_button(label='📥 Download Current Topics', data=df_xlsx, file_name=  f"{st.session_state.brand_name}{st.session_state.name_file}_{selected_number}_topics.xlsx"):
+                                press = True
+                             if press == True:
+                                 st.write("save successful")
+                            else:
+                                st.write("click on the download button to download")
 
 
 
