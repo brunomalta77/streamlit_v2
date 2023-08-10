@@ -321,6 +321,7 @@ def main():
                 st.session_state.df, uploaded_file_info, file_name = read_excel(df_file) #leitura
                 st.session_state.all_data = True
                 st.session_state.filter_data = True
+                st.session_state.top_topics_show = None 
                 st.session_state.brand_name = file_name
                 st.info(f"number of rows: {st.session_state.df.shape[0]}")
                 if st.session_state.df is not None:
