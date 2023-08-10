@@ -443,11 +443,13 @@ def main():
                             st.write(st.session_state.top_topics_show)
                             st.write("Do you want to save or change the number of topics?")
                         if st.checkbox("Save"):
+                            press = False
                             df_xlsx = to_excel(st.session_state.df_final)
                             st.download_button(label='📥 Download Current Topics',
                             data=df_xlsx,
                             file_name= f"{st.session_state.brand_name}{st.session_state.name_file}.xlsx")
-                            if st.download_button:
+                            press = True
+                            if press == True: 
                                 st.write("save successful")
                             else:
                                 st.warning("click on the download button to download") 
