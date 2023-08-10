@@ -442,21 +442,21 @@ def main():
                             st.write("\n")
                             st.write(st.session_state.top_topics_show)
                             st.write("Do you want to save or change the number of topics?")
-                        if st.checkbox("Save"):
-                            df_xlsx = to_excel(st.session_state.df_final)
-                            st.download_button(label='📥 Download Current Topics',
-                            data=df_xlsx,
-                            file_name= f"{st.session_state.brand_name}{st.session_state.name_file}.xlsx")
-                            st.write("save successful")
-                        if st.checkbox("Change topics"):
-                            number_options = list(range(1,11))
-                            selected_number = st.selectbox("Num of topics",number_options)
-                            top_topics,final_df = best_10(st.session_state.final_topics,st.session_state.unique_topics_df,n=selected_number)
-                            st.write("your topics")
-                            st.write("\n")
-                            st.write(top_topics)
-                            df_xlsx = to_excel(final_df)
-                            st.download_button(label='📥 Download Current Topics', data=df_xlsx, file_name=  f"{st.session_state.brand_name}{st.session_state.name_file}_{selected_number}_topics.xlsx")
+                            if st.checkbox("Save"):
+                                df_xlsx = to_excel(st.session_state.df_final)
+                                st.download_button(label='📥 Download Current Topics',
+                                data=df_xlsx,
+                                file_name= f"{st.session_state.brand_name}{st.session_state.name_file}.xlsx")
+                                st.write("save successful")
+                            if st.checkbox("Change topics"):
+                                number_options = list(range(1,11))
+                                selected_number = st.selectbox("Num of topics",number_options)
+                                top_topics,final_df = best_10(st.session_state.final_topics,st.session_state.unique_topics_df,n=selected_number)
+                                st.write("your topics")
+                                st.write("\n")
+                                st.write(top_topics)
+                                df_xlsx = to_excel(final_df)
+                                st.download_button(label='📥 Download Current Topics', data=df_xlsx, file_name=  f"{st.session_state.brand_name}{st.session_state.name_file}_{selected_number}_topics.xlsx")
 
 
 
