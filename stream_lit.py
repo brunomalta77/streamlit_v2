@@ -465,8 +465,8 @@ def main():
                             df_xlsx = to_excel(final_df)
                             if st.download_button(label='📥 Download Current Topics', data=df_xlsx, file_name=  f"{st.session_state.brand_name}{st.session_state.name_file}_{selected_number}_topics.xlsx"):
                                 press = True
-                             if press == True:
-                                 st.write("save successful")
+                            if press == True:
+                                st.write("save successful")
                             else:
                                 st.write("click on the download button to download")
 
