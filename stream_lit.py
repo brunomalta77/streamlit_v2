@@ -413,11 +413,12 @@ def main():
                             
                             if "author_predictions" in st.session_state.df.columns:
                                 author,channel,brand = my_values_all(st.session_state.df)
-                                if author != [] and channel !=[]:
+                                if author != [] and channel !=[] and brand != []:
                                     try:
                                         st.session_state.df = filtering_all(st.session_state.df,author,channel,brand)
                                         st.info(f" number of rows: {st.session_state.df.shape[0]}")
                                         if st.button("Generate Topics"):
+                                            st.session_state.button = True
                                             st.session_state.df = get_topics(st.session_state.df)
                                             st.session_state.final_topics = unique_topics(st.session_state.df)
                                             st.session_state.unique_topics_df = st.session_state.df
@@ -426,7 +427,6 @@ def main():
                                             if st.session_state.final_topics != []:
                                                 top_topics,st.session_state.df_final = best_10(st.session_state.final_topics,st.session_state.df)
                                                 st.session_state.top_topics_show=top_topics
-                                                st.write("Do you want to change the topics or Save ?")
                                                 st.session_state.name_file = f"_All_data"
                                         else:
                                             st.warning("please click in the button -> Generate topics")
