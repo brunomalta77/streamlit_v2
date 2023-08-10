@@ -30,7 +30,7 @@ openai.api_key= api_key
 #page config
 st.set_page_config(page_title="BrandDelta_app",page_icon="💵",layout="wide")
 
-st.title("Brand Delta Topic Modelling (V 0.1")
+st.title("Brand Delta Topic Modelling (V 0.1)")
 
 
 
