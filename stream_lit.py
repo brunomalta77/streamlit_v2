@@ -468,7 +468,7 @@ def main():
                             if press == True:
                                 st.write("save successful")
                             else:
-                                st.write("click on the download button to download")
+                                st.warning("click on the download button to download")
 
 
 
