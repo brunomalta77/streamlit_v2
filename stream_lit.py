@@ -347,7 +347,6 @@ def main():
                                             if st.session_state.final_topics != [] :
                                                 top_topics,st.session_state.df_final = best_10(st.session_state.final_topics,st.session_state.df)
                                                 st.session_state.top_topics_show = top_topics
-                                                st.write("Do you want to change the topics or Save ?")
                                                 st.session_state.name_file = f"_{ws}_{we}"
                                         else:
                                             st.warning("please click in the button -> Generate topics")
@@ -376,7 +375,6 @@ def main():
                                             if st.session_state.final_topics != [] :
                                                 top_topics,st.session_state.df_final = best_10(st.session_state.final_topics,st.session_state.df)
                                                 st.session_state.top_topics_show = top_topics
-                                                st.write("Do you want to change the topics or Save ?")
                                                 st.session_state.name_file = f"_{ws}_{we}"
                                         else:
                                             st.warning("please click in the button -> Generate topics")
@@ -404,7 +402,6 @@ def main():
                                             if st.session_state.final_topics != []: 
                                                 top_topics,st.session_state.df_final = best_10(st.session_state.final_topics,st.session_state.df)
                                                 st.session_state.top_topics_show=top_topics
-                                                st.write("Do you want to change the topics or Save ?")
                                                 st.session_state.name_file = f"_All_data"
                                         else:
                                             st.warning("please click in the button -> Generate topics")
