@@ -35,8 +35,11 @@ st.title("Brand Delta Topic Modelling (V 0.1)")
 
 
 @st.cache(allow_output_mutation=True,suppress_st_warning=True) 
-def read_excel(df_file):
-    df = pd.read_excel(df_file)
+def read_excel_parquet(df_file):
+    if "parquet" in str(df_file):
+        df = pd.read_parquet(df_file)
+    if "xlsx" in str(df_file):
+        df = pd.read_excel(df_file)
     uploaded_file_info= str(df_file)
     file_name = uploaded_file_info.split(", name='")[1].split(".")[0]
     df['Week Commencing'] = df['created_time'].apply(lambda x: (x - timedelta(days=x.weekday())).replace(hour=0, minute=0, second=0, microsecond=0))
@@ -319,7 +322,7 @@ def main():
                 st.warning("Please, if you encounter the -- AxiosError: Network Error--, close the excel you have open on your local machine")
                 st.session_state.top_topics_show = None 
             else:
-                st.session_state.df, uploaded_file_info, file_name = read_excel(df_file) #leitura
+                st.session_state.df, uploaded_file_info, file_name = read_excel_parquet(df_file) #leitura
                 st.session_state.all_data = True
                 st.session_state.filter_data = True
                 st.session_state.brand_name = file_name
