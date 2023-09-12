@@ -17,7 +17,8 @@ import xlsxwriter
 from io import BytesIO
 from pyxlsb import open_workbook as open_xlsb
 import requests
-
+import asyncio
+import aiohttp
 
 
 #Getting the API_Keys
@@ -164,16 +165,18 @@ def filtering_without_author(df,channel,brand,ws=None,we=None):
 
 # generating the Chat GPT respose
 @st.cache(allow_output_mutation=True,suppress_st_warning=True) 
-def generate_chatgpt_response_v2(prompt, model = "gpt-3.5-turbo-16k"):
-    time.sleep(1)
+async def generate_chatgpt_response_v2(prompt, model="gpt-3.5-turbo"):
+async with aiohttp.ClientSession() as session:
+    time.sleep(2)
     responses = []
     restart_sequence = "\n"
 
-    response = openai.ChatCompletion.create(
-          model=model,
-          messages=[{"role": "user", "content": prompt}],
-          temperature=0,
-          n=1
+    response = await openai.ChatCompletion.create(
+            model=model,
+            messages=[{"role": "user", "content": prompt}],
+            temperature=0,
+            n=1,
+            session=session,
         )
 
     return response['choices'][0]['message']['content']
@@ -184,25 +187,32 @@ def get_topics(df):
     total_requests = len(gr_msg_unique)
     topics = []
     l=0
-    for i,gm in  enumerate(gr_msg_unique):
-        try:
-            topics.append(generate_chatgpt_response_v2("Determine exactly 3 topics that are being discussed \
-                                                    in the text delimited by triple backticks. \
-                                                    Make each topic 5 to 6 words long. \
-                                                    Format your response as a list of items separated by commas \
-                                                    Text: ```{}``` \
-                                                    ".format(gm)))
-        except:
-            topics.append('')
-        print(l)
-        l+=1
     
+    async def generate_topic(i, gm):
+        try:
+            topic = await generate_chatgpt_response_v2("Determine exactly 3 topics that are being discussed "
+                                                        "in the text delimited by triple backticks. "
+                                                        "Make each topic 5 to 6 words long. "
+                                                        "Format your response as a list of items separated by commas "
+                                                        "Text: ```{}``` "
+                                                        .format(gm))
+            return topic
+        except:
+            return ''
+    
+    tasks = [generate_topic(i, gm) for i, gm in enumerate(gr_msg_unique)]   
+    for i, task in enumerate(asyncio.as_completed(tasks)):
+        topic = await task
+        topics.append(topic)
+        print(l)
+        l += 1
+        
         # Calculate progress
         progress = (i + 1) / total_requests * 100
         
         # Print progress update
         st.write(f"Processing request {i + 1} of {total_requests} ({progress:.2f}% complete)")
-        time.sleep(2)
+        await asyncio.sleep(2)
     
     # Merging the topics with the actual dataframe
     topicdf = pd.DataFrame({'grouped_message': gr_msg_unique, 'topics': topics})
@@ -353,7 +363,7 @@ def main():
                                         st.info(f"Data size : {st.session_state.df.shape[0]}")
                                         if st.button("Generate Topics"):
                                             st.session_state.button = True
-                                            st.session_state.df = get_topics(st.session_state.df)
+                                            st.session_state.df = await get_topics(st.session_state.df)
                                             st.session_state.final_topics = unique_topics(st.session_state.df)
                                             st.session_state.unique_topics_df = st.session_state.df
                                             if st.session_state.final_topics == []:
@@ -381,7 +391,7 @@ def main():
                                         st.info(f"number of rows: {st.session_state.df.shape[0]}")
                                         if st.button("Generate Topics"):
                                             st.session_state.button = True
-                                            st.session_state.df = get_topics(st.session_state.df)
+                                            st.session_state.df = await get_topics(st.session_state.df)
                                             st.session_state.final_topics = unique_topics(st.session_state.df)
                                             st.session_state.unique_topics_df = st.session_state.df
                                             if st.session_state.final_topics == []:
@@ -408,7 +418,7 @@ def main():
                                         st.info(f"Number of rows: {st.session_state.df.shape[0]}")
                                         if st.button("Generate Topics"):
                                             st.session_state.button = True
-                                            st.session_state.df = get_topics(st.session_state.df)
+                                            st.session_state.df = await get_topics(st.session_state.df)
                                             st.session_state.final_topics = unique_topics(st.session_state.df)
                                             st.session_state.unique_topics_df = st.session_state.df
                                             if st.session_state.final_topics == []:
@@ -430,7 +440,7 @@ def main():
                                         st.info(f" number of rows: {st.session_state.df.shape[0]}")
                                         if st.button("Generate Topics"):
                                             st.session_state.button = True
-                                            st.session_state.df = get_topics(st.session_state.df)
+                                            st.session_state.df = await get_topics(st.session_state.df)
                                             st.session_state.final_topics = unique_topics(st.session_state.df)
                                             st.session_state.unique_topics_df = st.session_state.df
                                             if st.session_state.final_topics == []:
