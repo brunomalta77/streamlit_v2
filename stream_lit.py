@@ -185,6 +185,7 @@ def get_topics(df,n):
     topics = []
     l=0
     for i,gm in  enumerate(gr_msg_unique):
+        start_time = time.time()
         try:
             topics.append(generate_chatgpt_response_v2("Determine exactly 3 topics that are being discussed \
                                                     in the text delimited by triple backticks. \
@@ -199,9 +200,10 @@ def get_topics(df,n):
     
         # Calculate progress
         progress = (i + 1) / total_requests * 100
-        
+        end_time= time.time()
+        elapsed_time = end_time - start_time
         # Print progress update
-        st.write(f"Processing request {i + 1} of {total_requests} ({progress:.2f}% complete)")
+        st.write(f"Processing request {i + 1} of {total_requests} ({progress:.2f}% complete), time:{elapsed_time}")
         time.sleep(2)
     
     # Merging the topics with the actual dataframe
