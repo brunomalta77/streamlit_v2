@@ -180,6 +180,7 @@ def generate_chatgpt_response_v2(prompt, model = "gpt-3.5-turbo"):
 
 def get_topics(df):
     gr_msg_unique = list(df.grouped_message.unique())
+    total_requests = len(gr_msg_unique)
     topics = []
     l=0
     for gm in gr_msg_unique:
@@ -194,7 +195,14 @@ def get_topics(df):
             topics.append('')
         print(l)
         l+=1
-    time.sleep(2)
+    
+        # Calculate progress
+        progress = (i + 1) / total_requests * 100
+        
+        # Print progress update
+        st.write(f"Processing request {i + 1} of {total_requests} ({progress:.2f}% complete)")
+        time.sleep(2)
+    
     # Merging the topics with the actual dataframe
     topicdf = pd.DataFrame({'grouped_message': gr_msg_unique, 'topics': topics})
     df1 = pd.merge(df, topicdf, on='grouped_message', how='inner')
