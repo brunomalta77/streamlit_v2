@@ -164,7 +164,7 @@ def filtering_without_author(df,channel,brand,ws=None,we=None):
 
 # generating the Chat GPT respose
 @st.cache(allow_output_mutation=True,suppress_st_warning=True) 
-def generate_chatgpt_response_v2(prompt, model = "gpt-3.5-turbo-16k",n):
+def generate_chatgpt_response_v2(prompt,n, model = "gpt-3.5-turbo-16k"):
     time.sleep(n)
     responses = []
     restart_sequence = "\n"
