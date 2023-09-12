@@ -182,7 +182,7 @@ async def generate_chatgpt_response_v2(prompt, model="gpt-3.5-turbo"):
         return response['choices'][0]['message']['content']
 
 
-def get_topics(df):
+async def get_topics(df):
     gr_msg_unique = list(df.grouped_message.unique())
     total_requests = len(gr_msg_unique)
     topics = []
