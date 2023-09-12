@@ -9,3 +9,5 @@ textColor="#fdf8f8"
 font="serif"
 
 
+gatherUsageStats = false
+
