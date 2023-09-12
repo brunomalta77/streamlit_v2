@@ -163,9 +163,9 @@ def filtering_without_author(df,channel,brand,ws=None,we=None):
 
 
 # generating the Chat GPT respose
-@st.cache(allow_output_mutation=True,suppress_st_warning=True) 
+@st.cache(allow_output_mutation=True,suppress_st_warning=True,n) 
 def generate_chatgpt_response_v2(prompt, model = "gpt-3.5-turbo-16k"):
-    time.sleep(3)
+    time.sleep(n)
     responses = []
     restart_sequence = "\n"
 
@@ -337,6 +337,7 @@ def main():
                 st.session_state.filter_data = True
                 st.session_state.brand_name = file_name
                 st.info(f"number of rows: {st.session_state.df.shape[0]}")
+                st.radio("Do you want a faster pace? Be aware of the cons")
                 if st.session_state.df is not None:
                     if  st.session_state.filter_data == True:
                         if st.checkbox("Filter data"):
