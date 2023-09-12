@@ -166,20 +166,20 @@ def filtering_without_author(df,channel,brand,ws=None,we=None):
 # generating the Chat GPT respose
 @st.cache(allow_output_mutation=True,suppress_st_warning=True) 
 async def generate_chatgpt_response_v2(prompt, model="gpt-3.5-turbo"):
-async with aiohttp.ClientSession() as session:
-    time.sleep(2)
-    responses = []
-    restart_sequence = "\n"
-
-    response = await openai.ChatCompletion.create(
-            model=model,
-            messages=[{"role": "user", "content": prompt}],
-            temperature=0,
-            n=1,
-            session=session,
-        )
-
-    return response['choices'][0]['message']['content']
+    async with aiohttp.ClientSession() as session:
+        time.sleep(2)
+        responses = []
+        restart_sequence = "\n"
+    
+        response = await openai.ChatCompletion.create(
+                model=model,
+                messages=[{"role": "user", "content": prompt}],
+                temperature=0,
+                n=1,
+                session=session,
+            )
+    
+        return response['choices'][0]['message']['content']
 
 
 def get_topics(df):
