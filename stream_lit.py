@@ -363,7 +363,7 @@ def main():
                                         st.info(f"Data size : {st.session_state.df.shape[0]}")
                                         if st.button("Generate Topics"):
                                             st.session_state.button = True
-                                            st.session_state.df = await get_topics(st.session_state.df)
+                                            st.session_state.df = get_topics(st.session_state.df)
                                             st.session_state.final_topics = unique_topics(st.session_state.df)
                                             st.session_state.unique_topics_df = st.session_state.df
                                             if st.session_state.final_topics == []:
@@ -391,7 +391,7 @@ def main():
                                         st.info(f"number of rows: {st.session_state.df.shape[0]}")
                                         if st.button("Generate Topics"):
                                             st.session_state.button = True
-                                            st.session_state.df = await get_topics(st.session_state.df)
+                                            st.session_state.df = get_topics(st.session_state.df)
                                             st.session_state.final_topics = unique_topics(st.session_state.df)
                                             st.session_state.unique_topics_df = st.session_state.df
                                             if st.session_state.final_topics == []:
@@ -418,7 +418,7 @@ def main():
                                         st.info(f"Number of rows: {st.session_state.df.shape[0]}")
                                         if st.button("Generate Topics"):
                                             st.session_state.button = True
-                                            st.session_state.df = await get_topics(st.session_state.df)
+                                            st.session_state.df =  get_topics(st.session_state.df)
                                             st.session_state.final_topics = unique_topics(st.session_state.df)
                                             st.session_state.unique_topics_df = st.session_state.df
                                             if st.session_state.final_topics == []:
@@ -440,7 +440,7 @@ def main():
                                         st.info(f" number of rows: {st.session_state.df.shape[0]}")
                                         if st.button("Generate Topics"):
                                             st.session_state.button = True
-                                            st.session_state.df = await get_topics(st.session_state.df)
+                                            st.session_state.df =  get_topics(st.session_state.df)
                                             st.session_state.final_topics = unique_topics(st.session_state.df)
                                             st.session_state.unique_topics_df = st.session_state.df
                                             if st.session_state.final_topics == []:
