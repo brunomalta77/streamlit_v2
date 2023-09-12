@@ -203,7 +203,7 @@ def get_topics(df,n):
         end_time= time.time()
         elapsed_time = end_time - start_time
         # Print progress update
-        st.write(f"Processing request {i + 1} of {total_requests} ({progress:.2f}% complete), time:{elapsed_time}")
+        st.write(f"Processing request {i + 1} of {total_requests} ({progress:.2f}% complete), time:{round(elapsed_time,2)}")
         time.sleep(2)
     
     # Merging the topics with the actual dataframe
