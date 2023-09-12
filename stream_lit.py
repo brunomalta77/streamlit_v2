@@ -183,7 +183,7 @@ def get_topics(df):
     total_requests = len(gr_msg_unique)
     topics = []
     l=0
-    for gm in gr_msg_unique:
+    for i,gm in  enumerate(gr_msg_unique):
         try:
             topics.append(generate_chatgpt_response_v2("Determine exactly 3 topics that are being discussed \
                                                     in the text delimited by triple backticks. \
