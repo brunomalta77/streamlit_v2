@@ -194,6 +194,7 @@ def get_topics(df):
             topics.append('')
         print(l)
         l+=1
+    time.sleep(2)
     # Merging the topics with the actual dataframe
     topicdf = pd.DataFrame({'grouped_message': gr_msg_unique, 'topics': topics})
     df1 = pd.merge(df, topicdf, on='grouped_message', how='inner')
