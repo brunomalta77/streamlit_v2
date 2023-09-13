@@ -203,6 +203,10 @@ def get_topics(df):
         # Print progress update
         st.write(f"Processing request {i + 1} of {total_requests} ({progress:.2f}% complete)")
         time.sleep(1)
+        if topics[0] == '':
+            st.warning("Does not have any topics-> contact IT staff")
+        else:
+            continue
     
     # Merging the topics with the actual dataframe
     topicdf = pd.DataFrame({'grouped_message': gr_msg_unique, 'topics': topics})
