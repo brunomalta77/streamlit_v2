@@ -32,7 +32,7 @@ st.set_page_config(page_title="BrandDelta_app",page_icon="💵",layout="wide")
 
 st.title("Brand Delta Topic Modelling (V 0.1)")
 
-st.write(st.__version__)
+
 
 @st.cache(allow_output_mutation=True,suppress_st_warning=True) 
 def read_excel_parquet(df_file):
@@ -164,30 +164,27 @@ def filtering_without_author(df,channel,brand,ws=None,we=None):
 
 # generating the Chat GPT respose
 @st.cache(allow_output_mutation=True,suppress_st_warning=True) 
-def generate_chatgpt_response_v2(prompt,n, model = "gpt-3.5-turbo"):
-    time.sleep(5)
+def generate_chatgpt_response_v2(prompt, model = "gpt-3.5-turbo-16k"):
+    time.sleep(1)
     responses = []
     restart_sequence = "\n"
 
-    response = openai.chatCompletion.create(
+    response = openai.ChatCompletion.create(
           model=model,
           messages=[{"role": "user", "content": prompt}],
           temperature=0,
           n=1
         )
 
-    st.write("API Response:", response)
     return response['choices'][0]['message']['content']
 
 
-def get_topics(df,n):
-    progress_bar = st.progress(0)
+def get_topics(df):
     gr_msg_unique = list(df.grouped_message.unique())
     total_requests = len(gr_msg_unique)
     topics = []
     l=0
     for i,gm in  enumerate(gr_msg_unique):
-        start_time = time.time()
         try:
             topics.append(generate_chatgpt_response_v2("Determine exactly 3 topics that are being discussed \
                                                     in the text delimited by triple backticks. \
@@ -197,19 +194,15 @@ def get_topics(df,n):
                                                     ".format(gm)))
         except:
             topics.append('')
-        st.write(l)
+        print(l)
         l+=1
     
         # Calculate progress
-        progress = round(i + 1) / total_requests * 100
-        progress_ = round(i + 1) / total_requests
-        progress_bar.progress(progress_)
-        end_time= time.time()
-        elapsed_time = end_time - start_time
+        progress = (i + 1) / total_requests * 100
+        
         # Print progress update
-        st.write(f"Processing request {i + 1} of {total_requests} ({progress:.2f}% complete), time:{round(elapsed_time,2)} S")
-        st.write(topics)
-        time.sleep(3)
+        st.write(f"Processing request {i + 1} of {total_requests} ({progress:.2f}% complete)")
+        time.sleep(2)
     
     # Merging the topics with the actual dataframe
     topicdf = pd.DataFrame({'grouped_message': gr_msg_unique, 'topics': topics})
@@ -329,8 +322,6 @@ def main():
         if "filter_data" not in st.session_state:
             st.session_state.filter_data = None
         
-        if "n" not in st.session_state:
-            st.session_state.n = None
         
         # initialize our app
         left_column,right_column = st.columns(2)
@@ -346,11 +337,6 @@ def main():
                 st.session_state.filter_data = True
                 st.session_state.brand_name = file_name
                 st.info(f"number of rows: {st.session_state.df.shape[0]}")
-                res_pace=st.radio("Do you want a faster pace? Be aware of the cons",["yes","no"])
-                if res_pace == "yes":
-                    st.session_state.n=1
-                else:
-                    st.session_state.n=3
                 if st.session_state.df is not None:
                     if  st.session_state.filter_data == True:
                         if st.checkbox("Filter data"):
@@ -367,7 +353,7 @@ def main():
                                         st.info(f"Data size : {st.session_state.df.shape[0]}")
                                         if st.button("Generate Topics"):
                                             st.session_state.button = True
-                                            st.session_state.df = get_topics(st.session_state.df, st.session_state.n)
+                                            st.session_state.df = get_topics(st.session_state.df)
                                             st.session_state.final_topics = unique_topics(st.session_state.df)
                                             st.session_state.unique_topics_df = st.session_state.df
                                             if st.session_state.final_topics == []:
@@ -395,7 +381,7 @@ def main():
                                         st.info(f"number of rows: {st.session_state.df.shape[0]}")
                                         if st.button("Generate Topics"):
                                             st.session_state.button = True
-                                            st.session_state.df = get_topics(st.session_state.df,st.session_state.n)
+                                            st.session_state.df = get_topics(st.session_state.df)
                                             st.session_state.final_topics = unique_topics(st.session_state.df)
                                             st.session_state.unique_topics_df = st.session_state.df
                                             if st.session_state.final_topics == []:
@@ -422,7 +408,7 @@ def main():
                                         st.info(f"Number of rows: {st.session_state.df.shape[0]}")
                                         if st.button("Generate Topics"):
                                             st.session_state.button = True
-                                            st.session_state.df = get_topics(st.session_state.df,st.session_state.n)
+                                            st.session_state.df = get_topics(st.session_state.df)
                                             st.session_state.final_topics = unique_topics(st.session_state.df)
                                             st.session_state.unique_topics_df = st.session_state.df
                                             if st.session_state.final_topics == []:
@@ -444,7 +430,7 @@ def main():
                                         st.info(f" number of rows: {st.session_state.df.shape[0]}")
                                         if st.button("Generate Topics"):
                                             st.session_state.button = True
-                                            st.session_state.df = get_topics(st.session_state.df,st.session_state.n)
+                                            st.session_state.df = get_topics(st.session_state.df)
                                             st.session_state.final_topics = unique_topics(st.session_state.df)
                                             st.session_state.unique_topics_df = st.session_state.df
                                             if st.session_state.final_topics == []:
