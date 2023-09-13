@@ -207,7 +207,7 @@ def get_topics(df,n):
         #elapsed_time = end_time - start_time
         # Print progress update
         #st.write(f"Processing request {i + 1} of {total_requests} ({progress:.2f}% complete), time:{round(elapsed_time,2)} S")
-        time.sleep(1)
+        time.sleep(3)
     
     # Merging the topics with the actual dataframe
     topicdf = pd.DataFrame({'grouped_message': gr_msg_unique, 'topics': topics})
