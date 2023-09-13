@@ -3,10 +3,8 @@ pandas
 numpy 
 seaborn 
 python-dotenv
-streamlit 
+streamlit == 0.51
 joblib
 openpyxl
 pyxlsb
 xlsxwriter
-asyncio
-aiohttp
