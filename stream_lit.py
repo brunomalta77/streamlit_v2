@@ -203,10 +203,10 @@ def get_topics(df,n):
         #progress = round(i + 1) / total_requests * 100
         progress = round(i + 1) / total_requests
         progress_bar.progress(progress)
-        #end_time= time.time()
-        #elapsed_time = end_time - start_time
+        end_time= time.time()
+        elapsed_time = end_time - start_time
         # Print progress update
-        #st.write(f"Processing request {i + 1} of {total_requests} ({progress:.2f}% complete), time:{round(elapsed_time,2)} S")
+        st.write(f"Processing request {i + 1} of {total_requests} ({progress:.2f}% complete), time:{round(elapsed_time,2)} S")
         time.sleep(1)
     
     # Merging the topics with the actual dataframe
