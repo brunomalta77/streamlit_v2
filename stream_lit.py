@@ -193,7 +193,7 @@ def get_topics(df,n):
                                                     Make each topic 5 to 6 words long. \
                                                     Format your response as a list of items separated by commas \
                                                     Text: ```{}``` \
-                                                    ".format(gm),n))
+                                                    ".format(gm)))
         except:
             topics.append('')
         print(l)
@@ -208,7 +208,7 @@ def get_topics(df,n):
         # Print progress update
         st.write(f"Processing request {i + 1} of {total_requests} ({progress:.2f}% complete), time:{round(elapsed_time,2)} S")
         st.write(topics)
-        time.sleep(1)
+        time.sleep(3)
     
     # Merging the topics with the actual dataframe
     topicdf = pd.DataFrame({'grouped_message': gr_msg_unique, 'topics': topics})
