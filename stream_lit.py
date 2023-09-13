@@ -197,7 +197,7 @@ def get_topics(df,n):
                                                     ".format(gm)))
         except:
             topics.append('')
-        print(l)
+        st.write(l)
         l+=1
     
         # Calculate progress
