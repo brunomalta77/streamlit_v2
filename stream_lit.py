@@ -176,6 +176,7 @@ def generate_chatgpt_response_v2(prompt,n, model = "gpt-3.5-turbo"):
           n=1
         )
 
+    st.write("API Response:", response)
     return response['choices'][0]['message']['content']
 
 
