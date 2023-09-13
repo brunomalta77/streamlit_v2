@@ -200,9 +200,9 @@ def get_topics(df,n):
         l+=1
     
         # Calculate progress
-        #progress = round(i + 1) / total_requests * 100
-        progress = round(i + 1) / total_requests
-        progress_bar.progress(progress)
+        progress = round(i + 1) / total_requests * 100
+        progress_ = round(i + 1) / total_requests
+        progress_bar.progress(progress_)
         end_time= time.time()
         elapsed_time = end_time - start_time
         # Print progress update
