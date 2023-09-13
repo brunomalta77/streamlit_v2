@@ -169,7 +169,7 @@ def generate_chatgpt_response_v2(prompt,n, model = "gpt-3.5-turbo-16k"):
     responses = []
     restart_sequence = "\n"
 
-    response = openai.chatCompletion.create(
+    response = openai.Completion.create(
           model=model,
           messages=[{"role": "user", "content": prompt}],
           temperature=0,
