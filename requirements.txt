@@ -3,7 +3,7 @@ pandas
 numpy 
 seaborn 
 python-dotenv
-streamlit == 0.52.2
+streamlit == 1.26.0
 joblib
 openpyxl
 pyxlsb
