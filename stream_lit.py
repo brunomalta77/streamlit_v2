@@ -32,7 +32,7 @@ st.set_page_config(page_title="BrandDelta_app",page_icon="💵",layout="wide")
 
 st.title("Brand Delta Topic Modelling (V 0.1)")
 
-
+st.write(st.__version__)
 
 @st.cache(allow_output_mutation=True,suppress_st_warning=True) 
 def read_excel_parquet(df_file):
