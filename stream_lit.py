@@ -202,6 +202,7 @@ def get_topics(df):
         
         # Print progress update
         st.write(f"Processing request {i + 1} of {total_requests} ({progress:.2f}% complete)")
+        st.wirte(topics)
         time.sleep(2)
     
     # Merging the topics with the actual dataframe
