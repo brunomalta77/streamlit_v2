@@ -187,6 +187,7 @@ def generate_chatgpt_response_v2(prompt, model = "gpt-3.5-turbo-16k"):
 
 
 def get_topics(df):
+    p = st.empty()
     progress_bar = st.progress(0)
     gr_msg_unique = list(df.grouped_message.unique())
     total_requests = len(gr_msg_unique)
@@ -219,7 +220,7 @@ def get_topics(df):
         elapsed_time = end_time - start_time
 
         # Print progress update
-        st.text(f"Processing request {i + 1} of {total_requests} ({progress_percentage:.2f}% complete) time {round(elapsed_time,2)} S")
+        p.text(f"Processing request {i + 1} of {total_requests} ({progress_percentage:.2f}% complete) time {round(elapsed_time,2)} S")
         #time.sleep(1)
     
     # Merging the topics with the actual dataframe
