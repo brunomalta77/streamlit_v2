@@ -178,7 +178,7 @@ def generate_chatgpt_response_v2(prompt, model = "gpt-3.5-turbo-16k"):
             )
     
         return response['choices'][0]['message']['content']
-     except Exception as e:
+    except Exception as e:
         # Handle the exception gracefully
         st.write(f"API call failed with error: {str(e)}")
         st.write("Continuing to the next iteration with a warning...")
