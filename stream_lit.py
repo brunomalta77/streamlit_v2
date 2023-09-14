@@ -29,7 +29,7 @@ openai.api_key= api_key
 #page config
 st.set_page_config(page_title="BrandDelta_app",page_icon="💵",layout="wide")
 
-logo_path = r"\brand_logo.png"
+logo_path = "brand_logo.png"
 image = Image.open(logo_path)
 
 col1, col2 = st.columns([4, 1])  # Adjust the width ratios as needed
