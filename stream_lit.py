@@ -198,12 +198,16 @@ def get_topics(df):
             topics.append('')
         print(l)
         l+=1
-    
+
+        
+        if topics[0] == '':
+            st.warning("Without any content")
+
         # Calculate progress
         progress_percentage = (i + 1) / total_requests * 100
         progress = (i + 1) / total_requests 
         progress_bar.progress(progress)
-
+        
         end_time = time.time()
         elapsed_time = end_time - start_time
 
