@@ -17,7 +17,6 @@ import xlsxwriter
 from io import BytesIO
 from pyxlsb import open_workbook as open_xlsb
 import requests
-import sys
 
 
 #Getting the API_Keys
@@ -30,7 +29,18 @@ openai.api_key= api_key
 #page config
 st.set_page_config(page_title="BrandDelta_app",page_icon="💵",layout="wide")
 
-st.title("Brand Delta Topic Modelling (V 0.1)")
+logo_path = r"\brand_logo.png"
+image = Image.open(logo_path)
+
+col1, col2 = st.columns([4, 1])  # Adjust the width ratios as needed
+
+# Logo on the left
+with col2:
+    st.image(image)  # Adjust the width as needed
+
+# Title on the right
+with col1:
+    st.title("Brand Delta Topic Modelling (V 0.1)")
 
 
 
