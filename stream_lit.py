@@ -165,18 +165,25 @@ def filtering_without_author(df,channel,brand,ws=None,we=None):
 # generating the Chat GPT respose
 @st.cache(allow_output_mutation=True,suppress_st_warning=True) 
 def generate_chatgpt_response_v2(prompt, model = "gpt-3.5-turbo-16k"):
-    time.sleep(3)
+    #time.sleep(3)
     responses = []
     restart_sequence = "\n"
-
-    response = openai.ChatCompletion.create(
-          model=model,
-          messages=[{"role": "user", "content": prompt}],
-          temperature=0,
-          n=1
-        )
-
-    return response['choices'][0]['message']['content']
+    try:
+        response = openai.ChatCompletion.create(
+              model=model,
+              messages=[{"role": "user", "content": prompt}],
+              temperature=0,
+              n=1, 
+            request_timeout=5
+            )
+    
+        return response['choices'][0]['message']['content']
+     except Exception as e:
+        # Handle the exception gracefully
+        st.write(f"API call failed with error: {str(e)}")
+        st.write("Continuing to the next iteration with a warning...")
+        return('')
+        
 
 
 def get_topics(df):
@@ -200,7 +207,7 @@ def get_topics(df):
         l+=1
 
         
-        if topics[0] == '':
+        if topics[l-1] == '':
             st.warning("Without any content")
 
         # Calculate progress
@@ -213,7 +220,7 @@ def get_topics(df):
 
         # Print progress update
         st.write(f"Processing request {i + 1} of {total_requests} ({progress_percentage:.2f}% complete) time {round(elapsed_time,2)} S")
-        time.sleep(1)
+        #time.sleep(1)
     
     # Merging the topics with the actual dataframe
     topicdf = pd.DataFrame({'grouped_message': gr_msg_unique, 'topics': topics})
