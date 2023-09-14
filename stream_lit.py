@@ -214,6 +214,11 @@ def get_topics(df):
         progress_percentage = (i + 1) / total_requests * 100
         progress = (i + 1) / total_requests 
         progress_bar.progress(progress)
+
+        #_----- changes
+        sys.stdout.write(f"\rProcessing request {i + 1} of {total_requests} ({progress_percentage:.2f}% complete)")
+        sys.stdout.flush()
+        #---- changes
         
         end_time = time.time()
         elapsed_time = end_time - start_time
