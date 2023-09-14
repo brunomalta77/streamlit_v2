@@ -214,17 +214,12 @@ def get_topics(df):
         progress_percentage = (i + 1) / total_requests * 100
         progress = (i + 1) / total_requests 
         progress_bar.progress(progress)
-
-        #_----- changes
-        sys.stdout.write(f"\rProcessing request {i + 1} of {total_requests} ({progress_percentage:.2f}% complete)")
-        sys.stdout.flush()
-        #---- changes
         
         end_time = time.time()
         elapsed_time = end_time - start_time
 
         # Print progress update
-        st.write(f"Processing request {i + 1} of {total_requests} ({progress_percentage:.2f}% complete) time {round(elapsed_time,2)} S")
+        st.text(f"Processing request {i + 1} of {total_requests} ({progress_percentage:.2f}% complete) time {round(elapsed_time,2)} S")
         #time.sleep(1)
     
     # Merging the topics with the actual dataframe
