@@ -273,11 +273,8 @@ def best_10(final_topic_list_cleaned,df1,n=10):
     # we need to ask the client for how many topics they want.
     te = pd.DataFrame(final_topic_list_cleaned)
     te.rename(columns={0: 'topics'},inplace=True)
-    st.write(te)
     te1 = pd.DataFrame(te.topics.value_counts()).reset_index()
-    st.write(te1)
     top_10_topics = list(te1[0:n]['topics'])
-    st.write(top_10_topics)
     cols_to_remove = [col for col in final_topic_list_cleaned if col not in top_10_topics]
     df2 = df1[df1.columns.difference(cols_to_remove)]
     # creating a binary column for the topics
