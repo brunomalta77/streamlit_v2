@@ -8,5 +8,4 @@ joblib
 openpyxl
 pyxlsb
 xlsxwriter
-concurrent.futures
 scikit-learn==1.2.1
