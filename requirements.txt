@@ -8,3 +8,5 @@ joblib
 openpyxl
 pyxlsb
 xlsxwriter
+concurrent.futures
+scikit-learn
