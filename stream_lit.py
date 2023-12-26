@@ -40,7 +40,8 @@ with col2:
 
 # Title on the right
 with col1:
-    st.title("Brand Delta Topic Modelling (V 0.1)")
+    st.title("Brand Delta Topic Modelling (V 0.2)")
+    st.subheader("Open AI version (0.28.1)")
 
 
 
