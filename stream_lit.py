@@ -92,6 +92,18 @@ def my_values_filtered(df):
 
 
 
+# Remove topics with less than 5 words
+def remove_noise_from_topics(topics):
+    final_topic_list = []
+    for top in topics:
+        nw= top.split(" ")
+        if len(nw) > 5:
+            final_topic_list.append(top)
+    return final_topic_list
+
+
+
+
 def filtering(df,ws,we,author,channel,brand):
     df = df[(df['Week Commencing'] >= ws) & (df['Week Commencing'] <= we) & (df["author_predictions"].isin(author)) & (df["message_type"].isin(channel)) & (df["brand"].isin(brand))]
     df["cleaned_message"] = df["cleaned_message"].apply(lambda x: str(x))
@@ -206,12 +218,15 @@ def get_topics(df):
     for i,gm in  enumerate(gr_msg_unique):
         start_time = time.time()
         try:
-            topics.append(generate_chatgpt_response_v2("Determine exactly 3 topics that are being discussed \
-                                                    in the text delimited by triple backticks. \
-                                                    Make each topic 5 to 6 words long. \
-                                                    Format your response as a list of items separated by commas \
-                                                    Text: ```{}``` \
-                                                    ".format(gm)))
+            topics.append(generate_chatgpt_response_v2("Act like a social media analyst tasked with finding the key topics or themes around food brands from a collection of social media posts.\
+                                                 Determine exactly 2 topics that are being discussed \
+                                                 in the text delimited by triple backticks. \
+                                                 Make each topic 5 to 6 words long. \
+                                                 If you find a similar theme or topic across multiple texts, please ensure that the topic name is exactly the same so they can be combined later. \
+                                                 Please focus on larger themes and try not to make the topics very specific.\
+                                                 Format your response as a list of items separated by commas \
+                                                 Text: ```{}``` \
+                                                 ".format(gm)))
         except:
             topics.append('')
         print(l)
@@ -315,6 +330,118 @@ def to_excel(df):
     processed_data = output.getvalue()
     return processed_data
 
+
+def combine_similar_topics(final_topic_list_cleaned):
+    # Vectorize the topics using TF-IDF
+    vectorizer = TfidfVectorizer(stop_words="english")
+    X = vectorizer.fit_transform(final_topic_list_cleaned)
+    # Perform hierarchical clustering
+    n_clusters = 10  # Number of main topics
+    # clustering = AgglomerativeClustering(n_clusters=n_clusters, affinity='cosine', linkage='average')
+    # cluster_assignments = clustering.fit_predict(X.toarray())
+
+    # Perform DBSCAN clustering
+    dbscan = DBSCAN(eps=0.6, min_samples=2, metric='cosine')
+    cluster_assignments = dbscan.fit_predict(X.toarray())
+    # Extract combined main topics
+    unique_clusters = np.unique(cluster_assignments)
+    st.write("unique_clusters",unique_clusters)
+    if len(unique_clusters) <=1:
+        return None
+    else:
+        main_topics = {}
+
+        for cluster in unique_clusters:
+            if cluster == -1:
+                continue  # Ignore noise points (topics that do not belong to any cluster)
+
+            indices = np.where(cluster_assignments == cluster)[0]
+            cluster_topics = [final_topic_list_cleaned[i] for i in indices]
+            main_topics[cluster] = cluster_topics
+
+        # Display the combined main topics
+        # for cluster, topics in main_topics.items():
+        #     st.write(f"Main Topic {cluster + 1}: {', '.join(topics)}")
+        
+        prompt = "In the text delimited by triple backticks, there is a dictionary where the value for each key is a list of topics which are quite similar to each other. \
+        #       Can you please provide one main topic for each key by combining the topics from the list of topics for that key.\
+        #       The topic you provide from each list must be a maximum of 8 words.\
+        #       Format your response as a list of topics separated by commas so the number of topics you provide is exactly equal to the number of keys\
+        #       Text: ```{}``` \
+        #      ".format(main_topics)
+        
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=[{"role": "user", "content": prompt}],
+            temperature=0,
+            n=1
+            )
+        clean_topics = response['choices'][0]['message']['content']
+        clean_topics_final = ast.literal_eval(clean_topics)
+
+        return clean_topics_final
+
+
+
+def generate_tags(msg, cleaned_topics_final):
+    try:
+        prompt = f"""
+        You will be provided with the following information:
+        1. An arbitrary text sample. The sample is delimited with triple backticks.
+        2. List of categories the text sample can be assigned to. The list is delimited with square brackets. The categories in the list are enclosed in the single quotes and comma separated.
+
+        Perform the following tasks:
+        1. Identify to which categories the provided text belongs to with the highest probability.
+        2. Each text sample can be assigned to multiple categories based on the probabilities.
+        3. If the text does not belong to any of the categories, then the response can be a blank string.
+        3. Provide your response as a list. Do not provide any additional information except the list of topics each text is assigned to.
+
+        List of categories: {cleaned_topics_final}
+
+        Text sample: ```{msg}```
+
+        """
+      
+        return (generate_chatgpt_response_v2(prompt))
+    except:
+        return ('')
+
+
+
+def assign_final_topics_message(df_final,cleaned_topics_final):
+    msg_unique = list(df_final.cleaned_message)
+    tags = []
+
+    progress_bar = st.progress(0)
+    all_msg = len(msg_unique)
+    count = 0 
+    
+
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        results = list(executor.map(generate_tags, msg_unique, [cleaned_topics_final] * len(msg_unique)))
+
+
+    df_final["final_topics"] = results
+    return df_final
+
+
+def create_binary_column(df_final,clean_topics_final):
+    for top in clean_topics_final:
+        df_final[top] = 0
+    for top in clean_topics_final:
+        for index, row in df_final.iterrows():
+            rowtopics = row['final_topics']
+            if top in rowtopics:
+                df_final.loc[index, top] = 1
+            else:
+                continue
+    return df_final
+
+
+
+
+
+
 def main():
     with st.container():
         
@@ -388,9 +515,25 @@ def main():
                                             if st.session_state.final_topics == []:
                                                 st.error("does not have any topic/ Topics with less than 5 words/ Chat GPT API problem")
                                             if st.session_state.final_topics != [] :
-                                                top_topics,st.session_state.df_final = best_10(st.session_state.final_topics,st.session_state.df)
-                                                st.session_state.top_topics_show = top_topics
-                                                st.session_state.name_file = f"_{ws}_{we}"
+                                                # removing the noise ( Topics with less than 5 words)
+                                                st.session_state.final_topics = remove_noise_from_topics(st.session_state.final_topics)
+                                                #combining the topics with an unsupervised model by sklearn
+                                                cleaned_topics_final = combine_similar_topics(st.session_state.final_topics)
+                                                if cleaned_topics_final == None:
+                                                    st.error("You do not have more than 1 topic, change the filter used or perhaps the data uploaded.")
+                                                else:
+                                                    st.write("cleaned_topics")
+                                                    st.write(cleaned_topics_final)
+                                                    #assign each message to a cluster using threathing
+                                                    st.session_state.df_final= assign_final_topics_message(st.session_state.df,cleaned_topics_final)
+                                                    # create a binary column for each of the top 10 Topics
+                                                    st.session_state.df_final = create_binary_column(st.session_state.df_final,cleaned_topics_final)
+                                                    st.write("final data frame")
+                                                    st.write(st.session_state.df_final.head())
+                                                    #getting the best 10 topics
+                                                    #top_topics,st.session_state.df_final = best_10(st.session_state.final_topics,st.session_state.df)
+                                                    #st.session_state.top_topics_show = top_topics
+                                                    st.session_state.name_file = f"_{ws}_{we}"
                                         else:
                                             st.warning("please click in the button -> Generate topics")
                                     except ZeroDivisionError as e:
@@ -416,9 +559,25 @@ def main():
                                             if st.session_state.final_topics == []:
                                                 st.error("does not have any topic/ Topics with less than 5 words/ Chat GPT API problem")
                                             if st.session_state.final_topics != [] :
-                                                top_topics,st.session_state.df_final = best_10(st.session_state.final_topics,st.session_state.df)
-                                                st.session_state.top_topics_show = top_topics
-                                                st.session_state.name_file = f"_{ws}_{we}"
+                                                # removing the noise ( Topics with less than 5 words)
+                                                st.session_state.final_topics = remove_noise_from_topics(st.session_state.final_topics)
+                                                #combining the topics with an unsupervised model by sklearn
+                                                cleaned_topics_final = combine_similar_topics(st.session_state.final_topics)
+                                                if cleaned_topics_final == None:
+                                                    st.error("You do not have more than 1 topic, change the filter used or perhaps the data uploaded.")
+                                                else:
+                                                    st.write("cleaned_topics")
+                                                    st.write(cleaned_topics_final)
+                                                    #assign each message to a cluster using threathing
+                                                    st.session_state.df_final= assign_final_topics_message(st.session_state.df,cleaned_topics_final)
+                                                    # create a binary column for each of the top 10 Topics
+                                                    st.session_state.df_final = create_binary_column(st.session_state.df_final,cleaned_topics_final)
+                                                    st.write("final data frame")
+                                                    st.write(st.session_state.df_final.head())
+                                                    #getting the best 10 topics
+                                                    #top_topics,st.session_state.df_final = best_10(st.session_state.final_topics,st.session_state.df)
+                                                    #st.session_state.top_topics_show = top_topics
+                                                    st.session_state.name_file = f"_{ws}_{we}"
                                         else:
                                             st.warning("please click in the button -> Generate topics")
                                     except ZeroDivisionError as e:
@@ -443,9 +602,25 @@ def main():
                                             if st.session_state.final_topics == []:
                                                 st.error("does not have any topic/ Topics with less than 5 words/ Chat GPT API problem")
                                             if st.session_state.final_topics != []: 
-                                                top_topics,st.session_state.df_final = best_10(st.session_state.final_topics,st.session_state.df)
-                                                st.session_state.top_topics_show=top_topics
-                                                st.session_state.name_file = f"_All_data"
+                                                # removing the noise ( Topics with less than 5 words)
+                                                st.session_state.final_topics = remove_noise_from_topics(st.session_state.final_topics)
+                                                #combining the topics with an unsupervised model by sklearn
+                                                cleaned_topics_final = combine_similar_topics(st.session_state.final_topics)
+                                                if cleaned_topics_final == None:
+                                                    st.error("You do not have more than 1 topic, change the filter used or perhaps the data uploaded.")
+                                                else:
+                                                    st.write("cleaned_topics")
+                                                    st.write(cleaned_topics_final)
+                                                    #assign each message to a cluster using threathing
+                                                    st.session_state.df_final= assign_final_topics_message(st.session_state.df,cleaned_topics_final)
+                                                    # create a binary column for each of the top 10 Topics
+                                                    st.session_state.df_final = create_binary_column(st.session_state.df_final,cleaned_topics_final)
+                                                    st.write("final data frame")
+                                                    st.write(st.session_state.df_final.head())
+                                                    #getting the best 10 topics
+                                                    #top_topics,st.session_state.df_final = best_10(st.session_state.final_topics,st.session_state.df)
+                                                    #st.session_state.top_topics_show = top_topics
+                                                    st.session_state.name_file = f"_All_data"
                                         else:
                                             st.warning("please click in the button -> Generate topics")
                                     except ZeroDivisionError as e:
@@ -465,9 +640,25 @@ def main():
                                             if st.session_state.final_topics == []:
                                                 st.error("does not have any topic/ Topics with less than 5 words/ Chat GPT API problem")
                                             if st.session_state.final_topics != []:
-                                                top_topics,st.session_state.df_final = best_10(st.session_state.final_topics,st.session_state.df)
-                                                st.session_state.top_topics_show=top_topics
-                                                st.session_state.name_file = f"_All_data"
+                                                  # removing the noise ( Topics with less than 5 words)
+                                                st.session_state.final_topics = remove_noise_from_topics(st.session_state.final_topics)
+                                                #combining the topics with an unsupervised model by sklearn
+                                                cleaned_topics_final = combine_similar_topics(st.session_state.final_topics)
+                                                if cleaned_topics_final == None:
+                                                    st.error("You do not have more than 1 topic, change the filter used or perhaps the data uploaded.")
+                                                else:
+                                                    st.write("cleaned_topics")
+                                                    st.write(cleaned_topics_final)
+                                                    #assign each message to a cluster using threathing
+                                                    st.session_state.df_final= assign_final_topics_message(st.session_state.df,cleaned_topics_final)
+                                                    # create a binary column for each of the top 10 Topics
+                                                    st.session_state.df_final = create_binary_column(st.session_state.df_final,cleaned_topics_final)
+                                                    st.write("final data frame")
+                                                    st.write(st.session_state.df_final.head())
+                                                    #getting the best 10 topics
+                                                    #top_topics,st.session_state.df_final = best_10(st.session_state.final_topics,st.session_state.df)
+                                                    #st.session_state.top_topics_show = top_topics
+                                                     st.session_state.name_file = f"_All_data"
                                         else:
                                             st.warning("please click in the button -> Generate topics")
                                     except ZeroDivisionError as e:
@@ -477,13 +668,13 @@ def main():
 
                   
                     if st.session_state.button is not None:
-                        if st.session_state.top_topics_show == None:
-                            st.warning("you do not have topics yet")
-                        else:
-                            st.write("your topics")
-                            st.write("\n")
-                            st.write(st.session_state.top_topics_show)
-                            st.write("Do you want to save or change the number of topics?")
+                        #if st.session_state.top_topics_show == None:
+                            #st.warning("you do not have topics yet")
+                        #else:
+                            #st.write("your topics")
+                            #st.write("\n")
+                            #st.write(st.session_state.top_topics_show)
+                            #st.write("Do you want to save or change the number of topics?")
                         if st.checkbox("Save"):
                             press = False
                             df_xlsx = to_excel(st.session_state.df_final)
@@ -496,22 +687,22 @@ def main():
                                 st.write("save successful")
                             else:
                                 st.warning("click on the download button to download") 
-                        if st.checkbox("Change topics"):
-                            press = False
-                            number_options = list(range(1,11))
-                            selected_number = st.selectbox("Num of topics",number_options)
-                            top_topics,final_df = best_10(st.session_state.final_topics,st.session_state.unique_topics_df,n=selected_number)
-                            st.write("your topics")
-                            st.write("\n")
-                            st.write(top_topics)
-                            df_xlsx = to_excel(final_df)
-                            if st.download_button(label='📥 Download Current Topics', 
-                                                  data=df_xlsx, file_name=  f"{st.session_state.brand_name}{st.session_state.name_file}_{selected_number}_topics.xlsx"):
-                                press = True
-                            if press == True:
-                                st.write("save successful")
-                            else:
-                                st.warning("click on the download button to download")
+                        #if st.checkbox("Change topics"):
+                            #press = False
+                            #number_options = list(range(1,11))
+                            #selected_number = st.selectbox("Num of topics",number_options)
+                            #top_topics,final_df = best_10(st.session_state.final_topics,st.session_state.unique_topics_df,n=selected_number)
+                            #st.write("your topics")
+                            #st.write("\n")
+                            #st.write(top_topics)
+                            #df_xlsx = to_excel(final_df)
+                            #if st.download_button(label='📥 Download Current Topics', 
+                            #                      data=df_xlsx, file_name=  f"{st.session_state.brand_name}{st.session_state.name_file}_{selected_number}_topics.xlsx"):
+                            #    press = True
+                            #if press == True:
+                            #    st.write("save successful")
+                            #else:
+                            #    st.warning("click on the download button to download")
 
 
 
