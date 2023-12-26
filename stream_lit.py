@@ -18,6 +18,15 @@ from io import BytesIO
 from pyxlsb import open_workbook as open_xlsb
 import requests
 from PIL import Image
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.cluster import AgglomerativeClustering
+from sklearn.cluster import DBSCAN
+import numpy as np
+import ast
+import concurrent.futures
+
+
+
 
 #Getting the API_Keys
 #load_dotenv()
