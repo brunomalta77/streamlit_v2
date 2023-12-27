@@ -415,8 +415,8 @@ def combine_similar_topics(final_topic_list_cleaned):
             main_topics[cluster] = cluster_topics
 
         # Display the combined main topics
-        # for cluster, topics in main_topics.items():
-        #     st.write(f"Main Topic {cluster + 1}: {', '.join(topics)}")
+        for cluster, topics in main_topics.items():
+             st.write(f"Main Topic {cluster + 1}: {', '.join(topics)}")
         
         prompt = "In the text delimited by triple backticks, there is a dictionary where the value for each key is a list of topics which are quite similar to each other. \
         #       Can you please provide one main topic for each key by combining the topics from the list of topics for that key.\
