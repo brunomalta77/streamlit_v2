@@ -439,6 +439,12 @@ def combine_similar_topics(final_topic_list_cleaned):
 
 
 def generate_tags(msg, cleaned_topics_final):
+    
+    max_context_length = 4097
+    if len(message) > max_context_length:
+        message = message[:max_context_length]
+    
+    
     try:
         prompt = f"""
         You will be provided with the following information:
