@@ -418,7 +418,7 @@ def combine_similar_topics(final_topic_list_cleaned):
         for cluster, topics in main_topics.items():
             #st.write(f"Main Topic {cluster + 1}: {', '.join(topics)}")
             if len(topics) > 1500:
-                main_topics[cluster]= topics[:1500]  
+                main_topics[cluster]= topics[:1500]      
             st.write(f"Main Topic {cluster + 1}: {', '.join(topics)}")
         
         prompt = "In the text delimited by triple backticks, there is a dictionary where the value for each key is a list of topics which are quite similar to each other. \
