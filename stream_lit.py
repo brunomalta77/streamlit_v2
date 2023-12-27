@@ -417,16 +417,16 @@ def combine_similar_topics(final_topic_list_cleaned):
         # Display the combined main topics
         for cluster, topics in main_topics.items():
             #st.write(f"Main Topic {cluster + 1}: {', '.join(topics)}")
-            if len(topics) > 1500:
-                main_topics[cluster]= topics[:1500]      
+            if len(topics) > 300:
+                main_topics[cluster]= topics[:300]      
             st.write(f"Main Topic {cluster + 1}: {', '.join(topics)}")
         
         prompt = "In the text delimited by triple backticks, there is a dictionary where the value for each key is a list of topics which are quite similar to each other. \
-        #       Can you please provide one main topic for each key by combining the topics from the list of topics for that key.\
-        #       The topic you provide from each list must be a maximum of 8 words.\
-        #       Format your response as a list of topics separated by commas so the number of topics you provide is exactly equal to the number of keys\
-        #       Text: ```{}``` \
-        #      ".format(main_topics)
+               Can you please provide one main topic for each key by combining the topics from the list of topics for that key.\
+               The topic you provide from each list must be a maximum of 8 words.\
+               Format your response as a list of topics separated by commas so the number of topics you provide is exactly equal to the number of keys\
+               Text: ```{}``` \
+              ".format(main_topics)
         
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
