@@ -197,7 +197,7 @@ def filtering_without_author(df,channel,brand,ws=None,we=None):
 # generating the Chat GPT respose
 @st.cache(allow_output_mutation=True,suppress_st_warning=True) 
 def generate_chatgpt_response_v2(prompt, model = "gpt-3.5-turbo-16k"):
-    time.sleep(4)
+    time.sleep(5)
     responses = []
     restart_sequence = "\n"
     try:
@@ -210,8 +210,10 @@ def generate_chatgpt_response_v2(prompt, model = "gpt-3.5-turbo-16k"):
             )
     
         return response['choices'][0]['message']['content']
+        time.sleep(1)
     except Exception as e:
         # Handle the exception gracefully
+        time.sleep(1)
         st.write(f"API call failed with error: {str(e)}")
         st.write("Continuing to the next iteration with a warning...")
         return('')
