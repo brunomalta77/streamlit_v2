@@ -443,9 +443,9 @@ def combine_similar_topics(final_topic_list_cleaned):
 
 def generate_tags(msg, cleaned_topics_final):
     
-    max_context_length = 1500
-    if len(msg) > max_context_length:
-        msg = msg[:max_context_length]
+    #max_context_length = 1500
+    #if len(msg) > max_context_length:
+        #msg = msg[:max_context_length]
     
     
     try:
