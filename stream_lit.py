@@ -218,7 +218,50 @@ def generate_chatgpt_response_v2(prompt, model = "gpt-3.5-turbo-16k"):
         
 
 
+def generate_tags_get_topics(gm):
+    try:
+        prompt = "Act like a social media analyst tasked with finding the key topics or themes around food brands from a collection of social media posts.\
+                                                 Determine exactly 2 topics that are being discussed \
+                                                 in the text delimited by triple backticks. \
+                                                 Make each topic 5 to 6 words long. \
+                                                 If you find a similar theme or topic across multiple texts, please ensure that the topic name is exactly the same so they can be combined later. \
+                                                 Please focus on larger themes and try not to make the topics very specific.\
+                                                 Format your response as a list of items separated by commas \
+                                                 Text: ```{}``` \
+                                                 ".format(gm)
+      
+        return (generate_chatgpt_response_v2(prompt))
+    except:
+        return ('')
+
+
 def get_topics(df):
+    p = st.empty()
+    progress_bar = st.progress(0)
+    gr_msg_unique = list(df.grouped_message.unique())
+    total_requests = len(gr_msg_unique)
+    with st.spinner("Running...."):
+        with concurrent.futures.ThreadPoolExecutor() as executor:
+            bar = st.progress(0)
+            placeholder = st.empty()
+            topics = list(executor.map(generate_tags_get_topics,(gm for gm in gr_msg_unique)))
+            for idx,res in enumerate(topics,start=1):
+                progress = idx/total_requests
+                placeholder.text(f"{int(progress * 100)}%")
+                # update progress bar
+                bar.progress(progress)
+
+        
+    
+    # Merging the topics with the actual dataframe
+    topicdf = pd.DataFrame({'grouped_message': gr_msg_unique, 'topics': topics})
+    df1 = pd.merge(df, topicdf, on='grouped_message', how='inner')
+    return df1
+
+
+
+#not being used
+def get_topics_not_used(df):
     p = st.empty()
     progress_bar = st.progress(0)
     gr_msg_unique = list(df.grouped_message.unique())
@@ -427,9 +470,16 @@ def assign_final_topics_message(df_final,cleaned_topics_final):
     count = 0 
     
 
-    with concurrent.futures.ThreadPoolExecutor() as executor:
-        results = list(executor.map(generate_tags, msg_unique, [cleaned_topics_final] * len(msg_unique)))
-
+    with st.spinner("Running...."):
+        with concurrent.futures.ThreadPoolExecutor() as executor:
+            bar = st.progress(0)
+            placeholder = st.empty()
+            results = list(executor.map(generate_tags,msg_unique,[cleaned_topics_final] * len(msg_unique)))
+            for idx,res in enumerate(results,start=1):
+                progress = idx/all_msg
+                placeholder.text(f"{int(progress * 100)}%")
+                # update progress bar
+                bar.progress(progress)
 
     df_final["final_topics"] = results
     return df_final
