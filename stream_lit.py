@@ -276,7 +276,7 @@ def get_topics_not_used(df):
             topics.append(generate_chatgpt_response_v2("Act like a social media analyst tasked with finding the key topics or themes around food brands from a collection of social media posts.\
                                                  Determine exactly 2 topics that are being discussed \
                                                  in the text delimited by triple backticks. \
-                                                 Make each topic 5 to 6 words long. \
+                                                 Make each topic have precisely 5 to 6 words long, is very important. \
                                                  If you find a similar theme or topic across multiple texts, please ensure that the topic name is exactly the same so they can be combined later. \
                                                  Please focus on larger themes and try not to make the topics very specific.\
                                                  Format your response as a list of items separated by commas \
