@@ -332,7 +332,7 @@ def unique_topics(df1):
     final_topic_list_cleaned = []
     for top in final_topic_list:
         nw = top.split(' ')
-        if len(nw) > 5:
+        if len(nw) > 5 and len(nw) <11:
             final_topic_list_cleaned.append(top)
     
     return final_topic_list_cleaned
@@ -399,45 +399,52 @@ def combine_similar_topics(final_topic_list_cleaned):
     dbscan = DBSCAN(eps=0.6, min_samples=2, metric='cosine')
     cluster_assignments = dbscan.fit_predict(X.toarray())
     # Extract combined main topics
+    #unique_clusters = np.unique(cluster_assignments)
     unique_clusters = np.unique(cluster_assignments)
+    main_topics = {}
     st.write("unique_clusters",unique_clusters)
     if len(unique_clusters) <=1:
         return None
-    else:
-        main_topics = {}
-
-        for cluster in unique_clusters:
-            if cluster == -1:
-                continue  # Ignore noise points (topics that do not belong to any cluster)
-
+        
+    for cluster in unique_clusters:
+        if cluster >= 0:
             indices = np.where(cluster_assignments == cluster)[0]
             cluster_topics = [final_topic_list_cleaned[i] for i in indices]
-            main_topics[cluster] = cluster_topics
-
-        # Display the combined main topics
-        for cluster, topics in main_topics.items():
-            #st.write(f"Main Topic {cluster + 1}: {', '.join(topics)}")
-            if len(topics) > 300:
-                main_topics[cluster]= topics[:300]      
-            st.write(f"Main Topic {cluster + 1}: {', '.join(topics)}")
+            if len(cluster_topics) < 100:
+                main_topics[cluster] = cluster_topics
+            else:
+                my_cluster = cluster_topics[:100]
+                main_topics[cluster] = my_cluster
+        else:
+            continue
         
-        prompt = "In the text delimited by triple backticks, there is a dictionary where the value for each key is a list of topics which are quite similar to each other. \
-               Can you please provide one main topic for each key by combining the topics from the list of topics for that key.\
-               The topic you provide from each list must be a maximum of 8 words.\
-               Format your response as a list of topics separated by commas so the number of topics you provide is exactly equal to the number of keys\
-               Text: ```{}``` \
-              ".format(main_topics)
-        
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
-            messages=[{"role": "user", "content": prompt}],
-            temperature=0,
-            n=1
-            )
-        clean_topics = response['choices'][0]['message']['content']
-        clean_topics_final = ast.literal_eval(clean_topics)
+    #for cluster, topics in main_topics.items():
+        #st.write(f"Main Topic {cluster + 1}: {(topics)}")
+    
 
-        return clean_topics_final
+
+    prompt = "In the text delimited by triple backticks, there is a dictionary where the value for each key is a list of topics which are quite similar to each other. \
+    #       Can you please provide just one main topic for each key by combining the all the topics from the list of topics for that key.\
+    #       The topic you provide from each list must be a maximum of 8 words.\
+    #       Format your response as a list of topics separated by commas so the number of topics you provide is exactly equal to the number of keys\
+    #       Text: ```{}``` \
+    #      ".format(main_topics)
+    
+    #st.write("prompt",prompt)
+    #debugging
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=[{"role": "user", "content": prompt}],
+        temperature=0,
+        n=1
+        )
+    clean_topics = response['choices'][0]['message']['content']
+    clean_topics_final = ast.literal_eval(clean_topics)
+    #st.write(clean_topics_final)
+
+    return clean_topics_final
+
+
 
 
 
